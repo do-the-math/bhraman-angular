@@ -1,0 +1,112 @@
+
+
+<!-- <div class="container-fluid"> -->
+	<!-- <div class="row " >
+		<div class="dropdown col-md-12">
+			<button data-toggle="dropdown" class="btn btn-default dropdown-toggle pull-right" type="button" aria-expanded="false">Default <span class="caret"></span></button>
+			<select class="dropdown-menu pull-right" multiple="multiple" [(ngModel)]="optionSelected" (ngModelChange)="onChange()" style="height: 20em" >
+				<option  class="dropdown-item " *ngFor="let cat of categoryList" [ngValue]="cat._id" style="font-size: 2em; width: 10em;" >
+						{{cat.categoryName}} 
+				</option>
+			</select>
+			
+		</div>
+	</div> -->
+	
+
+	
+	<!-- <div class="btn-group pull-right">
+		<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">choose <span class="caret"></span></a>
+		<ul class="dropdown-menu" style="padding: 10px" id="myDiv" (ngModelChange)="onChange()" >
+			<li *ngFor="let cat of categoryList">
+				<p><input type="checkbox"  style="margin-right: 10px; font-size: 10px" name="class" (click)="chooseCat(cat._id)"> {{cat.categoryName}} </p>
+			</li>
+			
+		</ul>
+	</div> -->
+	
+<!-- 	<div class="btn-group pull-right">
+		<a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">Choose Category <span class="caret"></span></a>
+		<ul class="dropdown-menu"  id="myDiv" (ngModelChange)="onChange()" >
+			<li *ngFor="let cat of categoryList">
+				<div (click)="chooseCat(cat._id)" class="choice" >
+					<input type="checkbox"  name="class" class="pull-right" id="{{cat.categoryName}}"><label for="{{cat.categoryName}}" style="font-size: 17px"> {{cat.categoryName}} </label>
+				</div>
+			</li>
+			
+			
+		</ul>
+	
+	</div>
+	
+
+
+	<div class="mainDiv">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="text-center">
+					<h3>
+						<div #gmap style="width:100%;height:75vh"></div>
+					</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+ </div>
+	 -->
+	
+<!--  -->
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+	  <div class="x_title">
+		<h2 style="margin:10px!important;">Map</h2>
+		<ul class="nav navbar-right panel_toolbox">
+		  <li>
+			<div class="form-horizontal form-label-left">
+				<div class="form-group">
+					<label class=" control-label dropdown-toggle" data-toggle="dropdown">Choose Category <span class="caret"></span></label>
+
+					<ul class="dropdown-menu mydropdown"  (ngModelChange)="onChange()" >
+						<!-- <li style="background-color: #eee; color: #73879C" inactive >
+							<div (click)="clearall()" >Clear All
+							</div>
+						</li> -->
+						<li *ngFor="let cat of categoryList; let i = index"
+							[ngClass]="{'active': selectedIdx.indexOf(i)>=0}">
+							<div >
+								<input type="checkbox"  class="pull-right icheckbox_flat-green" [checked]="selectedIdx.indexOf(i)>=0" id="{{cat.categoryName}}" (click)="chooseCat(cat._id); selectItem(i)"  > <label for="{{cat.categoryName}}" > {{cat.categoryName}} </label>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		  </li> 
+		  
+		</ul>
+		<div class="clearfix"></div>
+		
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12">
+					<div class="">
+						<h3>
+							<div #gmap style="width:100%;height:83%"></div>
+						</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+
+
+	
+	
+	
+	
+

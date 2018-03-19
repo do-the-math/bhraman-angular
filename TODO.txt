@@ -1,0 +1,36 @@
+1) MAP {
+      .clear All
+      .search contact/contacts
+      .add user defined radius
+      .Contacts updation using marker drag option
+      .legends(different color different categories)
+      .infowindow
+      .Add Contact using map click/markers
+      .details of the contacts shown on the map(using a buton)
+      .click on a point(not the currect location) on the map and draw the circle and     the contacts
+
+     
+       1) shortest route on the map and direction
+       2) colored route
+       3) day/night map
+}
+2) category component: 
+         .add a discription feild
+3) Login and Register page/ auth guard for routes
+4) breadcrumbs on pages
+
+5) cool animation/ responsive pages
+     .route animation when routing to another page
+     
+6) DataBase models future proof
+     .multiple user account
+     .
+7) optimising the number of service call and front end app
+8) Robust Code/ Think
+
+
+
+
+
+
+ref: https://embed.plnkr.co/plunk/kx1T2f

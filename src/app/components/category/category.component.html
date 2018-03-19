@@ -1,0 +1,275 @@
+
+<!-- <div class="container" >
+	<div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="x_panel">
+		<div class="x_title">
+			<h2>Manage  <b> Category </b></h2>
+				<button href="#addEmployeeModal" data-toggle="modal" type="button" class="btn btn-success pull-right">Add Category</button>
+			<div class="clearfix"></div>
+		</div>
+
+		  <div class="x_content mytable">
+			<div class="table-responsive">
+			  <table class="table table-striped jambo_table bulk_action">
+				<thead>
+				  <tr class="headings">
+					
+					<th class="column-title"> Name </th>
+					
+					<th class="column-title"><span class="nobr">Actions </span></th>
+					
+				  </tr>
+				</thead>
+
+				<tbody *ngFor="let c of mockcategories">
+				  <tr class="even pointer">
+					
+					<td class=" ">
+						<a  routerLink="contacts/{{c._id}}">
+							{{c.categoryName}}
+						</a>
+					</td>
+					
+				   
+					<td>
+						<a href="#editCategoryModal" class="edit" data-toggle="modal" (click)="passID( c )"><i class="fa fa-edit"></i></a>
+							
+						<a href="#deleteCategoryModal" class="delete" data-toggle="modal" (click)="passID( c )">
+							<i class="fa fa-remove"></i>
+						</a>
+					</td>
+				  </tr>
+				</tbody>
+			  </table>
+			</div>
+		  </div>
+		</div>
+	</div>
+</div>
+ -->
+
+
+
+<!-- /////////////////////////////////// -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="x_panel">
+	  <div class="x_title">
+		<h2 style="margin:10px!important;">Manage Category</h2>
+		<ul class="nav navbar-right panel_toolbox">
+		  <li>
+		  </li>
+		  <li></li>
+		  <li>  
+			<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success pull-right">Add Category </button>
+		  </li>
+		</ul>
+		<div class="clearfix"></div>
+	  </div>
+
+	  <div class="x_content">
+
+		
+
+		<div class="table-responsive">
+		  <table class="table table-striped jambo_table bulk_action">
+			<thead>
+			  <tr class="headings">
+				<th class="column-title" style="width: 5%;">
+				  <!-- <input type="checkbox" id="check-all" class="flat"> -->
+				</th>
+				<th class="column-title" style="width: 30%;text-align:center">Category </th>
+				<th class="column-title"> </th>
+				<th class="column-title"> </th>
+				<th class="column-title"></th>
+				<th class="column-title"> </th>
+				<th class="column-title"> </th>
+				<th class="column-title"> </th>
+				<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
+				</th>
+				<!-- <th class="bulk-actions" colspan="7">
+				  <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+				</th> -->
+			  </tr>
+			</thead>
+
+			<tbody>
+			  <tr *ngFor="let c of mockcategories; let index = index">
+				<td class="a-center ">
+				  <!-- <input type="checkbox" class="flat" name="table_records"> -->
+				</td>
+				<td class=" " style="text-align:center">
+					<a routerLink="contacts/{{c._id}}"> {{c.name}}</a>
+				</td>
+				<td class=" "> </td>
+				<td class=" "> </td>
+				<td class=" "></td>
+				<td class=" "></td>
+				<td class=" "></td>
+				<td class="a-right a-right "></td>
+				<td class=" " style="text-align:center">
+					<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passID( c )"><i class="fa fa-pencil"></i> Edit </a>
+					<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passID( c )"><i class="fa fa-trash-o"></i> Delete </a>
+				</td>
+			  </tr>
+			</tbody>
+		  </table>
+		</div>
+				
+			
+	  </div>
+	</div>
+</div>
+
+
+<!-- Add Modal HTML -->
+<!-- <div id="addEmployeeModal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">                      
+					<h4 class="modal-title">Add Category</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">                    
+					<div class="form-group">
+						<label>Category Name</label>
+						<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+						
+					</div>
+									 
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input type="submit" class="btn btn-success" value="Add" (click)="addCategory()" data-dismiss="modal">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">                      
+					<h4 class="modal-title">Edit Category</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">                    
+					<div class="form-group">
+						<label>Name</label>
+						<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+					</div>
+									
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input type="submit" class="btn btn-info" value="Save" (click)="updateCategory()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div id="deleteCategoryModal" class="modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">                      
+					<h4 class="modal-title">Delete Category</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">                    
+					<p>Are you sure you want to delete these Records?</p>
+					<p class="text-warning"><small>This action cannot be undone.</small></p>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input type="submit" class="btn btn-danger" value="Delete" (click)="deleteCategory()" data-dismiss="modal">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+ -->
+
+
+
+
+
+<!-- add category -->
+<div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:200px" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Add Category</h4>
+			</div>
+			<div class="modal-body">
+				<div id="testmodal2" style="padding:20px;">
+					<form id="antoform2" class="form-horizontal calender" role="form">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">Category name</label>
+						<div class="col-sm-9">
+							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary antosubmit2" (click)="addCategory()" data-dismiss="modal">Add</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- edit category -->
+<div id="editCategoryModal" class="modal fade" style="margin-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Edit Category</h4>
+			</div>
+			<div class="modal-body">
+				<div id="testmodal2" style="padding: 20px;">
+					<form id="antoform2" class="form-horizontal calender" role="form">
+					<div class="form-group">
+						<label class="col-sm-4 control-label">New Category name</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-warning antosubmit2" (click)="updateCategory()" data-dismiss="modal">Update</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- delete category -->
+<div id="deleteCategoryModal" class="modal fade" style="margin-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Delete Category</h4>
+			</div>
+			<div class="modal-body">
+				<div id="testmodal2" style="padding: 20px;">
+					<p>Are you sure you want to delete these Records?</p>
+					<p class="text-warning red"><b>This action cannot be undone.</b></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger antosubmit2" (click)="deleteCategory()" data-dismiss="modal">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+ 

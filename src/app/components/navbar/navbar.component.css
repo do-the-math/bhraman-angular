@@ -1,0 +1,18 @@
+.my-navbar {
+	border-radius:0px;
+	margin-bottom: 0px! important;
+	color: white;
+	background-color: #15273f;
+	border-bottom: grey 2px solid;
+}
+
+.my-navbar-brand{
+	margin: 0px;
+	padding:0px;
+	padding: 15px;
+	padding-top: 2px;
+	font-size: 30px;
+	font-style: bold;
+	color: white;
+	
+}

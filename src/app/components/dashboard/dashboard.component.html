@@ -1,0 +1,116 @@
+ <body [ngClass]="{'nav-sm': clicked, 'nav-md': !clicked}">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a routerLink="/dashboard"  class="site_title"> <span>Tour App</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="assets/img/img.jpg"  class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2 *ngIf="user">{{user.name}}</h2>
+              </div>
+            </div>
+           
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                  <li (click)="sideToggle='home'" [ngClass]="{'active': sideToggle=='home'}"><a routerLink="home"><i class="fa fa-home"></i> Home </a></li>
+                  <li (click)="sideToggle='category'" [ngClass]="{'active': sideToggle=='category'}"><a routerLink="category"><i class="fa fa-table"></i> Category </a></li>
+                  <!-- <li><a routerLink="login"><i class="fa fa-clone"></i>RoughT</a> </li> -->
+                </ul>
+              </div>
+              
+
+            </div>
+            
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Settings">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Lock">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Logout" (click)="onLogoutClick()">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle" (click)="sidebarToggle()"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="">
+                  <a *ngIf="user" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img src="assets/img/img.jpg" alt="">{{user.name}}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <!-- <li><a href="javascript:;"> Profile</a></li>
+                    <li>
+                      <a href="javascript:;">
+                        <span class="badge bg-red pull-right">50%</span>
+                        <span>Settings</span>
+                      </a>
+                    </li>
+                    <li><a href="javascript:;">Help</a></li> -->
+                    <li><a (click)="onLogoutClick()"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+
+                
+              </ul>
+            </nav>
+          </div>
+        </div>
+       
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12" style="height:86.8%; padding-top:20px">
+              <router-outlet></router-outlet>
+            </div>
+          <br />
+
+          </div>
+        </div>
+       
+
+        <!-- footer content -->
+        <footer class="footer navbar-fixed-bottom">
+          <div class="pull-right">
+            Bootstrap Admin Template by  Aman
+          </div>
+          <div class="clearfix"></div>
+        </footer>
+        <!-- /footer content -->
+      </div>
+    </div>
+</body>
