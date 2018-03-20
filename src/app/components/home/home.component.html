@@ -75,7 +75,7 @@
 						<li *ngFor="let cat of categoryList; let i = index"
 							[ngClass]="{'active': selectedIdx.indexOf(i)>=0}">
 							<div >
-								<input type="checkbox"  class="pull-right icheckbox_flat-green" [checked]="selectedIdx.indexOf(i)>=0" id="{{cat.categoryName}}" (click)="chooseCat(cat._id); selectItem(i)"  > <label for="{{cat.categoryName}}" > {{cat.categoryName}} </label>
+								<input type="checkbox"  class="pull-right icheckbox_flat-green" [checked]="selectedIdx.indexOf(i)>=0" id="{{cat.name}}" (click)="chooseCat(cat._id); selectItem(i)"  > <label for="{{cat.name}}" > {{cat.name}} </label>
 							</div>
 						</li>
 					</ul>

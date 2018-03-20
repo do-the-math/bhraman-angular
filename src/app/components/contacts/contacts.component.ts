@@ -79,7 +79,7 @@ export class ContactsComponent implements OnInit {
 				()=> console.log("done")
 			);
     }
-	addContact(categoryID: number){
+	addContact(){
 		console.log("Contact Added from Component");
 		
 		this.newContactObj.categoryID = this.route.snapshot.paramMap.get('categoryID');

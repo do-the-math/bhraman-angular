@@ -31,10 +31,12 @@ export class HomeComponent implements OnInit {
 	searchContactList: Contact[];
 	categoryList: category[];
 	
-	
+	ttmp: any;
 	// category selection
 	optionSelected = [];
 	selectedIdx = [];
+	
+	prev_infowindow = null;
 	
 	constructor(
 		private route: ActivatedRoute, 
@@ -100,7 +102,7 @@ export class HomeComponent implements OnInit {
 	}
 
     selectItem(index):void {	
-		console.log(this.selectedIdx)
+		// console.log(this.selectedIdx)
 		var idx = this.selectedIdx.indexOf(index);
 		if(idx > -1){
 			this.selectedIdx.splice(idx, 1);
@@ -131,7 +133,8 @@ export class HomeComponent implements OnInit {
 				}
 			}
 		});
-		if(this.searchContactList.length>0){
+		console.log(this.searchContactList)
+		if(this.searchContactList.length>=0){
 			console.log("ngOnInit2")
 			this.ngOnInit2();
 		} 
@@ -299,7 +302,9 @@ export class HomeComponent implements OnInit {
 										contact.position.lng);
 			//console.log(dist)
 			if (dist < 1) {
+				console.log(contact.notes)
 				this.showContactInMap(contact);
+				
 			}
 		});
 	}
@@ -312,11 +317,18 @@ export class HomeComponent implements OnInit {
 							map: this.map,
 							title: contact.name
 			});
+		this.ttmp = contact;
+		var infoWindowContent = '<div id="content"><h1 id="firstHeading" class="firstHeading">' + contact.notes + '</h1><ul> <li *ngFor="let note of ttmp.notes">{{note.note}}</li> </ul></div>';
 		marker.addListener('click',(tmp)=>{
+			if( this.prev_infowindow ) {
+			   this.prev_infowindow.close();
+			}
+			
 			var infowindow = new google.maps.InfoWindow({
-				content: contact.name
+				content: infoWindowContent
 			  });
-			  infowindow.open(this.map, marker);
+			this.prev_infowindow = infowindow;
+			infowindow.open(this.map, marker);
 	   });
 		this.markers.push(marker );
 	}

@@ -23,13 +23,16 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Location</label>
 				<div class="col-sm-8">
-					<div>
+					<div style="margin-right: 77px">
 						<ng4geo-autocomplete  [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+					</div>
+					<div >
+						<button type="button" class="btn btn-lg btn-primary "  data-toggle="modal" data-target="#openMap" >Map</button> 
 					</div>
 				</div>
 			</div>
 			<hr>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label class="col-sm-2 control-label">Notes</label>
 				<div class="col-sm-8"  >
 					<div style="overflow: auto;height:140px;word-wrap: break-word;">
@@ -42,7 +45,67 @@
 					<textarea type="text" class="col-sm-8 form-control h-10" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}"  ></textarea>
 					<button type="button" class="btn btn-sm btn-primary col-sm-2 pull-right" (click)="addNote()" >Add</button> 
 				</div>
-			</div>	
+			</div>	 -->
+			
+				<table class="table table-striped bulk_action" >
+					<thead>
+					  <tr class="headings">
+						<th class="column-title" style="width: 5%;"></th>
+						<th class="column-title" style="width: 5%;text-align:center"> Topic </th>
+						<th class="column-title" style="width: 5%;text-align:center">  </th>
+						<th class="column-title" style="width: 70%;text-align:center"> Note </th>
+						<th class="column-title" style="width: 15%;text-align:center"><span class="nobr">Edit</span></th>
+					  </tr>
+					</thead>
+
+					<tbody style="overflow: auto;height:140px;" >
+					  <tr *ngFor="let note of newObj.notes" >
+						<td class="a-center ">
+						  
+						</td>
+						<td class=" " style="text-align:center">
+							<input type="text" placeholder={{note.date}}/>
+						</td>
+						<td class=" " style="text-align:center">
+							:
+						</td>
+						<td class=" "  style="text-align:center"> 
+							<input type="text"  placeholder={{note.note}} style="width: 100%;"/>
+						</td>
+						
+						<td class=" " style="text-align:center">
+							<input type="button"  value="Remove" />
+							
+						</td>
+					  </tr>
+					  
+					  <tr >
+						<td class="a-center ">
+						</td>
+						<td class=" " style="text-align:center">
+							<input *ngIf=showInp type="text" placeholder="Enter Key Value.."  [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}"  />
+						</td>
+						<td style="text-align:center"><div *ngIf=showInp> : </div>
+						</td>
+						<td class=" " style="text-align:center"> 
+							<input *ngIf=showInp type="text"  style="width: 100%;" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}" placeholder="Enter Note.."/>
+						</td>
+
+						<td class=" " style="text-align:center">
+							<div *ngIf=!showInp>
+								<!-- <a  class="btn"  value="Add" (click)="addField()"></a> -->
+								<input type="button"  value="Add"  (click)="addField()"  />
+								<!-- <button  type="button"  data-toggle="modal" data-target="" class="btn  pull-right" (click)="addField()">Add Contact </button> -->
+							</div>
+							<div *ngIf=showInp>
+								<!-- <a class="btn"   value="Save" (click)="saveField()"></a> -->
+								<button  type="button"  data-toggle="modal" data-target="" class="btn btn-success pull-right" (click)="saveField()">Add Contact </button>
+							</div>
+						</td>
+					  </tr>
+					</tbody>
+				</table>
+				        
 		</form>
 			
 	  </div>
@@ -50,9 +113,27 @@
 </div>
 
 
+<!-- <div #gmap style="width:100%;height:83%"></div> -->
 
-
-
+<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:200px" >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Add Location</h4>
+			</div>
+			<div class="modal-body">
+				<div id="testmodal2" style="padding:20px;">
+					<div #gmap style="width:100%;height:50%"></div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary antosubmit2" data-dismiss="modal" (click)="saveLocation()">Add</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 
  

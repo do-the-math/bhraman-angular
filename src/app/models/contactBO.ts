@@ -14,3 +14,10 @@ export class Contact {
 		lng: Number;
 	}
 }
+
+export class Markerr
+{
+	position:string;
+	map: string;
+	title: string;
+}
