@@ -16,7 +16,7 @@
 			<div class="form-group">
 				<label class="col-sm-2 control-label">Name</label>
 				<div class="col-sm-8">
-					<input type="text" class="form-control" required placeholder={{newObj.name}} >
+					<input type="text" class="form-control" required placeholder={{tmpObj.name}} disable>
 				</div>
 			</div>
 			
@@ -46,65 +46,57 @@
 					<button type="button" class="btn btn-sm btn-primary col-sm-2 pull-right" (click)="addNote()" >Add</button> 
 				</div>
 			</div>	 -->
-			
+			<div style="overflow: auto;height:45%" >
 				<table class="table table-striped bulk_action" >
 					<thead>
 					  <tr class="headings">
-						<th class="column-title" style="width: 5%;"></th>
-						<th class="column-title" style="width: 5%;text-align:center"> Topic </th>
-						<th class="column-title" style="width: 5%;text-align:center">  </th>
-						<th class="column-title" style="width: 70%;text-align:center"> Note </th>
-						<th class="column-title" style="width: 15%;text-align:center"><span class="nobr">Edit</span></th>
+						<th class="column-title" style="width: 40%;text-align:center"> Topic </th>
+						<th class="column-title" style="width: 10%;text-align:center">  </th>
+						<th class="column-title" style="width: 40%;text-align:center"> Note </th>
+						<th class="column-title" style="width: 10%;text-align:center"><span class="nobr">Delete</span></th>
 					  </tr>
 					</thead>
 
-					<tbody style="overflow: auto;height:140px;" >
-					  <tr *ngFor="let note of newObj.notes" >
-						<td class="a-center ">
-						  
-						</td>
-						<td class=" " style="text-align:center">
+					<tbody>
+					  <tr *ngFor="let note of tmpObj.notes" >
+						<td class=" " style="width: 40%;text-align:center">
 							<input type="text" placeholder={{note.date}}/>
 						</td>
-						<td class=" " style="text-align:center">
+						<td class=" " style="width: 10%;text-align:center">
 							:
 						</td>
-						<td class=" "  style="text-align:center"> 
+						<td class=" "  style="width: 40%;text-align:center"> 
 							<input type="text"  placeholder={{note.note}} style="width: 100%;"/>
 						</td>
 						
-						<td class=" " style="text-align:center">
+						<td class=" " style="width: 10%;text-align:center">
 							<input type="button"  value="Remove" />
-							
 						</td>
 					  </tr>
 					  
-					  <tr >
-						<td class="a-center ">
+					<tr >
+						<td class=" " style="width: 40%;text-align:center">
+							<input *ngIf=!showInp type="text" placeholder="Enter Key Value.."  [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}"  />
 						</td>
-						<td class=" " style="text-align:center">
-							<input *ngIf=showInp type="text" placeholder="Enter Key Value.."  [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}"  />
+						<td style="width: 10%;text-align:center"><div *ngIf=!showInp> : </div>
 						</td>
-						<td style="text-align:center"><div *ngIf=showInp> : </div>
-						</td>
-						<td class=" " style="text-align:center"> 
-							<input *ngIf=showInp type="text"  style="width: 100%;" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}" placeholder="Enter Note.."/>
+						<td class=" " style="width: 40%;text-align:center"> 
+							<input *ngIf=!showInp type="text"  style="width: 100%;" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}" placeholder="Enter Note.."/>
 						</td>
 
-						<td class=" " style="text-align:center">
-							<div *ngIf=!showInp>
-								<!-- <a  class="btn"  value="Add" (click)="addField()"></a> -->
-								<input type="button"  value="Add"  (click)="addField()"  />
-								<!-- <button  type="button"  data-toggle="modal" data-target="" class="btn  pull-right" (click)="addField()">Add Contact </button> -->
-							</div>
+						<td class=" " style="width: 10%;text-align:center">
 							<div *ngIf=showInp>
-								<!-- <a class="btn"   value="Save" (click)="saveField()"></a> -->
-								<button  type="button"  data-toggle="modal" data-target="" class="btn btn-success pull-right" (click)="saveField()">Add Contact </button>
+								<input type="button"  value="Add"  (click)="showInp=!showInp"  />
+							</div>
+							<div *ngIf=!showInp>
+							
+								<button  type="button"  data-toggle="modal" data-target="" class="btn btn-success pull-right" (click)="saveField();showInp=!showInp">Save </button>
 							</div>
 						</td>
-					  </tr>
+					</tr>
 					</tbody>
 				</table>
+			</div>
 				        
 		</form>
 			
@@ -115,7 +107,7 @@
 
 <!-- <div #gmap style="width:100%;height:83%"></div> -->
 
-<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:200px" >
+<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:10%" >
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

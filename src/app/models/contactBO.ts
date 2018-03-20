@@ -1,23 +1,16 @@
 
 
-export class Contact {
-	_id: String;
-	name: String;
-	categoryID: String;
-	location: String;
+export class CONTACT {
+	_id: string;
+	name: string;
+	categoryID: string;
+	location: string;
 	notes: [{
-			date: String;
-			note: String;
+			date: string;
+			note: string;
 	}];
 	position: {
-		lat: Number;
-		lng: Number;
+		lat: number;
+		lng: number;
 	}
-}
-
-export class Markerr
-{
-	position:string;
-	map: string;
-	title: string;
 }

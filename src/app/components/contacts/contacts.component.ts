@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Contact } from '../../models/contactBO';
-import { CONTACTS } from '../../models/contact-mock';
-import { category } from '../../models/categoryBO';
+import { CONTACT } from '../../models/contactBO';
+import { CATEGORY } from '../../models/categoryBO';
 
 import { ActivatedRoute } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
+import { ContactService } from '../../services/contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -12,21 +12,18 @@ import { CategoryService } from '../../services/category.service';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-	categoryID: String;
-    contactList: Contact[];
+	categoryID: string;
+    contactList: CONTACT[];
 	newContactName = "";
 	selectedID: any;
-	pageCategory: category;
-	
-    newContactObj: Contact = new Contact;
+	pageCategory: CATEGORY = new CATEGORY();
+    newContactObj: CONTACT = new CONTACT();
 	userSettings: any;
-	notes = this.newContactObj.notes ;
-
-
 	
 	constructor(
 		private route: ActivatedRoute, 
-		private CategoryService: CategoryService) {
+		private CategoryService: CategoryService,
+        private ContactService: ContactService) {
 			this.route.params.subscribe( params => console.log(params) );
 		}
 
@@ -40,7 +37,7 @@ export class ContactsComponent implements OnInit {
 		}
     }
 	
-	passContact(passedContact){
+	passContact(passedContact: CONTACT){
 	  console.log("ID passed="+passedContact._id);
 	  this.selectedID = passedContact._id;
 	  this.newContactObj = passedContact;
@@ -52,9 +49,9 @@ export class ContactsComponent implements OnInit {
 	
 	
 	// <! SERVICES--------------------------------------------
-	getCategory(categoryID: any){
+	getCategory(categoryID: string){
 		console.log("Contact Added from Component");
-		//this.contactList = CONTACTS;
+		
 		this.CategoryService.fetchCategoryById(categoryID)
 			.subscribe(
 				data => {
@@ -65,10 +62,10 @@ export class ContactsComponent implements OnInit {
 				()=> console.log("done")
 			);
     }
-	getContacts(categoryID: String){
+	getContacts(categoryID: string){
 		console.log("Contact Added from Component");
 		//this.contactList = CONTACTS;
-		this.CategoryService.fetchContactByCategoryId(categoryID)
+		this.ContactService.fetchContactByCategoryId(categoryID)
 			.subscribe(
 				data => {
 					// this.mockcategories.push(JSON.parse(JSON.stringify(data))),
@@ -84,12 +81,10 @@ export class ContactsComponent implements OnInit {
 		
 		this.newContactObj.categoryID = this.route.snapshot.paramMap.get('categoryID');
 		this.newContactObj.name = this.newContactName;
-		console.log("xxxxxxxxxx    "+this.newContactObj.name);
 		
-		this.CategoryService.addContact(this.newContactObj)
+		this.ContactService.addContact(this.newContactObj)
 			.subscribe(
 				data => {
-					// this.mockcategories.push(JSON.parse(JSON.stringify(data))),
 					this.contactList.push(data.createdContact);
 					console.log(data)
 				},
@@ -102,7 +97,7 @@ export class ContactsComponent implements OnInit {
 		console.log("Contact Updated from Component");
 		
 		this.newContactObj.name = this.newContactName;
-		this.CategoryService.updateContactById(this.newContactObj._id, this.newContactObj)
+		this.ContactService.updateContactById(this.newContactObj._id, this.newContactObj)
 			.subscribe(
 				data => {
 					console.log("updated contact");
@@ -116,7 +111,7 @@ export class ContactsComponent implements OnInit {
 		console.log('Categories Deleted from Component');
 		
 		console.log("ID deleted  "+this.selectedID);
-		this.CategoryService.deleteContactById(this.selectedID)
+		this.ContactService.deleteContactById(this.selectedID)
 			.subscribe(
 				data => {
 					console.log("category deleted and data"+data);

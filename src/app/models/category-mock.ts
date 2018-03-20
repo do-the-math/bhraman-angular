@@ -1,6 +1,6 @@
-import { category } from './categoryBO';
+// import { category } from './categoryBO';
 
-export const CATEGORIES: category[] = [
+// export const CATEGORIES: category[] = [
     
-];
+// ];
 

@@ -26,6 +26,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
 import { CategoryService } from './services/category.service';
+import { ContactService } from './services/contact.service';
 
 const appRoutes: Routes = [
 	{ path: '', component: LoginComponent }, 
@@ -34,7 +35,7 @@ const appRoutes: Routes = [
 	{ 
 		path: 'dashboard',
 		component: DashboardComponent,
-		canActivate: [AuthGuard],
+		//canActivate: [AuthGuard],
 		children: [
 			{path: '', redirectTo: 'home', pathMatch: 'full'},
 			{ path: 'home', component: HomeComponent },
@@ -71,7 +72,8 @@ const appRoutes: Routes = [
   providers: [  ValidateService, 
 				AuthService, 
 				AuthGuard,
-				CategoryService
+				CategoryService,
+				ContactService
 			],
   bootstrap: [AppComponent]
 })

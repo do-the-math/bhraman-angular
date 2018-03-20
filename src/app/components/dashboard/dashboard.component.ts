@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit {
 		 });
 	}
 
-	sideToggle = "home"
+	sideToggle = 'home'
 	clicked = false;
 	
 	sidebarToggle(){

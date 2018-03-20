@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { } from '@types/googlemaps';
 import { CategoryService } from '../../services/category.service';
-import { Contact } from '../../models/contactBO';
-import { CONTACTS } from '../../models/contact-mock';
-import { CATEGORIES } from '../../models/category-mock';
-import { category } from '../../models/categoryBO';
+import { ContactService } from '../../services/contact.service';
+import { CONTACT } from '../../models/contactBO';
+import { CATEGORY } from '../../models/categoryBO';
 import { ActivatedRoute } from '@angular/router';
 import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import { SelectControlValueAccessor } from '@angular/forms';
@@ -26,10 +25,10 @@ export class HomeComponent implements OnInit {
 	markers: any = [];
 	circles: any = [];
 	
-	// Contacts and Category
-	contactList: Contact[];
-	searchContactList: Contact[];
-	categoryList: category[];
+	// CONTACTs and Category
+	contactList: CONTACT[];
+	searchContactList: CONTACT[];
+	categoryList: CATEGORY[];
 	
 	ttmp: any;
 	// category selection
@@ -40,7 +39,8 @@ export class HomeComponent implements OnInit {
 	
 	constructor(
 		private route: ActivatedRoute, 
-		private CategoryService: CategoryService) {
+		private CategoryService: CategoryService,
+		private ContactService: ContactService) {
 			this.route.params.subscribe( params => console.log(params) );
 		}
 
@@ -170,7 +170,7 @@ export class HomeComponent implements OnInit {
 		//this.contactList = CONTACTS;
 		//this.searchContactList = CONTACTS;
 		
-		this.CategoryService.fetchContactAll()
+		this.ContactService.fetchContactAll()
 			.subscribe(
 				data => {
 					this.contactList = data;

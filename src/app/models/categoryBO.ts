@@ -1,8 +1,8 @@
 
 // categody class
-export class category {
-	_id: String;
-	count: Number;
-	name: String;
-	date: String;
+export class CATEGORY {
+	_id: string;
+	count: number;
+	name: string;
+	date: string;
 }
