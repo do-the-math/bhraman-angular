@@ -27,15 +27,16 @@ import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
 import { CategoryService } from './services/category.service';
 import { ContactService } from './services/contact.service';
+import { SandboxComponent } from './components/sandbox/sandbox.component';
 
-const appRoutes: Routes = [
-	{ path: '', component: LoginComponent }, 
+const appRoutes: Routes = [ 
+	{ path: 'sandbox', component: SandboxComponent }, 
 	{ path: 'login', component: LoginComponent },  	
 	{ path: 'register', component: RegisterComponent },  
 	{ 
 		path: 'dashboard',
 		component: DashboardComponent,
-		//canActivate: [AuthGuard],
+		canActivate: [AuthGuard],
 		children: [
 			{path: '', redirectTo: 'home', pathMatch: 'full'},
 			{ path: 'home', component: HomeComponent },
@@ -44,7 +45,7 @@ const appRoutes: Routes = [
 			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent }
 		]
 	},
-	{ path: '**',component: LoginComponent }
+	{ path: '**', redirectTo: '/login' }
 ];
 
 
@@ -59,7 +60,8 @@ const appRoutes: Routes = [
     ContactDetailComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SandboxComponent
   ],
   imports: [
     BrowserModule,

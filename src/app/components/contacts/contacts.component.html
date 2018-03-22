@@ -142,13 +142,13 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
 	  <div class="x_title">
-		<h2 style="margin:10px!important;">Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
+		<h2 >Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
 		<ul class="nav navbar-right panel_toolbox">
 		  <li>
 		  </li>
 		  <li></li>
 		  <li>  
-			<button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-success pull-right">Add Contact </button>
+			<button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right" style="border-radius: 50px;"><i class="fa fa-plus"></i> Add New </button>
 		  </li>
 		</ul>
 		<div class="clearfix"></div>
@@ -171,8 +171,8 @@
 				<td class="a-center ">
 				  <!-- <input type="checkbox" class="flat" name="table_records"> -->
 				</td>
-				<td class=" " style="text-align:center">
-					<a routerLink="../../contactdetail/{{c._id}}">{{c.name}}</a>
+				<td class=" " style="text-align:center" routerLink="../../contactdetail/{{c._id}}">
+					<a >{{c.name}}</a>
 				</td>
 				<td class=" " style="text-align:center"> {{c.location}}</td>
 				

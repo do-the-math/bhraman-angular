@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
 	// category selection
 	optionSelected = [];
 	selectedIdx = [];
-	
+	listContent:string = "";
 	prev_infowindow = null;
 	
 	constructor(
@@ -51,7 +51,8 @@ export class HomeComponent implements OnInit {
 		var mapProp = {
 			center: new google.maps.LatLng(17.385044, 78.4877),
 			zoom: 15,
-			mapTypeId: google.maps.MapTypeId.ROADMAP
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			
 		};
 		
 		this.marker = navigator.geolocation.getCurrentPosition((position) => {});	
@@ -234,7 +235,7 @@ export class HomeComponent implements OnInit {
 	
 	/////////////////////////
 	trackMe() {
-		console.log("trackMe");
+		//console.log("trackMe");
 		if (navigator.geolocation) {
 			this.isTracking = true;
 			navigator.geolocation.getCurrentPosition((position) => {
@@ -248,7 +249,7 @@ export class HomeComponent implements OnInit {
 	}
 
 	showTrackingPosition(position) {
-		console.log("showTrackingPosition");
+		//console.log("showTrackingPosition");
 
 		this.currentLat = position.coords.latitude;
 		this.currentLong = position.coords.longitude;
@@ -270,12 +271,18 @@ export class HomeComponent implements OnInit {
 		this.circles.push(circle);
 		//circle.setMap(this.map);
 			
-		var icon = {
+		/* var icon = {
 			url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // url
 			scaledSize: new google.maps.Size(50, 50), // scaled size
 			origin: new google.maps.Point(0, 0), // origin
 			anchor: new google.maps.Point(50, 50) // anchor
-		}
+		} */
+		/* var icon: {
+                  path: pinSymbol
+                  scale: 5,
+                  strokeWeight:2,
+                  strokeColor:"#B40404"
+               }, */
 		
 		if (!this.marker) {
 			this.marker = new google.maps.Marker({
@@ -283,7 +290,7 @@ export class HomeComponent implements OnInit {
 				map: this.map,
 				title: 'You are Here!',
 				
-				icon: icon
+				icon: this.pinSymbol('blue')
 			});
 		}
 		else {
@@ -291,10 +298,20 @@ export class HomeComponent implements OnInit {
 		}
 		this.findNearByContacts();
 	}
+	pinSymbol(color) {
+		return {
+			path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+			fillColor: color,
+			fillOpacity: 1,
+			strokeColor: '#000',
+			strokeWeight: 2,
+			scale: 1
+		};
+	}
 
 	findNearByContacts() {
-		console.log("findNearByContacts");
-		console.log(this.searchContactList)
+		//console.log("findNearByContacts");
+		//console.log(this.searchContactList)
 		this.searchContactList.forEach(contact => {
 			var dist = this.findDistance(this.currentLat, 
 										this.currentLong, 
@@ -309,8 +326,8 @@ export class HomeComponent implements OnInit {
 		});
 	}
 
-	showContactInMap(contact) {
-		console.log("showContactInMap");
+	showContactInMap(contact: CONTACT) {
+		//console.log("showContactInMap");
 		var marker = new google.maps.Marker({
 							position: new google.maps.LatLng(contact.position.lat, 
 															contact.position.lng),
@@ -318,7 +335,7 @@ export class HomeComponent implements OnInit {
 							title: contact.name
 			});
 		this.ttmp = contact;
-		var infoWindowContent = '<div id="content"><h1 id="firstHeading" class="firstHeading">' + contact.notes + '</h1><ul> <li *ngFor="let note of ttmp.notes">{{note.note}}</li> </ul></div>';
+		var infoWindowContent = this.InfoWinContent(contact)
 		marker.addListener('click',(tmp)=>{
 			if( this.prev_infowindow ) {
 			   this.prev_infowindow.close();
@@ -345,6 +362,23 @@ export class HomeComponent implements OnInit {
 		if (unit=="K") { dist = dist * 1.609344 }
 		if (unit=="N") { dist = dist * 0.8684 }
 		return dist
+	}
+	
+	InfoWinContent(obj: CONTACT){
+		
+		for(var t=0;t<obj.notes.length;t++){
+			this.listContent  = this.listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
+		}
+		var infoWindowContent = "<div style='width: 300px' >"+
+									"<h2 class='firstHeading'><b>Name:</b> " + obj.name + "</h2>"+
+									"<hr>"+
+									"<h2> Notes: </h2>"+
+									"<ol style='padding-left:20px'>"+
+										this.listContent+
+									"</ol>"+
+								"</div>"
+		
+		return infoWindowContent;
 	}
 
 }

@@ -54,13 +54,13 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
 	  <div class="x_title">
-		<h2 style="margin:10px!important;">Manage Category</h2>
+		<h2 class="col-xs-12">Manage Category</h2>
 		<ul class="nav navbar-right panel_toolbox">
 		  <li>
 		  </li>
 		  <li></li>
 		  <li>  
-			<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success pull-right">Add Category </button>
+			<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success btn-xs pull-right col-xs-12" style="border-radius: 50px;"><i class="fa fa-plus"></i> Add New </button>
 		  </li>
 		</ul>
 		<div class="clearfix"></div>
@@ -77,18 +77,11 @@
 				<th class="column-title" style="width: 5%;">
 				  <!-- <input type="checkbox" id="check-all" class="flat"> -->
 				</th>
-				<th class="column-title" style="width: 30%;text-align:center">Category </th>
-				<th class="column-title"> </th>
-				<th class="column-title"> </th>
-				<th class="column-title"></th>
-				<th class="column-title"> </th>
-				<th class="column-title"> </th>
-				<th class="column-title"> </th>
+				<th class="column-title" style="width: 30%;">Category </th>
+				
 				<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
 				</th>
-				<!-- <th class="bulk-actions" colspan="7">
-				  <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-				</th> -->
+				
 			  </tr>
 			</thead>
 
@@ -97,15 +90,10 @@
 				<td class="a-center ">
 				  <!-- <input type="checkbox" class="flat" name="table_records"> -->
 				</td>
-				<td class=" " style="text-align:center">
-					<a routerLink="contacts/{{c._id}}"> {{c.name}}</a>
+				<td class=" " style="" routerLink="contacts/{{c._id}}">
+					<a > {{c.name}}</a>
 				</td>
-				<td class=" "> </td>
-				<td class=" "> </td>
-				<td class=" "></td>
-				<td class=" "></td>
-				<td class=" "></td>
-				<td class="a-right a-right "></td>
+				
 				<td class=" " style="text-align:center">
 					<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passObj( c )"><i class="fa fa-pencil"></i> Edit </a>
 					<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passObj( c )"><i class="fa fa-trash-o"></i> Delete </a>
@@ -132,8 +120,8 @@
 				<div id="testmodal2" style="top:50%;">
 					<form id="antoform2" class="form-horizontal calender" role="form">
 					<div class="form-group">
-						<label class="col-sm-3 control-label">Category name</label>
-						<div class="col-sm-9">
+						<label class="col-sm-3 col-xs-12 control-label">Category name</label>
+						<div class="col-sm-9 col-xs-12">
 							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
 						</div>
 					</div>
@@ -159,8 +147,8 @@
 				<div id="testmodal2" style="top:50%;">
 					<form id="antoform2" class="form-horizontal calender" role="form">
 					<div class="form-group">
-						<label class="col-sm-4 control-label">New Category name</label>
-						<div class="col-sm-8">
+						<label class="col-sm-4 col-xs-12 control-label">New Category name</label>
+						<div class="col-sm-8 col-xs-12">
 							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
 						</div>
 					</div>

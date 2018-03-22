@@ -14,8 +14,8 @@ export class ContactDetailComponent implements OnInit {
 	map: google.maps.Map;
 	geocoder;
 	userSettings: any;
-	myNoteDate: string = "Enter Key.." ;
-	myNoteText: string = "Enter Note..";
+	myNoteDate: string = "" ;
+	myNoteText: string = "";
 	showInp:boolean = true;
 
 	contactID: string;
@@ -23,17 +23,20 @@ export class ContactDetailComponent implements OnInit {
 	tmpObj: CONTACT;
 
 	addedMarker:any;
-
+	nameInputbutton: boolean = true;
+	
     constructor(private route: ActivatedRoute,
 				private CategoryService: CategoryService,
 				private ContactService: ContactService) {}
     
     ngOnInit() {
+		this.nameInputbutton= true;
     	this.tmpObj = new CONTACT();
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
 		this.getContact();
 		this.userSettings = {
 			"inputString":"Bangalore,karnataka"
+			
 		}
 		
 		// var mapProp = {
@@ -42,7 +45,6 @@ export class ContactDetailComponent implements OnInit {
 		// 	mapTypeId: google.maps.MapTypeId.ROADMAP
 		// };
 		// this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-
 		//this.myMarker = navigator.geolocation.getCurrentPosition((position) => {});	
 		
 		this.geocoder = new google.maps.Geocoder;
@@ -50,9 +52,11 @@ export class ContactDetailComponent implements OnInit {
 		// google.maps.event.addListener(this.map, 'click', (event)=>{
 		//    this.placeMarker(event);
 		// });
-		
     }
 
+	toggleInput(){
+		this.nameInputbutton = !this.nameInputbutton;
+	}
 	getContact(){
 		console.log("Contact Added from Component");
 		this.ContactService.fetchContactById(this.contactID)
@@ -62,6 +66,7 @@ export class ContactDetailComponent implements OnInit {
 					//this.myNotes = this.tmpObj.notes;
 					this.userSettings = {
 						"inputString": this.tmpObj.location
+						/* ,"showSearchButton": false */
 					}
 					var myPos = new google.maps.LatLng(this.tmpObj.position.lat, this.tmpObj.position.lng)
 					var mapProp = {
@@ -78,8 +83,10 @@ export class ContactDetailComponent implements OnInit {
 							draggable: true
 					});
 					this.addedMarker.addListener('position_changed', (event)=>{
-						console.log("position_changed");
-						//console.log(this.addedMarker.getPosition());
+						//console.log("position_changed");
+						this.userSettings = {
+							"inputString": this.tmpObj.location
+						}
 					});
 					console.log(data[0].notes);
 				},
@@ -100,9 +107,7 @@ export class ContactDetailComponent implements OnInit {
 				()=> console.log("done")
 			); 
     }
-	
 	saveField(){
-		//this.showInp = !this.showInp;
 		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
 			this.tmpObj.notes.push({
 				date: this.myNoteDate,
@@ -117,8 +122,6 @@ export class ContactDetailComponent implements OnInit {
 		}
 	}
 	saveLocation(){
-		
-
 		this.tmpObj.position = this.addedMarker.position;
 		this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
 			if (status === 'OK') {
@@ -132,11 +135,35 @@ export class ContactDetailComponent implements OnInit {
 					window.alert('No results found');
 				}
 			} else {
-            window.alert('Geocoder failed due to: ' + status);
-          }
+				window.alert('Geocoder failed due to: ' + status);
+			}
         });
 		this.updateContact();
+	}
+	autoCompleteCallback1(selectedData:any) {
+		console.log(selectedData);
+		
+		this.tmpObj.position= selectedData.data.geometry.location;
+		this.tmpObj.location = selectedData.data.formatted_address;
+		this.userSettings = {
+						"inputString": this.tmpObj.location
+					}
+		let location = new google.maps.LatLng(this.tmpObj.position.lat, this.tmpObj.position.lng);
+		this.map.panTo(location);
+		
+		this.addedMarker.setMap(null);
+		this.addedMarker = 	new google.maps.Marker({
+								position: this.tmpObj.position,
+								map: this.map,
+								title: this.tmpObj.name,
+								draggable: true
+							});
+		this.addedMarker.addListener('position_changed', (event)=>{
+						//console.log("position_changed");
+						this.userSettings = {
+							"inputString": this.tmpObj.location
+						}
+					});
 		
 	}
-	
 }

@@ -14,8 +14,8 @@
        2) colored route
        3) day/night map
 }
-2) category component: 
-         .add a discription feild
+2) contact detail component: 
+         .add NOTES
 3) Login and Register page/ auth guard for routes
 4) breadcrumbs on pages
 
@@ -24,7 +24,7 @@
      
 6) DataBase models future proof
      .multiple user account
-     .
+     
 7) optimising the number of service call and front end app
 8) Robust Code/ Think
 
