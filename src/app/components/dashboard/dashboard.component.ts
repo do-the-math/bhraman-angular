@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { USER } from '../../models/userBO';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,24 +9,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-	 user: Object;
-	 
+	user: USER;
+	sideToggle = ''
+	clicked = false;
+	
 	constructor(  private authService: AuthService,
 				  private router: Router) { }
 
 	ngOnInit() {
+		this.user = new USER();
 		this.authService.getProfile().subscribe(profile => {
 		  this.user = profile.user;
 		},
-		 err => {
-		   console.log(err);
-		   return false;
-		 });
+		err => {
+			console.log(err);
+			return false;
+		});
 	}
-
-	sideToggle = 'home'
-	clicked = false;
-	
 	sidebarToggle(){
 	  this.clicked = !this.clicked;
 	}
@@ -36,6 +36,6 @@ export class DashboardComponent implements OnInit {
 		}); */
 		this.router.navigate(['/login']);
 		return false;
-	  }
+	}
 
 }

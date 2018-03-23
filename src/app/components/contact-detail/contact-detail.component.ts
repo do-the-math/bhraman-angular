@@ -107,7 +107,7 @@ export class ContactDetailComponent implements OnInit {
 				()=> console.log("done")
 			); 
     }
-	saveField(){
+	addNote(){
 		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
 			this.tmpObj.notes.push({
 				date: this.myNoteDate,
@@ -120,6 +120,14 @@ export class ContactDetailComponent implements OnInit {
 		}else{
 			console.log("Enter Some Notes")
 		}
+	}
+	removeNote(note){
+		console.log("clicked");
+		console.log(note.note);
+		var idx = this.tmpObj.notes.indexOf(note);
+		this.tmpObj.notes.splice(idx, 1);
+		this.updateContact();
+		
 	}
 	saveLocation(){
 		this.tmpObj.position = this.addedMarker.position;
@@ -140,6 +148,7 @@ export class ContactDetailComponent implements OnInit {
         });
 		this.updateContact();
 	}
+
 	autoCompleteCallback1(selectedData:any) {
 		console.log(selectedData);
 		

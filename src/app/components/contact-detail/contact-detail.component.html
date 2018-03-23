@@ -42,7 +42,7 @@
 					<div class="form-group">
                         <div class="">
                           <div class="input-group">
-                            <input type="text" class="form-control" required placeholder={{tmpObj.location}} disabled >
+                            <input type="text" class="form-control" required placeholder={{tmpObj.location}} [disabled]="nameInputbutton" >
                             <span class="input-group-btn mybtn">
 							  <button  type="button" class="btn btn-default "  data-toggle="modal" data-target="#openMap" >
 								<i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
@@ -89,10 +89,10 @@
 								  </thead>
 								  <tbody >
 									<tr *ngFor="let note of tmpObj.notes;let idx = index">
-										<th width="5%" scope="row">{{idx}}</th>
+										<th width="5%" scope="row">{{idx+1}}</th>
 										<td width="20%">{{note.date}}</td>
 										<td width="60%" style="word-wrap:break-word">{{note.note}}</td>
-										<td width="15%" style="text-align:center"><button  type="button"  class="btn btn-xs btn-danger">Remove </button></td>
+										<td width="15%" style="text-align:center"><button  type="button"  class="btn btn-xs btn-danger" (click)="removeNote(note)">Remove </button></td>
 									</tr>
 									<tr>
 										<th width="5%" scope="row" ><div *ngIf=!showInp>@</div></th>
@@ -104,7 +104,7 @@
 												<input type="button" class="btn btn-xs btn-default"  value="Add New"  (click)="showInp=!showInp"/>
 											</div>
 											<div *ngIf=!showInp>
-												<button  type="button" class="btn btn-xs btn-success"  (click)="saveField();showInp=!showInp" style="width:96%">Save </button>
+												<button  type="button" class="btn btn-xs btn-success"  (click)="addNote();showInp=!showInp" style="width:96%">Save </button>
 											</div>
 										</td>
 									</tr>

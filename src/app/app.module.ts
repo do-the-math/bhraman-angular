@@ -6,6 +6,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { FlashMessagesModule } from 'angular2-flash-messages';
+import 'angular2-notifications';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SimpleNotificationsModule } from 'angular2-notifications';
 
 import { AppComponent } from './app.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -30,7 +34,6 @@ import { ContactService } from './services/contact.service';
 import { SandboxComponent } from './components/sandbox/sandbox.component';
 
 const appRoutes: Routes = [ 
-	{ path: 'sandbox', component: SandboxComponent }, 
 	{ path: 'login', component: LoginComponent },  	
 	{ path: 'register', component: RegisterComponent },  
 	{ 
@@ -42,7 +45,8 @@ const appRoutes: Routes = [
 			{ path: 'home', component: HomeComponent },
 			{ path: 'category', component: CategoryComponent }, 
 			{ path: 'category/contacts/:categoryID',component: ContactsComponent },
-			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent }
+			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent },
+			{ path: 'sandbox', component: SandboxComponent }
 		]
 	},
 	{ path: '**', redirectTo: '/login' }
@@ -69,13 +73,17 @@ const appRoutes: Routes = [
 	RouterModule.forRoot(appRoutes),
 	Ng4GeoautocompleteModule.forRoot(),
 	FormsModule,
-	HttpModule
+	HttpModule,
+	FlashMessagesModule.forRoot(),
+	SimpleNotificationsModule.forRoot(),
+	BrowserAnimationsModule
   ],
   providers: [  ValidateService, 
 				AuthService, 
 				AuthGuard,
 				CategoryService,
-				ContactService
+				ContactService,
+				BrowserAnimationsModule
 			],
   bootstrap: [AppComponent]
 })
