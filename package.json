@@ -22,7 +22,6 @@
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
     "@types/googlemaps": "^3.30.7",
-    "angular-2-dropdown-multiselect": "^1.6.3",
     "angular2-flash-messages": "^2.0.4",
     "angular2-jwt": "^0.2.3",
     "angular2-notifications": "^0.9.7",

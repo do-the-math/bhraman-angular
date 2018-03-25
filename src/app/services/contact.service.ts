@@ -7,6 +7,7 @@ import { of }         from 'rxjs/observable/of';
 import 'rxjs/add/operator/map'
 
 import { CONTACT } from '../models/contactBO';
+import { SERVICE_HOST } from '../services/general.js';
 
 @Injectable()
 export class ContactService {
@@ -19,42 +20,42 @@ export class ContactService {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get('http://localhost:3000/contact/', {headers: headers})
+		return this.http.get(SERVICE_HOST+'/contact/', {headers: headers})
 			.map(res => res.json())
 	}
 	fetchContactByCategoryId(categoryID: string) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get('http://localhost:3000/contact/cat/'+categoryID, {headers: headers})
+		return this.http.get(SERVICE_HOST+'/contact/cat/'+categoryID, {headers: headers})
 			.map(res => res.json())
 	}
 	fetchContactById(contactID: string) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get('http://localhost:3000/contact/'+contactID, {headers: headers})
+		return this.http.get(SERVICE_HOST+'/contact/'+contactID, {headers: headers})
 			.map(res => res.json())
 	}
 	addContact(newContact: CONTACT){
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.post('http://localhost:3000/contact/',newContact, {headers: headers})
+		return this.http.post(SERVICE_HOST+'/contact/',newContact, {headers: headers})
 			.map(res => res.json())
 	}
 	updateContactById(id:any, newContact: CONTACT){
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.patch('http://localhost:3000/contact/'+id, newContact, {headers: headers})
+		return this.http.patch(SERVICE_HOST+'/contact/'+id, newContact, {headers: headers})
 			.map(res => res.json())
 	}
 	deleteContactById(id: string){
 		console.log('Contact deleted from service');
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.delete('http://localhost:3000/contact/'+id, {headers: headers})
+		return this.http.delete(SERVICE_HOST+'/contact/'+id, {headers: headers})
 			.map(res => res.json())
 	}
 

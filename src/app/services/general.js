@@ -1,6 +1,3 @@
+SERVICE_HOST: 'https://tour-service.herokuapp.com';
+//SERVICE_HOST: 'http://localhost:3000';
 
-// categody class
-export class SERVICE_HOST {
-	//HOST: 'http://172.16.0.31:3000/';
-	HOST: "http://localhost:3000";
-}
