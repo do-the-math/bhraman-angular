@@ -341,12 +341,10 @@ export class HomeComponent implements OnInit {
 			   this.prev_infowindow.close();
 			}
 			
-			var infowindow = new google.maps.InfoWindow({
-				content: infoWindowContent
-			  });
+			var infowindow = new google.maps.InfoWindow({ content: infoWindowContent });
 			this.prev_infowindow = infowindow;
 			infowindow.open(this.map, marker);
-	   });
+	    });
 		this.markers.push(marker );
 	}
 
@@ -376,9 +374,22 @@ export class HomeComponent implements OnInit {
 									"<ol style='padding-left:20px'>"+
 										this.listContent+
 									"</ol>"+
-								"</div>"
+								"</div>"+
+								"<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
+									"passId("+obj._id+")> Add </a>"
 		
 		return infoWindowContent;
+	}
+	addNote(){
+		// if(this.myNoteDate.length>0 && this.myNoteText.length>0){
+		// 	this.tmpObj.notes.push({
+		// 		date: this.myNoteDate,
+		// 		note: this.myNoteText
+		// 	});
+		// 	this.updateContact();
+		// }else{
+		// 	console.log("Enter Some Notes")
+		// }
 	}
 
 }

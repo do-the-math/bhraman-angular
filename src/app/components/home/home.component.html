@@ -103,7 +103,39 @@
 
 
 	
+<div id="addNotes" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Add Notes</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table" style="table-layout: fixed; width: 100%">
+					<thead>
+						<tr>
+							<th width="5%">#</th>
+							<th width="20%">Topic</th>
+							<th width="60%">Note</th>
+							<th width="15%" style="text-align:center">Edit</th>
+						</tr>
+					</thead>
+						<tbody >
+							<tr>
+								<th width="5%" scope="row" ><div>@</div></th>
+								<td width="20%"><input  type="text"  style="width:90%;"   placeholder="Key.."/></td>
+								<td width="60%"><input type="text"  style="width:90%;"  placeholder="Note.."/></td>
 
+								<td width="15%" style="text-align:center">
+									<button  type="button" class="btn btn-xs btn-success" style="width:96%" (click)="addNote()">Save </button>
+								</td>
+							</tr>
+						</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 
 	
 	
