@@ -5,7 +5,7 @@ import { ContactService } from '../../services/contact.service';
 import { CONTACT } from '../../models/contactBO';
 import { CATEGORY } from '../../models/categoryBO';
 import { ActivatedRoute } from '@angular/router';
-import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
+//import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import { SelectControlValueAccessor } from '@angular/forms';
 
 @Component({

@@ -5,7 +5,6 @@ import { FormsModule }   from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
-import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { FlashMessagesModule } from 'angular2-flash-messages';
 import 'angular2-notifications';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -69,7 +68,6 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
-	MultiselectDropdownModule,
 	RouterModule.forRoot(appRoutes),
 	Ng4GeoautocompleteModule.forRoot(),
 	FormsModule,
