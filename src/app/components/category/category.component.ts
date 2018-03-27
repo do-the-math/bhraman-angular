@@ -54,7 +54,7 @@ export class CategoryComponent implements OnInit {
 					this.mockcategories = data
 					console.log(data)
 				},
-				error => {/* alert(error) */},
+				error => { alert(error) },
 				()=> console.log("done")
 			);
 	}

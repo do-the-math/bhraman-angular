@@ -1,13 +1,14 @@
 <div class="col-md-12 col-sm-12 col-xs-12" >
 	<div class="x_panel">
 	  <div class="x_title">
-		<h2 style="width:100%">
-			<button  type="button"  class="btn btn-success btn-xs" style="border-radius: 50px;" (click)="backClicked()"><i class="fa fa-backward"></i> Back</button> 
+		<h2 style="width:100%"> 
 			Manage Contact Detail
 
+
 			<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs pull-right" ><i class="fa fa-trash-o"></i> Delete </a>
-			<a  class="edit btn btn-info btn-xs pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i> Edit </a>
+			<a  class="edit btn btn-info btn-xs pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i>   Edit </a>
 			<a  class="edit btn btn-success btn-xs pull-right" *ngIf="!nameInputbutton" (click)="toggleInput();updateContact()" ><i class="fa fa-pencil"></i> Save </a>
+			<button  type="button"  class="btn btn-dark btn-xs pull-right" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
 		</h2>
 
 		
@@ -107,13 +108,13 @@
 										<td width="15%" style="text-align:center"><button  type="button"  class="btn btn-xs btn-danger" (click)="removeNote(note)">Remove </button></td>
 									</tr>
 									<tr>
-										<th width="5%" scope="row" ><div *ngIf=!showInp>@</div></th>
+										<th width="5%" scope="row" ><div *ngIf=!showInp>#</div></th>
 										<td width="20%"><input *ngIf=!showInp type="text"  style="width:90%;" [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}"  placeholder="Key.."/></td>
 										<td width="60%"><input *ngIf=!showInp type="text"  style="width:90%;" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}" placeholder="Note.."/></td>
 										
 										<td width="15%" style="text-align:center">
 											<div *ngIf=showInp>
-												<input type="button" class="btn btn-xs btn-default"  value="Add New"  (click)="showInp=!showInp"/>
+												<input type="button" class="btn btn-xs btn-default"  value="Add Note"  (click)="showInp=!showInp"/>
 											</div>
 											<div *ngIf=!showInp>
 												<button  type="button" class="btn btn-xs btn-success"  (click)="addNote();showInp=!showInp" style="width:96%">Save </button>

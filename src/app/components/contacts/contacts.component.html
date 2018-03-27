@@ -142,13 +142,15 @@
 <div class="col-md-12 col-sm-12 col-xs-12">
 	<div class="x_panel">
 	  <div class="x_title">
-		<h2 class="col-md-2 col-sm-2 col-xs-12" ><button  type="button"  class="btn btn-success btn-xs" style="border-radius: 50px;" (click)="backClicked()"><i class="fa fa-backward"></i> Back</button> Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
+		<h2 class="col-md-2 col-sm-2 col-xs-12" > Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
 		<ul class="nav navbar-right panel_toolbox">
 		  <li>
 		  </li>
-		  <li></li>
+		  <li>
+		  	<button  type="button"  class="btn btn-dark btn-xs" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+		  </li>
 		  <li>  
-			<button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right" style="border-radius: 50px;"><i class="fa fa-plus"></i> Add New </button>
+			<button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button>
 		  </li>
 		</ul>
 		<div class="clearfix"></div>
