@@ -16,46 +16,46 @@ export class ContactService {
 	constructor(private http: Http) { }	
 	
 	//Contacts Services
-	fetchContactAll() : Observable<CONTACT[]> {
+	fetchContactAll(uid) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/', {headers: headers})
+		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontacts/'+uid, {headers: headers})
 			.map(res => res.json())
 	}
-	fetchContactByCategoryId(categoryID: string) : Observable<CONTACT[]> {
+	fetchContactByCategoryId(uid: string, categoryID: string) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/cat/'+categoryID, {headers: headers})
+		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+uid+'/'+categoryID, {headers: headers})
 			.map(res => res.json())
 	}
 	fetchContactById(contactID: string) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/'+contactID, {headers: headers})
+		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+contactID, {headers: headers})
 			.map(res => res.json())
 	}
 	addContact(newContact: CONTACT){
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.post(GlobalVariable.BASE_API_URL+'/contact/',newContact, {headers: headers})
+		return this.http.post(GlobalVariable.BASE_API_URL+'/contact/usercontact/',newContact, {headers: headers})
 			.map(res => res.json())
 	}
 	updateContactById(id:any, newContact: CONTACT){
 		console.log("Contact Added from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.patch(GlobalVariable.BASE_API_URL+'/contact/'+id, newContact, {headers: headers})
+		return this.http.patch(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+id, newContact, {headers: headers})
 			.map(res => res.json())
 	}
 	deleteContactById(id: string){
 		console.log('Contact deleted from service');
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.delete(GlobalVariable.BASE_API_URL+'/contact/'+id, {headers: headers})
+		return this.http.delete(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+id, {headers: headers})
 			.map(res => res.json())
 	}
 

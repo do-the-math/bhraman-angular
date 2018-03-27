@@ -8,8 +8,10 @@ import { Component } from '@angular/core';
 export class AppComponent {
 	public options = {
 	    position: ["top", "right"],
-	    timeOut: 5000,
-	    lastOnBottom: true
+	    timeOut: 3000,
+	    clickToClose: true,
+	    preventDuplicates: true,
+	    animate: "rotate"
 	}
   title = 'app';
 }

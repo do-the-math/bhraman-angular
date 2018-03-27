@@ -1,8 +1,17 @@
 <div class="col-md-12 col-sm-12 col-xs-12" >
 	<div class="x_panel">
 	  <div class="x_title">
-		<h2 >Manage Contact Detail</h2>
-		<ul class="nav navbar-right panel_toolbox">
+		<h2 style="width:100%">
+			<button  type="button"  class="btn btn-success btn-xs" style="border-radius: 50px;" (click)="backClicked()"><i class="fa fa-backward"></i> Back</button> 
+			Manage Contact Detail
+
+			<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs pull-right" ><i class="fa fa-trash-o"></i> Delete </a>
+			<a  class="edit btn btn-info btn-xs pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i> Edit </a>
+			<a  class="edit btn btn-success btn-xs pull-right" *ngIf="!nameInputbutton" (click)="toggleInput();updateContact()" ><i class="fa fa-pencil"></i> Save </a>
+		</h2>
+
+		
+		<!-- <ul class="nav navbar-right panel_toolbox"> -->
                       <!-- <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li class="dropdown">
@@ -15,13 +24,16 @@
                         </ul>
                       </li> -->
 					  
-					<li class=" pull-right">
+					<!-- <li class=" pull-right">
 						<a class="close-link pull-right"><i class="fa fa-close"></i></a>
 					</li>
 					<li class=" pull-right">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" (click)="toggleInput()"><i class="fa fa-wrench"></i></a>
-					</li>
-        </ul>
+					</li> -->
+			<!-- <li>
+
+			</li>
+        </ul> -->
 		<div class="clearfix"></div>
 	  </div>
 
@@ -42,9 +54,9 @@
 					<div class="form-group">
                         <div class="">
                           <div class="input-group">
-                            <input type="text" class="form-control" required placeholder={{tmpObj.location}} [disabled]="nameInputbutton" >
+                            <input type="text" class="form-control" required placeholder={{tmpObj.location}} [disabled]="true" >
                             <span class="input-group-btn mybtn">
-							  <button  type="button" class="btn btn-default "  data-toggle="modal" data-target="#openMap" >
+							  <button  type="button" class="btn btn-default "  data-toggle="modal" data-target="#openMap" [disabled]="nameInputbutton" >
 								<i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
 							  </button>
                             </span>
@@ -82,7 +94,7 @@
 								  <thead>
 									<tr>
 									  <th width="5%">#</th>
-									  <th width="20%">Topic</th>
+									  <th width="20%">Label</th>
 									  <th width="60%">Note</th>
 									  <th width="15%" style="text-align:center">Edit</th>
 									</tr>
@@ -144,4 +156,24 @@
 </div>
 
 
- 
+<!-- delete contact new-->
+<div id="deleteContactModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Delete Contact</h4>
+			</div>
+			<div class="modal-body">
+				<div id="testmodal2" style="padding: 20px;">
+					<p>Are you sure you want to delete these Records?</p>
+					<p class="text-warning red"><b>This action cannot be undone.</b></p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-danger antosubmit2" (click)="deleteContact()" data-dismiss="modal">Delete</button>
+			</div>
+		</div>
+	</div>
+</div>

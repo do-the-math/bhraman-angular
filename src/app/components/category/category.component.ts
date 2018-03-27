@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { Router } from "@angular/router";
 import { CategoryService } from '../../services/category.service';
+import { AuthService } from '../../services/auth.service';
 import { CATEGORY } from '../../models/categoryBO';
+import { USER } from '../../models/userBO';
 
 @Component({
   selector: 'app-category',
@@ -12,6 +14,7 @@ import { CATEGORY } from '../../models/categoryBO';
 export class CategoryComponent implements OnInit {
 	mockcategories: CATEGORY[] = [];
 	newCategoryName: string;
+	user: USER = new USER();;
 	//tmp: any;
 	//selectedID: any;
 	
@@ -19,11 +22,21 @@ export class CategoryComponent implements OnInit {
 	
 	constructor(
 		private CategoryService: CategoryService, 
+		private authService: AuthService,
 		private router: Router
 		) { }
 
 	ngOnInit() {
-		this.getCategories();
+		
+		this.authService.getProfile().subscribe(profile => {
+			this.user = profile.user;
+			console.log(this.user._id);
+			this.getCategories(this.user);
+		},
+		err => {
+			console.log(err);
+			return false;
+		});
 	}
 
 	passObj(passedCategory: CATEGORY){
@@ -32,10 +45,10 @@ export class CategoryComponent implements OnInit {
 	}
 
 	
-	getCategories(){
+	getCategories(user: USER){
 		console.log('Categories Fetched from Component');		
-		
-		this.CategoryService.fetchCategoryAll()
+		console.log("xxxxxxxx "+this.user.name+" "+this.user._id);
+		this.CategoryService.fetchCategoryAll(this.user._id)
 			.subscribe(
 				data => {
 					this.mockcategories = data
@@ -56,15 +69,18 @@ export class CategoryComponent implements OnInit {
 		  
 		  var newObj = new CATEGORY();
 		  newObj.name = this.newCategoryName;
+		  newObj.userID = this.user._id;
 		  newObj.count = 0;
 		  newObj.date = "12 May";
+
+		  console.log(this.user._id);
 
 		  // save this on database
 		  this.CategoryService.addCategory(newObj)
 			.subscribe(
 				data => {
 					console.log("added");
-					this.getCategories();
+					this.getCategories(this.user);
 				},
 				error => alert(error),
 				()=> console.log("done")
@@ -72,7 +88,7 @@ export class CategoryComponent implements OnInit {
 		} 
 	}
 	updateCategory(){
-		this.newCategoryName=this.newCategoryName.charAt(0).toUpperCase() + this.newCategoryName.slice(1).toLowerCase();
+		this.newCategoryName = this.newCategoryName.charAt(0).toUpperCase() + this.newCategoryName.slice(1).toLowerCase();
 		this.tmpCatObj.name = this.newCategoryName;
 		
 		this.CategoryService.updateCategoryById(this.tmpCatObj._id, this.tmpCatObj)
@@ -92,7 +108,7 @@ export class CategoryComponent implements OnInit {
 			.subscribe(
 				data => {
 					console.log("category deleted and data"+data);
-					this.getCategories();
+					this.getCategories(this.user);
 				},
 				error => alert(error),
 				()=> console.log("done")

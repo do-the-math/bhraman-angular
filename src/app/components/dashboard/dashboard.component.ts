@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
 		this.user = new USER();
 		this.authService.getProfile().subscribe(profile => {
 		  this.user = profile.user;
+		  console.log("dashboard "+this.user.name)
 		},
 		err => {
 			console.log(err);

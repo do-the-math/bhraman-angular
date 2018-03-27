@@ -42,7 +42,8 @@ export class LoginComponent implements OnInit {
 					showProgressBar: true,
 					pauseOnHover: false,
 					clickToClose: false,
-					maxLength: 10
+					maxLength: 10,
+					preventLastDuplicates: true
 				}
 				)
 			  this.router.navigate(['/dashboard']);

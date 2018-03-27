@@ -3,6 +3,7 @@
 export class CONTACT {
 	_id: string;
 	name: string;
+	userID: string;
 	categoryID: string;
 	location: string;
 	notes: [{

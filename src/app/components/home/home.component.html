@@ -123,8 +123,8 @@
 						<tbody >
 							<tr>
 								<th width="5%" scope="row" ><div>@</div></th>
-								<td width="20%"><input  type="text"  style="width:90%;"   placeholder="Key.."/></td>
-								<td width="60%"><input type="text"  style="width:90%;"  placeholder="Note.."/></td>
+								<td width="20%"><input  type="text"  style="width:90%;"   placeholder="Key.."  [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}" /></td>
+								<td width="60%"><input type="text"  style="width:90%;"  placeholder="Note.."  [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}"/></td>
 
 								<td width="15%" style="text-align:center">
 									<button  type="button" class="btn btn-xs btn-success" style="width:96%" (click)="addNote()">Save </button>

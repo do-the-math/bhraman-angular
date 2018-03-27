@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CONTACT } from '../../models/contactBO';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { ContactService } from '../../services/contact.service';
+import { AuthService } from '../../services/auth.service';
+import { USER } from '../../models/userBO';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-contact-detail',
@@ -17,6 +20,7 @@ export class ContactDetailComponent implements OnInit {
 	myNoteDate: string = "" ;
 	myNoteText: string = "";
 	showInp:boolean = true;
+	oldName: string = "";
 
 	contactID: string;
 	myNotes:any=[];
@@ -25,18 +29,30 @@ export class ContactDetailComponent implements OnInit {
 	addedMarker:any;
 	nameInputbutton: boolean = true;
 	
+	user: USER;
     constructor(private route: ActivatedRoute,
+    			private router: Router,
 				private CategoryService: CategoryService,
-				private ContactService: ContactService) {}
+				private ContactService: ContactService,
+				private authService: AuthService,
+				private _location: Location) {}
     
     ngOnInit() {
 		this.nameInputbutton= true;
     	this.tmpObj = new CONTACT();
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
+
+		this.user = new USER();
+		this.authService.getProfile().subscribe(profile => {
+		  this.user = profile.user;
+		},
+		err => {
+			console.log(err);
+			return false;
+		});
 		this.getContact();
 		this.userSettings = {
 			"inputString":"Bangalore,karnataka"
-			
 		}
 		
 		// var mapProp = {
@@ -52,6 +68,7 @@ export class ContactDetailComponent implements OnInit {
 		// google.maps.event.addListener(this.map, 'click', (event)=>{
 		//    this.placeMarker(event);
 		// });
+
     }
 
 	toggleInput(){
@@ -63,7 +80,7 @@ export class ContactDetailComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.tmpObj = data[0] as CONTACT;
-					//this.myNotes = this.tmpObj.notes;
+					this.oldName = this.tmpObj.name;
 					this.userSettings = {
 						"inputString": this.tmpObj.location
 						/* ,"showSearchButton": false */
@@ -82,11 +99,22 @@ export class ContactDetailComponent implements OnInit {
 							title: this.tmpObj.name,
 							draggable: true
 					});
-					this.addedMarker.addListener('position_changed', (event)=>{
+					this.addedMarker.addListener('dragend', (event)=>{
 						//console.log("position_changed");
-						this.userSettings = {
-							"inputString": this.tmpObj.location
-						}
+						this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
+							if (status === 'OK') {
+								console.log(results[0].formatted_address)
+								if (results[0]) {
+									this.userSettings = {
+										"inputString":results[0].formatted_address
+									}
+								} else {
+									window.alert('No results found');
+								}
+							} else {
+								window.alert('Geocoder failed due to: ' + status);
+							}
+				        });
 					});
 					console.log(data[0].notes);
 				},
@@ -96,16 +124,19 @@ export class ContactDetailComponent implements OnInit {
     }
 	updateContact(){
 		console.log("Contact Updated from Component");
-		
-		this.ContactService.updateContactById(this.tmpObj._id, this.tmpObj)
-			.subscribe(
-				data => {
-					console.log("updated contact");
-					console.log(data)
-				},
-				error => alert(error),
-				()=> console.log("done")
-			); 
+		console.log(this.tmpObj.name+" "+this.oldName);
+		if(this.tmpObj.name!=this.oldName){
+			this.ContactService.updateContactById(this.tmpObj._id, this.tmpObj)
+				.subscribe(
+					data => {
+						console.log("updated contact");
+						console.log(data);
+						this.oldName = this.tmpObj.name
+					},
+					error => alert(error),
+					()=> console.log("done")
+				); 
+		}
     }
 	addNote(){
 		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
@@ -167,12 +198,28 @@ export class ContactDetailComponent implements OnInit {
 								title: this.tmpObj.name,
 								draggable: true
 							});
-		this.addedMarker.addListener('position_changed', (event)=>{
-						//console.log("position_changed");
-						this.userSettings = {
-							"inputString": this.tmpObj.location
-						}
-					});
+		// this.addedMarker.addListener('position_changed', (event)=>{
+		// 				this.userSettings = {
+		// 					"inputString": this.tmpObj.location
+		// 				}
+		// });
+		
+	}
+	backClicked() {
+        this._location.back();
+    }
+    deleteContact(){
+		console.log('Categories Deleted from Component');
+		
+		this.ContactService.deleteContactById(this.tmpObj._id)
+			.subscribe(
+				data => {
+					console.log("category deleted and data"+data);
+					this.router.navigate(['/dashboard/category'])
+				},
+				error => alert(error),
+				()=> console.log("done")
+		); 
 		
 	}
 }

@@ -17,12 +17,12 @@ export class CategoryService {
 	constructor(private http: Http) { }
 	
 	//Category Services
-	fetchCategoryAll() : Observable<CATEGORY[]> {
-		console.log('category fetched from service');
+	fetchCategoryAll(uid) : Observable<CATEGORY[]> {
+		console.log('category fetched from service '+uid);
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get(GlobalVariable.BASE_API_URL+'/category/', {headers: headers})
+		return this.http.get(GlobalVariable.BASE_API_URL+'/category/usercategories/'+uid, {headers: headers})
 			.map(res => res.json())
 	}
 	fetchCategoryById(id: any) : Observable<CATEGORY> {
@@ -30,7 +30,7 @@ export class CategoryService {
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.get(GlobalVariable.BASE_API_URL+'/category/'+id, {headers: headers})
+		return this.http.get(GlobalVariable.BASE_API_URL+'/category/usercategory/'+id, {headers: headers})
 			.map(res => res.json())
 	}
 	addCategory(newCategory: CATEGORY){
@@ -38,7 +38,7 @@ export class CategoryService {
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.post(GlobalVariable.BASE_API_URL+'/category/', newCategory, {headers: headers})
+		return this.http.post(GlobalVariable.BASE_API_URL+'/category/usercategory', newCategory, {headers: headers})
 			.map(res => res.json())
 	}
 	updateCategoryById(id: any, updatedCategory: CATEGORY){
@@ -46,7 +46,7 @@ export class CategoryService {
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.patch(GlobalVariable.BASE_API_URL+'/category/'+id, updatedCategory, {headers: headers})
+		return this.http.patch(GlobalVariable.BASE_API_URL+'/category/usercategory/'+id, updatedCategory, {headers: headers})
 			.map(res => res.json())
 	}
 	deleteCategoryById(id: string){
@@ -54,7 +54,7 @@ export class CategoryService {
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
-		return this.http.delete(GlobalVariable.BASE_API_URL+'/category/'+id, {headers: headers})
+		return this.http.delete(GlobalVariable.BASE_API_URL+'/category/usercategory/'+id, {headers: headers})
 			.map(res => res.json())
 	}
 

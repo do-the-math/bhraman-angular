@@ -7,6 +7,8 @@ import { CATEGORY } from '../../models/categoryBO';
 import { ActivatedRoute } from '@angular/router';
 //import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import { SelectControlValueAccessor } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { USER } from '../../models/userBO';
 
 @Component({
   selector: 'app-home',
@@ -26,8 +28,9 @@ export class HomeComponent implements OnInit {
 	circles: any = [];
 	
 	// CONTACTs and Category
+	tmpObj: CONTACT;
 	contactList: CONTACT[];
-	searchContactList: CONTACT[];
+	searchContactList: CONTACT[] = [];
 	categoryList: CATEGORY[];
 	
 	ttmp: any;
@@ -37,14 +40,21 @@ export class HomeComponent implements OnInit {
 	listContent:string = "";
 	prev_infowindow = null;
 	
+	//notes
+	myNoteDate: string = "" ;
+	myNoteText: string = "";
+	user: USER;
+
 	constructor(
 		private route: ActivatedRoute, 
 		private CategoryService: CategoryService,
-		private ContactService: ContactService) {
+		private ContactService: ContactService,
+		private authService: AuthService) {
 			this.route.params.subscribe( params => console.log(params) );
 		}
 
 	ngOnInit() { 
+		this.tmpObj = new CONTACT();
 		this.optionSelected = [];
 		this.selectedIdx = [];
 		
@@ -58,8 +68,18 @@ export class HomeComponent implements OnInit {
 		this.marker = navigator.geolocation.getCurrentPosition((position) => {});	
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 		// service call
-		this.getContact();
-		this.getCategory();
+
+		this.user = new USER();
+		this.authService.getProfile().subscribe(profile => {
+			this.user = profile.user;
+			this.getContact();
+			this.getCategory();
+		},
+		err => {
+			console.log(err);
+			return false;
+		});
+		
 		
 		
 		
@@ -147,7 +167,7 @@ export class HomeComponent implements OnInit {
 		console.log('Categories Fetched from Component');
 		//this.categoryList = CATEGORIES; 
 		
-		this.CategoryService.fetchCategoryAll()
+		this.CategoryService.fetchCategoryAll(this.user._id)
 			.subscribe(
 				data => {
 					this.categoryList = data
@@ -171,7 +191,7 @@ export class HomeComponent implements OnInit {
 		//this.contactList = CONTACTS;
 		//this.searchContactList = CONTACTS;
 		
-		this.ContactService.fetchContactAll()
+		this.ContactService.fetchContactAll(this.user._id)
 			.subscribe(
 				data => {
 					this.contactList = data;
@@ -374,23 +394,45 @@ export class HomeComponent implements OnInit {
 									"<ol style='padding-left:20px'>"+
 										this.listContent+
 									"</ol>"+
-								"</div>"+
-								"<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
-									"passId("+obj._id+")> Add </a>"
+								"</div>"
+
+
+								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
+								// 	"passId("+obj._id+")> Add </a>"
 		
 		return infoWindowContent;
 	}
-	addNote(){
-		// if(this.myNoteDate.length>0 && this.myNoteText.length>0){
-		// 	this.tmpObj.notes.push({
-		// 		date: this.myNoteDate,
-		// 		note: this.myNoteText
-		// 	});
-		// 	this.updateContact();
-		// }else{
-		// 	console.log("Enter Some Notes")
-		// }
+	addNote(id){
+		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
+			
+			this.ContactService.fetchContactById(id)
+			.subscribe(
+				data => {
+					this.tmpObj = data[0];
+					this.tmpObj.notes.push({
+						date: this.myNoteDate,
+						note: this.myNoteText
+					});
+					this.updateContact(this.tmpObj);
+					
+				},
+				error => alert(error),
+				()=> console.log("done")
+			);
+		}
 	}
-
+	updateContact(obj:CONTACT){
+		console.log("Contact Updated from Component");
+		
+		this.ContactService.updateContactById(obj._id, obj)
+			.subscribe(
+				data => {
+					console.log("updated contact");
+					console.log(data)
+				},
+				error => alert(error),
+				()=> console.log("done")
+			); 
+    }
 }
 
