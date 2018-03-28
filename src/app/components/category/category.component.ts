@@ -5,6 +5,7 @@ import { CategoryService } from '../../services/category.service';
 import { AuthService } from '../../services/auth.service';
 import { CATEGORY } from '../../models/categoryBO';
 import { USER } from '../../models/userBO';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-category',
@@ -23,7 +24,8 @@ export class CategoryComponent implements OnInit {
 	constructor(
 		private CategoryService: CategoryService, 
 		private authService: AuthService,
-		private router: Router
+		private router: Router,
+		private _location: Location
 		) { }
 
 	ngOnInit() {
@@ -120,4 +122,7 @@ export class CategoryComponent implements OnInit {
 	  //do any necessery stuff.
 	  console.log(selectedData);
 	}
+	backClicked() {
+        this._location.back();
+    }
 }

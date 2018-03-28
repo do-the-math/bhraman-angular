@@ -1,4 +1,4 @@
-.dropdown-menu li:hover {
+/*.dropdown-menu li:hover {
 	border-top: .3px #1ABB9C solid; 
 	color: white;
 	background-color: #1ABB9C;
@@ -21,14 +21,88 @@
 }
 .mydropdown {
 	margin-top: 10px;
+}*/
+
+
+
+
+
+/*   hhhhhhhhhhhhhhhhhhhhhh*/
+/*   hhhhhhhhhhhhhhhhhhhhhh*/
+/*   hhhhhhhhhhhhhhhhhhhhhh*/
+
+#myChoice  {
+	font-size: 17px;
+}
+.mydropdown {
+	width: 22em;
+	margin-top: 5px;
+	margin-right: 20px;
+}
+.dropdown-menu li:hover {
+	/*border-top: .3px #1ABB9C solid; */
+	color: white;
+	background-color: #eee;
+}
+.dropdown-menu li.active {
+	/*border-top: .3px white solid; 
+	background-color: #eee;*/
+}
+.dropdown-menu li {
+	padding: 0px;
+	margin-top: 2px;
+	padding-left: 20px;
+	padding-right: 20px;
+	font-size: 25px;	
 }
 
-.choice {
-	margin-right: 10px; 
+
+
+li > label {
 	font-size: 20px;
-	
+	cursor: pointer;
+}
+li label input[type="checkbox"] {
+	display: none;
+}
+.checkboxContainer {
+	width: 22em;
+}
+label > input[type="checkbox"] + .label-text:before{
+	content: "\f096" ;
+	font-family: "FontAwesome";
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	font-size: 25px;
+	text-transform: none;
+	line-height: 1;
+	width: 1em;
+	-webkit-font-smoothing: antialiased;
+	display: inline-block;
+	margin-right: 5px;
+}
+label > input[type="checkbox"]:checked + .label-text:before {
+	content: "\f14a";
+	color: #1ABB9C;
+	font-size: 25px;
+	animation: tick 150ms ease-in;
+	/*background-color: #2a3f54;*/
+}
+label > input[type="checkbox"]:not(:checked) + .label-text:before {
+	content: "\f096";
+	font-size: 25px;
+	animation: notick 150ms ease-out;
+	/*background-color: #2a3f54;*/
 }
 
-
-
-
+@keyframes tick {
+	0% {transform: scale(0);}
+	80% {transform: scale(1.5);}
+	100% {transform: scale(1);}
+}
+@keyframes notick {
+	100% {transform: scale(1);}
+	80% {transform: scale(1.5);}
+	0% {transform: scale(0);}
+}

@@ -44,16 +44,15 @@ export class ContactDetailComponent implements OnInit {
 
 		this.user = new USER();
 		this.authService.getProfile().subscribe(profile => {
-		  this.user = profile.user;
-		},
-		err => {
-			console.log(err);
-			return false;
+				this.user = profile.user;
+			},
+			err => {
+				console.log(err);
+				return false;
 		});
 		this.getContact();
-		this.userSettings = {
-			"inputString":"Bangalore,karnataka"
-		}
+		
+		
 		
 		// var mapProp = {
 		// 	center: new google.maps.LatLng(17.385044, 78.4877),
@@ -64,11 +63,6 @@ export class ContactDetailComponent implements OnInit {
 		//this.myMarker = navigator.geolocation.getCurrentPosition((position) => {});	
 		
 		this.geocoder = new google.maps.Geocoder;
-		
-		// google.maps.event.addListener(this.map, 'click', (event)=>{
-		//    this.placeMarker(event);
-		// });
-
     }
 
 	toggleInput(){
@@ -100,7 +94,6 @@ export class ContactDetailComponent implements OnInit {
 							draggable: true
 					});
 					this.addedMarker.addListener('dragend', (event)=>{
-						//console.log("position_changed");
 						this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
 							if (status === 'OK') {
 								console.log(results[0].formatted_address)

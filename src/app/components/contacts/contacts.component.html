@@ -140,14 +140,15 @@
 <!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
 <!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
 <div class="col-md-12 col-sm-12 col-xs-12">
-	<div class="x_panel">
+	<button  type="button"  class="btn btn-dark btn-sm pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+	<div class="x_panel" style="margin-top: 10px;">
 	  <div class="x_title">
 		<h2 class="col-md-2 col-sm-2 col-xs-12" > Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
 		<ul class="nav navbar-right panel_toolbox">
 		  <li>
 		  </li>
 		  <li>
-		  	<button  type="button"  class="btn btn-dark btn-xs" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+		  	
 		  </li>
 		  <li>  
 			<button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button>
@@ -176,7 +177,7 @@
 				<td class=" " style="text-align:center" routerLink="../../contactdetail/{{c._id}}">
 					<a >{{c.name}}</a>
 				</td>
-				<td class=" " style="text-align:center"> {{c.location}}</td>
+				<td class=" " style="text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
 				
 				<td class=" " style="text-align:center">
 					<!-- <a routerLink="../../contactdetail/{{c._id}}" class=" edit btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a> -->

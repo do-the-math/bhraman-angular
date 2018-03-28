@@ -1,5 +1,6 @@
 <div class="col-md-12 col-sm-12 col-xs-12" >
-	<div class="x_panel">
+	<button  type="button"  class="btn btn-dark btn-sm pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+	<div class="x_panel" style="margin-top: 10px;">
 	  <div class="x_title">
 		<h2 style="width:100%"> 
 			Manage Contact Detail
@@ -8,7 +9,6 @@
 			<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs pull-right" ><i class="fa fa-trash-o"></i> Delete </a>
 			<a  class="edit btn btn-info btn-xs pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i>   Edit </a>
 			<a  class="edit btn btn-success btn-xs pull-right" *ngIf="!nameInputbutton" (click)="toggleInput();updateContact()" ><i class="fa fa-pencil"></i> Save </a>
-			<button  type="button"  class="btn btn-dark btn-xs pull-right" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
 		</h2>
 
 		
@@ -43,7 +43,7 @@
 			<div class="form-group">
 				<label class="col-sm-2 col-xs-12 control-label">Name:</label>
 				<div class="col-sm-8  col-xs-12">					
-					<input type="text" class="form-control" required placeholder={{tmpObj.name}} [disabled]="nameInputbutton">	
+					<input type="text" class="form-control" [(ngModel)]="tmpObj.name" [ngModelOptions]="{standalone: true}" required placeholder={{tmpObj.name}} [disabled]="nameInputbutton">	
 				</div>
 			</div>
 			

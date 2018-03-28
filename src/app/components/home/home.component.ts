@@ -55,6 +55,8 @@ export class HomeComponent implements OnInit {
 
 	ngOnInit() { 
 		this.tmpObj = new CONTACT();
+		this.user = new USER();
+
 		this.optionSelected = [];
 		this.selectedIdx = [];
 		
@@ -62,26 +64,21 @@ export class HomeComponent implements OnInit {
 			center: new google.maps.LatLng(17.385044, 78.4877),
 			zoom: 15,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			
 		};
 		
-		this.marker = navigator.geolocation.getCurrentPosition((position) => {});	
+		//this.marker = navigator.geolocation.getCurrentPosition((position) => {});	
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+		
 		// service call
-
-		this.user = new USER();
 		this.authService.getProfile().subscribe(profile => {
-			this.user = profile.user;
-			this.getContact();
-			this.getCategory();
-		},
-		err => {
-			console.log(err);
-			return false;
+				this.user = profile.user;
+				this.getContact();
+				this.getCategory();
+			},
+			err => {
+				console.log(err);
+				return false;
 		});
-		
-		
-		
 		
 		//this.findMe();
 		
@@ -93,33 +90,36 @@ export class HomeComponent implements OnInit {
         for (var i = 0; i < this.markers.length; i++) {
           this.markers[i].setMap(null);
         }
-		for (var i = 0; i < this.circles.length; i++) {
-          this.circles[i].setMap(null);
-        }
+
+
+		// for (var i = 0; i < this.circles.length; i++) {
+  //         this.circles[i].setMap(null);
+  //       }
 		
-		navigator.geolocation.getCurrentPosition((position) => {
-			let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-			this.map.panTo(location);
-			var circle = new google.maps.Circle({
-				center: location,
-				map: this.map,
-				radius: 1000,          // IN METERS.
-				fillColor: '#00628B',
-				fillOpacity: 0.2,
-				strokeColor: "#FFF",
-				strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
-			});
-			this.circles.push(circle);
-			this.findNearByContacts();
-		})
-		
+		// navigator.geolocation.getCurrentPosition((position) => {
+		// 	let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		// 	this.map.panTo(location);
+		// 	var circle = new google.maps.Circle({
+		// 		center: location,
+		// 		map: this.map,
+		// 		radius: 1000,          // IN METERS.
+		// 		fillColor: '#00628B',
+		// 		fillOpacity: 0.2,
+		// 		strokeColor: "#FFF",
+		// 		strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
+		// 	});
+		// 	this.circles.push(circle);
+		// 	this.findNearByContacts();
+		// })
+
+		this.findNearByContacts();
 	}
 	
 	clearall(){
 		this.selectedIdx=[];
 		this.optionSelected = [];
 		this.onChange();
-		this.ngOnInit2();
+		//this.ngOnInit2();
 	}
 
     selectItem(index):void {	
@@ -142,12 +142,10 @@ export class HomeComponent implements OnInit {
 		}
 		this.onChange();
 	}
-	
 	onChange() {
 		// filter contacts and search
 		this.searchContactList = this.contactList.filter(contact => {
-			var s=0;
-			for(s=0;s<this.optionSelected.length;s++){
+			for(var s=0;s<this.optionSelected.length;s++){
 				if(contact.categoryID === this.optionSelected[s]) {
 					console.log(s);
 					return true;
@@ -162,40 +160,34 @@ export class HomeComponent implements OnInit {
     }
 	
 	
-	
 	getCategory(){
 		console.log('Categories Fetched from Component');
-		//this.categoryList = CATEGORIES; 
 		
 		this.CategoryService.fetchCategoryAll(this.user._id)
 			.subscribe(
 				data => {
-					this.categoryList = data
-					var s = 0;
-					for(s=0; s< this.categoryList.length;s++){
+					this.categoryList = data;
+					for(var s=0; s< this.categoryList.length;s++){
 						this.selectedIdx.push(s);
 						this.optionSelected.push(this.categoryList[s]._id);
 					}
 					//console.log(this.optionSelected)
-					this.trackMe();
+					
+					
 				},
 				error => {},
 				()=> console.log("done")
 			); 
-		
 	}
-
-	
 	getContact(){
-		console.log("Get all contacts");
-		//this.contactList = CONTACTS;
-		//this.searchContactList = CONTACTS;
+		console.log("Contacts Fetched from Component");
 		
 		this.ContactService.fetchContactAll(this.user._id)
 			.subscribe(
 				data => {
 					this.contactList = data;
 					this.searchContactList = data;
+					this.trackMe();
 					//console.log(data)
 				},
 				error => { },
@@ -255,7 +247,8 @@ export class HomeComponent implements OnInit {
 	
 	/////////////////////////
 	trackMe() {
-		//console.log("trackMe");
+		console.log("trackMe");
+
 		if (navigator.geolocation) {
 			this.isTracking = true;
 			navigator.geolocation.getCurrentPosition((position) => {
@@ -269,13 +262,12 @@ export class HomeComponent implements OnInit {
 	}
 
 	showTrackingPosition(position) {
-		//console.log("showTrackingPosition");
+		console.log("showTrackingPosition");
 
 		this.currentLat = position.coords.latitude;
 		this.currentLong = position.coords.longitude;
 
 		let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		
 		this.map.panTo(location);
 		
 		var circle = new google.maps.Circle({
@@ -330,7 +322,8 @@ export class HomeComponent implements OnInit {
 	}
 
 	findNearByContacts() {
-		//console.log("findNearByContacts");
+		console.log("findNearByContacts");
+
 		//console.log(this.searchContactList)
 		this.searchContactList.forEach(contact => {
 			var dist = this.findDistance(this.currentLat, 
@@ -339,15 +332,14 @@ export class HomeComponent implements OnInit {
 										contact.position.lng);
 			//console.log(dist)
 			if (dist < 1) {
-				console.log(contact.notes)
 				this.showContactInMap(contact);
-				
 			}
 		});
 	}
 
 	showContactInMap(contact: CONTACT) {
-		//console.log("showContactInMap");
+		console.log("showContactInMap");
+
 		var marker = new google.maps.Marker({
 							position: new google.maps.LatLng(contact.position.lat, 
 															contact.position.lng),
@@ -383,7 +375,6 @@ export class HomeComponent implements OnInit {
 	}
 	
 	InfoWinContent(obj: CONTACT){
-		
 		for(var t=0;t<obj.notes.length;t++){
 			this.listContent  = this.listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
 		}
@@ -395,8 +386,6 @@ export class HomeComponent implements OnInit {
 										this.listContent+
 									"</ol>"+
 								"</div>"
-
-
 								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
 								// 	"passId("+obj._id+")> Add </a>"
 		
@@ -414,7 +403,6 @@ export class HomeComponent implements OnInit {
 						note: this.myNoteText
 					});
 					this.updateContact(this.tmpObj);
-					
 				},
 				error => alert(error),
 				()=> console.log("done")
