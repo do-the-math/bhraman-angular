@@ -5,7 +5,6 @@ import { ContactService } from '../../services/contact.service';
 import { CONTACT } from '../../models/contactBO';
 import { CATEGORY } from '../../models/categoryBO';
 import { ActivatedRoute } from '@angular/router';
-//import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 import { SelectControlValueAccessor } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
@@ -16,33 +15,28 @@ import { USER } from '../../models/userBO';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-	@ViewChild('gmap') gmapElement: any;
-	
-	map: google.maps.Map;
-	isTracking = false;
+	@ViewChild('gmap') gmapElement: any;	
 
-	currentLat: any;
-	currentLong: any;
-	marker: any;
-	markers: any = [];
-	circles: any = [];
-	
-	// CONTACTs and Category
-	tmpObj: CONTACT;
+	map: google.maps.Map;
+	// My place on map
+	myOriginalPosition: any;
+	myOriginalMarker: google.maps.Marker;
+	myCurrentPosition = {
+		latitude: 0,
+		longitude: 0
+	};
+	myCurrentMarker: google.maps.Marker;
+
+	myCircleRadius: number;
+	myCircle: google.maps.Circle;
+	markerList: any[];
 	contactList: CONTACT[];
-	searchContactList: CONTACT[] = [];
+	filteredContactListByCategory: CONTACT[];
+	searchContactList: CONTACT[];
 	categoryList: CATEGORY[];
-	
-	ttmp: any;
-	// category selection
-	optionSelected = [];
-	selectedIdx = [];
-	listContent:string = "";
-	prev_infowindow = null;
-	
-	//notes
-	myNoteDate: string = "" ;
-	myNoteText: string = "";
+
+	optionSelected: string[];
+	infowindow_open:any = null;
 	user: USER;
 
 	constructor(
@@ -51,88 +45,67 @@ export class HomeComponent implements OnInit {
 		private ContactService: ContactService,
 		private authService: AuthService) {
 			this.route.params.subscribe( params => console.log(params) );
+			this.myCircleRadius = 1000; // 1km
 		}
 
 	ngOnInit() { 
-		this.tmpObj = new CONTACT();
 		this.user = new USER();
-
 		this.optionSelected = [];
-		this.selectedIdx = [];
-		
+		this.myCircleRadius = 1000; // 1km
+		this.infowindow_open = null;
+		this.markerList = []
+
 		var mapProp = {
 			center: new google.maps.LatLng(17.385044, 78.4877),
 			zoom: 15,
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 		};
-		
-		//this.marker = navigator.geolocation.getCurrentPosition((position) => {});	
+			
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 		
 		// service call
 		this.authService.getProfile().subscribe(profile => {
 				this.user = profile.user;
-				this.getContact();
-				this.getCategory();
+				this.getCategory(this.user);
+				this.getContact(this.user);
 			},
 			err => {
 				console.log(err);
 				return false;
 		});
-		
-		//this.findMe();
-		
 	}
-	
-	ngOnInit2(){		
-		//this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+	getCategory(user: USER){
+		console.log('Categories Fetched from Component');
 		
-        for (var i = 0; i < this.markers.length; i++) {
-          this.markers[i].setMap(null);
-        }
-
-
-		// for (var i = 0; i < this.circles.length; i++) {
-  //         this.circles[i].setMap(null);
-  //       }
+		this.CategoryService.fetchCategoryAll(user._id)
+			.subscribe(
+				data => {
+					this.categoryList = data;
+					for(var s=0; s< this.categoryList.length;s++){
+						this.optionSelected.push(this.categoryList[s]._id);
+					}					
+				},
+				error => {},
+				()=> console.log("done")
+			); 
+	}
+	getContact(user: USER){
+		console.log("Contacts Fetched from Component");
 		
-		// navigator.geolocation.getCurrentPosition((position) => {
-		// 	let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		// 	this.map.panTo(location);
-		// 	var circle = new google.maps.Circle({
-		// 		center: location,
-		// 		map: this.map,
-		// 		radius: 1000,          // IN METERS.
-		// 		fillColor: '#00628B',
-		// 		fillOpacity: 0.2,
-		// 		strokeColor: "#FFF",
-		// 		strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
-		// 	});
-		// 	this.circles.push(circle);
-		// 	this.findNearByContacts();
-		// })
-
-		this.findNearByContacts();
-	}
-	
-	clearall(){
-		this.selectedIdx=[];
-		this.optionSelected = [];
-		this.onChange();
-		//this.ngOnInit2();
-	}
-
-    selectItem(index):void {	
-		// console.log(this.selectedIdx)
-		var idx = this.selectedIdx.indexOf(index);
-		if(idx > -1){
-			this.selectedIdx.splice(idx, 1);
-			
-		} else {
-			this.selectedIdx.push(index);
-		}
+		this.ContactService.fetchContactAll(user._id)
+			.subscribe(
+				data => {
+					this.contactList = data;
+					this.filteredContactListByCategory = data;
+					this.displayMapOne();
+				},
+				error => { },
+				()=> console.log("done")
+			);
     }
 	chooseCat(catID){
+		console.log("chooseCat");
+
 		var idx = this.optionSelected.indexOf(catID);
 		if(idx > -1){
 			this.optionSelected.splice(idx, 1);
@@ -140,119 +113,79 @@ export class HomeComponent implements OnInit {
 		} else {
 			this.optionSelected.push(catID);
 		}
-		this.onChange();
+		this.filterContacts();
+		this.onOptionChange();
 	}
-	onChange() {
-		// filter contacts and search
-		this.searchContactList = this.contactList.filter(contact => {
-			for(var s=0;s<this.optionSelected.length;s++){
-				if(contact.categoryID === this.optionSelected[s]) {
-					console.log(s);
-					return true;
-				}
-			}
-		});
-		console.log(this.searchContactList)
-		if(this.searchContactList.length>=0){
-			console.log("ngOnInit2")
-			this.ngOnInit2();
-		} 
-    }
-	
-	
-	getCategory(){
-		console.log('Categories Fetched from Component');
-		
-		this.CategoryService.fetchCategoryAll(this.user._id)
-			.subscribe(
-				data => {
-					this.categoryList = data;
-					for(var s=0; s< this.categoryList.length;s++){
-						this.selectedIdx.push(s);
-						this.optionSelected.push(this.categoryList[s]._id);
-					}
-					//console.log(this.optionSelected)
-					
-					
-				},
-				error => {},
-				()=> console.log("done")
-			); 
+	getRadius(){
+		return this.myCircleRadius;
 	}
-	getContact(){
-		console.log("Contacts Fetched from Component");
-		
-		this.ContactService.fetchContactAll(this.user._id)
-			.subscribe(
-				data => {
-					this.contactList = data;
-					this.searchContactList = data;
-					this.trackMe();
-					//console.log(data)
-				},
-				error => { },
-				()=> console.log("done")
-			);
-    }
-	
+	setRadius(val: number){
+		this.myCircleRadius = val;
+	}
 
-	
-	
-
-/* 	findMe() {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				this.showPosition(position);
-			});
-		} else {
-			alert("Geolocation is not supported by this browser.");
+	clearMap(option: string){
+		for (var i = 0; i < this.markerList.length; i++) {
+          this.markerList[i].setMap(null);
+        }
+        if(option=="all"){
+			this.myCircle.setMap(null);
 		}
 	}
 
-	showPosition(position) {
-		this.currentLat = position.coords.latitude;
-		this.currentLong = position.coords.longitude;
+	clearaOptions(){
+		this.clearMap("");
+		this.optionSelected = [];
+	}
+	drawCircleOnMap(position){
+		console.log("drawCircleOnMap");
 
+		this.myCurrentPosition = position.coords;
+		this.myOriginalPosition = position.coords;
 		let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		this.map.panTo(location);
+		
 		var circle = new google.maps.Circle({
 			center: location,
 			map: this.map,
-			radius: 1000,          // IN METERS.
-			fillColor: '#FF6600',
-			fillOpacity: 0.3,
+			radius: this.getRadius(), 
+			fillColor: '#00628B',
+			fillOpacity: 0.2,
 			strokeColor: "#FFF",
-			strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
+			strokeWeight: 0
 		});
-		this.map.panTo(location);
+		this.myCircle = circle;
 
-		circle.setMap(this.map);
-
-		if (this.marker) {
-			this.marker = new google.maps.Marker({
-				position: location,
-				map: this.map,
-				title: 'My Position',
-				icon: 'https://dcassetcdn.com/design_img/612534/82744/82744_3973059_612534_image.jpg'
-				});
-		}
-		else {
-			
-			this.marker.setPosition(location);
-		}
+		this.myCurrentMarker = new google.maps.Marker({
+			position: location,
+			map: this.map,
+			title: 'You are Here!'
+		});
+		this.findNearByContacts();
 	}
-	 */
-	
-	
 
-	
-	/////////////////////////
-	trackMe() {
-		console.log("trackMe");
+	filterContacts(){
+		console.log("filter contact");
+
+		this.filteredContactListByCategory = this.contactList.filter(contact => {
+				for(var s=0;s<this.optionSelected.length;s++){
+					if(contact.categoryID === this.optionSelected[s]) {
+						//console.log(s);
+						return true;
+					}
+				}
+			});
+			//console.log(this.filteredContactListByCategory)
+	}
+	getFilteredContacts(){
+		return this.filteredContactListByCategory;
+	}
+	displayMapOne(){	
+		console.log("display Map One");
 
 		if (navigator.geolocation) {
-			this.isTracking = true;
 			navigator.geolocation.getCurrentPosition((position) => {
-				this.showTrackingPosition(position);
+				console.log("curr location found")
+				this.drawCircleOnMap(position);
 			}, (err) => {
 				console.log(err);
 			});
@@ -261,77 +194,25 @@ export class HomeComponent implements OnInit {
 		}
 	}
 
-	showTrackingPosition(position) {
-		console.log("showTrackingPosition");
+	onOptionChange(){
+		console.log("onOptionChange");
 
-		this.currentLat = position.coords.latitude;
-		this.currentLong = position.coords.longitude;
-
-		let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		this.map.panTo(location);
-		
-		var circle = new google.maps.Circle({
-				center: location,
-				map: this.map,
-				radius: 1000,          // IN METERS.
-				fillColor: '#00628B',
-				fillOpacity: 0.2,
-				strokeColor: "#FFF",
-				strokeWeight: 0         // DON'T SHOW CIRCLE BORDER.
-			});
-			
-		this.circles.push(circle);
-		//circle.setMap(this.map);
-			
-		/* var icon = {
-			url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png", // url
-			scaledSize: new google.maps.Size(50, 50), // scaled size
-			origin: new google.maps.Point(0, 0), // origin
-			anchor: new google.maps.Point(50, 50) // anchor
-		} */
-		/* var icon: {
-                  path: pinSymbol
-                  scale: 5,
-                  strokeWeight:2,
-                  strokeColor:"#B40404"
-               }, */
-		
-		if (!this.marker) {
-			this.marker = new google.maps.Marker({
-				position: location,
-				map: this.map,
-				title: 'You are Here!',
-				
-				icon: this.pinSymbol('blue')
-			});
-		}
-		else {
-			this.marker.setPosition(location);
-		}
+		this.clearMap("marker");
 		this.findNearByContacts();
-	}
-	pinSymbol(color) {
-		return {
-			path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-			fillColor: color,
-			fillOpacity: 1,
-			strokeColor: '#000',
-			strokeWeight: 2,
-			scale: 1
-		};
 	}
 
 	findNearByContacts() {
 		console.log("findNearByContacts");
 
-		//console.log(this.searchContactList)
-		this.searchContactList.forEach(contact => {
-			var dist = this.findDistance(this.currentLat, 
-										this.currentLong, 
+		var searchContactList = this.getFilteredContacts()
+		searchContactList.forEach(contact => {
+			var dist = this.findDistance(
+										this.myCurrentPosition.latitude, 
+										this.myCurrentPosition.longitude,
 										contact.position.lat, 
 										contact.position.lng);
-			//console.log(dist)
-			if (dist < 1) {
+			console.log(dist)
+			if (dist*1000 < this.getRadius()) {
 				this.showContactInMap(contact);
 			}
 		});
@@ -341,23 +222,23 @@ export class HomeComponent implements OnInit {
 		console.log("showContactInMap");
 
 		var marker = new google.maps.Marker({
-							position: new google.maps.LatLng(contact.position.lat, 
-															contact.position.lng),
-							map: this.map,
-							title: contact.name
-			});
-		this.ttmp = contact;
+			position: new google.maps.LatLng(contact.position.lat, 
+											contact.position.lng),
+			map: this.map,
+			title: contact.name,
+			icon: this.pinSymbol('blue')
+		});
+
 		var infoWindowContent = this.InfoWinContent(contact)
 		marker.addListener('click',(tmp)=>{
-			if( this.prev_infowindow ) {
-			   this.prev_infowindow.close();
+			if( this.infowindow_open ) {
+			   this.infowindow_open.close();
 			}
-			
-			var infowindow = new google.maps.InfoWindow({ content: infoWindowContent });
-			this.prev_infowindow = infowindow;
-			infowindow.open(this.map, marker);
+			var myInfowindow = new google.maps.InfoWindow({ content: infoWindowContent });
+			this.infowindow_open = myInfowindow;
+			myInfowindow.open(this.map, marker);
 	    });
-		this.markers.push(marker );
+		this.markerList.push(marker);
 	}
 
 	findDistance(lat1, lon1, lat2, lon2, unit="K") {
@@ -375,15 +256,16 @@ export class HomeComponent implements OnInit {
 	}
 	
 	InfoWinContent(obj: CONTACT){
+		var listContent = ""
 		for(var t=0;t<obj.notes.length;t++){
-			this.listContent  = this.listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
+			listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
 		}
 		var infoWindowContent = "<div style='width: 300px' >"+
 									"<h2 class='firstHeading'><b>Name:</b> " + obj.name + "</h2>"+
 									"<hr>"+
 									"<h2> Notes: </h2>"+
 									"<ol style='padding-left:20px'>"+
-										this.listContent+
+										listContent+
 									"</ol>"+
 								"</div>"
 								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
@@ -391,36 +273,17 @@ export class HomeComponent implements OnInit {
 		
 		return infoWindowContent;
 	}
-	addNote(id){
-		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
-			
-			this.ContactService.fetchContactById(id)
-			.subscribe(
-				data => {
-					this.tmpObj = data[0];
-					this.tmpObj.notes.push({
-						date: this.myNoteDate,
-						note: this.myNoteText
-					});
-					this.updateContact(this.tmpObj);
-				},
-				error => alert(error),
-				()=> console.log("done")
-			);
-		}
+	pinSymbol(color) {
+		return {
+			//path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
+			path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
+			fillColor: color,
+			fillOpacity: 1,
+			strokeColor: '#000',
+			strokeWeight: 2,
+			scale: 1
+		};
 	}
-	updateContact(obj:CONTACT){
-		console.log("Contact Updated from Component");
-		
-		this.ContactService.updateContactById(obj._id, obj)
-			.subscribe(
-				data => {
-					console.log("updated contact");
-					console.log(data)
-				},
-				error => alert(error),
-				()=> console.log("done")
-			); 
-    }
 }
+
 

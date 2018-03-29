@@ -11,69 +11,65 @@ import { NotificationsService } from 'angular2-notifications';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-	username: string;
-	password: string;
 	
 	constructor(  private authService: AuthService,
 			      private router: Router,
-				  private flashMessage: FlashMessagesService,
 				   private notif: NotificationsService
 				  ) { }
 
 	ngOnInit() {
 		this.notif.info(
-					'Enter Password',
-					'You are not logged in',
-					{
-						timeOut: 5000,
-						showProgressBar: true,
-						pauseOnHover: false,
-						clickToClose: false,
-						maxLength: 10,
-						preventLastDuplicates: true
-					}
-				)
+			'Enter Password',
+			'You are not logged in',
+			{
+				timeOut: 2000,
+				showProgressBar: true,
+				pauseOnHover: false,
+				clickToClose: true,
+				maxLength: 10,
+				preventLastDuplicates: true
+			}
+		)	
 	}
 	
-	onLoginSubmit() {
+	onLogin(value: any) {
 		const user = {
-		  username: this.username,
-		  password: this.password
+			username: value.username,
+			password: value.password
 		}
 
 		this.authService.authenticateUser(user).subscribe(data => {
 			if(data.success) {
-				//////////
-				this.authService.storeUserData(data.token, data.user);
-				//this.flashMessage.show('You are now logged in', {cssClass: 'alert-success', timeout: 5000});
 				this.notif.success(
 					'Success',
 					'You are now logged in',
 					{
-						timeOut: 5000,
+						timeOut: 3000,
 						showProgressBar: true,
 						pauseOnHover: false,
-						clickToClose: false,
+						clickToClose: true,
 						maxLength: 10,
 						preventLastDuplicates: true
 					}
 				)
+				this.authService.storeUserData(data.token, data.user);
 				this.router.navigate(['/dashboard']);
 			} else {
-			  
-			  this.router.navigate(['login']);
-			  this.notif.error(
-                 'Auth Failed',
-                 'Enter Correct Credential',
-                 {
-                   timeOut: 3000,
-                   showProgressBar: true,
-                   pauseOnHover: false,
-                   clickToClose: true,
-                   maxLength: 50
-                 }
-               )
+				this.notif.error(
+					'Auth Failed',
+					'Enter Correct Credential',
+					{
+						timeOut: 3000,
+						showProgressBar: true,
+						pauseOnHover: false,
+						clickToClose: true,
+						maxLength: 50
+					}
+				)
 			}
 		});
 	}
 }
+
+
+

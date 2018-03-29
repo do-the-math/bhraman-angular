@@ -17,16 +17,16 @@ export class ContactFormComponent implements OnInit {
 	map: google.maps.Map;
 	geocoder;
 	userSettings: any;
+
 	myNoteDate: string = "" ;
 	myNoteText: string = "";
 	showInp:boolean = true;
+	nameInputbutton:boolean;
 	categoryID: string;
-	myNotes:any=[];
-	tmpObj: CONTACT = new CONTACT();
+	
+	curContactObj: CONTACT;
 	user: USER;
-	addedMarker:any;
-	nameInputbutton: boolean = true;
-	newContactName:string;
+	curContactMarker:any;
 	
 
     constructor(private route: ActivatedRoute,
@@ -38,25 +38,14 @@ export class ContactFormComponent implements OnInit {
     
     ngOnInit() {
     	this.categoryID = (this.route.snapshot.paramMap.get('categoryID'));
-    	this.newContactName = null;
-		this.nameInputbutton= true;
-    	this.tmpObj = new CONTACT();
+		this.nameInputbutton = true;
+    	this.curContactObj = new CONTACT();
     	this.user = new USER();
 		this.geocoder = new google.maps.Geocoder;
 		
 		this.authService.getProfile().subscribe(profile => {
-				this.user = profile.user;
-				this.tmpObj.userID = this.user._id;
-				this.tmpObj.categoryID = this.categoryID 
-				this.tmpObj.location = null;
-				this.tmpObj.name = null;
-				//this.tmpObj.notes = [];
-				this.tmpObj.position = {
-					"lat":0,
-					"lng":0
-				}
-				
-				console.log(this.tmpObj)
+				this.user = profile.user;	
+				this.createContact(this.user);			
 			},
 			err => {
 				console.log(err);
@@ -65,17 +54,21 @@ export class ContactFormComponent implements OnInit {
 		this.userSettings = {
 						"inputString": "Enter Location"
 					}
-		this.createContact();
+		
     }
 
 	toggleInput(){
-		if(this.tmpObj.name != null && this.tmpObj.location != null)
+		if(this.curContactObj.name != null && this.curContactObj.location != null)
 			this.nameInputbutton = false;
 	}
 
 
 
-	createContact(){
+	createContact(user: USER){
+		this.curContactObj.userID = user._id;
+		this.curContactObj.categoryID = this.categoryID;
+		//this.curContactObj.notes = [];
+
 		navigator.geolocation.getCurrentPosition((position) => {
 			var myPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 			var mapProp = {
@@ -85,24 +78,24 @@ export class ContactFormComponent implements OnInit {
 			};
 			this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 			
-			this.addedMarker = new google.maps.Marker({
+			this.curContactMarker = new google.maps.Marker({
 					position: myPos,
 					map: this.map,
-					title: this.tmpObj.name,
+					title: this.curContactObj.name,
 					draggable: true
 			});
 		
-			this.addedMarker.addListener('dragend', (event)=>{
-				this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
+			this.curContactMarker.addListener('dragend', (event)=>{
+				this.geocoder.geocode({'location': this.curContactMarker.position}, (results, status)=> {
 					if (status === 'OK') {
 						console.log(results[0].formatted_address)
 						if (results[0]) {
 							this.userSettings = {
 								"inputString": results[0].formatted_address
 							}
-							this.tmpObj.location = results[0].formatted_address;
-							this.tmpObj.position.lat = this.addedMarker.position.lat();
-							this.tmpObj.position.lng = this.addedMarker.position.lng();
+							this.curContactObj.location = results[0].formatted_address;
+							this.curContactObj.position.lat = this.curContactMarker.position.lat();
+							this.curContactObj.position.lng = this.curContactMarker.position.lng();
 						} else {
 							window.alert('No results found');
 						}
@@ -116,10 +109,8 @@ export class ContactFormComponent implements OnInit {
 
 	addContact(){
 		console.log("Contact Updated from Component");
-		
-		this.tmpObj.name = this.newContactName;
-		this.tmpObj.categoryID = this.categoryID
-		this.ContactService.addContact(this.tmpObj)
+
+		this.ContactService.addContact(this.curContactObj)
 			.subscribe(
 				data => {
 					console.log("added contact");
@@ -130,21 +121,23 @@ export class ContactFormComponent implements OnInit {
 				()=> console.log("done")
 			); 
     }
-	saveContact(){
+	onSubmit(value: any){
 		console.log("contact saved")
-		console.log(this.tmpObj)
+		console.log(this.curContactObj);
+		//console.log(value);
+		this.curContactObj.name = value.name;
+
 		this.addContact();
 	}
 
 
 	addNote(){
 		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
-			this.myNotes.push({
+			this.curContactObj.notes.push({
 				date: this.myNoteDate,
 				note: this.myNoteText
 			});
-			this.tmpObj.notes = this.myNotes;
-			console.log(this.tmpObj.notes)
+			console.log(this.curContactObj.notes)
 			this.myNoteDate = "";
 			this.myNoteText = "";
 		}else{
@@ -153,46 +146,27 @@ export class ContactFormComponent implements OnInit {
 	}
 	removeNote(note){
 		console.log("clicked");
-		console.log(note.note);
-		var idx = this.myNotes.notes.indexOf(note);
-		this.myNotes.notes.splice(idx, 1);
+	
+		var idx = this.curContactObj.notes.indexOf(note);
+		this.curContactObj.notes.splice(idx, 1);
 	}
-	// saveLocation(){
-	// 	this.tmpObj.position = this.addedMarker.position;
-	// 	this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
-	// 		if (status === 'OK') {
-	// 			console.log(results[0].formatted_address)
-	// 			if (results[0]) {
-	// 				this.tmpObj.location = results[0].formatted_address;
-	// 				this.userSettings = {
-	// 					"inputString": this.tmpObj.location
-	// 				}
-	// 				this.updateContact();
-	// 			} else {
-	// 				window.alert('No results found');
-	// 			}
-	// 		} else {
-	// 			window.alert('Geocoder failed due to: ' + status);
-	// 		}
- 	//  });
-	// }
 
 	autoCompleteCallback1(selectedData:any) {
 		console.log(selectedData);
 		
-		this.tmpObj.position= selectedData.data.geometry.location;
-		this.tmpObj.location = selectedData.data.formatted_address;
+		this.curContactObj.position= selectedData.data.geometry.location;
+		this.curContactObj.location = selectedData.data.formatted_address;
 		this.userSettings = {
-						"inputString": this.tmpObj.location
+						"inputString": this.curContactObj.location
 					}
-		let location = new google.maps.LatLng(this.tmpObj.position.lat, this.tmpObj.position.lng);
+		let location = new google.maps.LatLng(this.curContactObj.position.lat, this.curContactObj.position.lng);
 		this.map.panTo(location);
 		
-		this.addedMarker.setMap(null);
-		this.addedMarker = 	new google.maps.Marker({
-								position: this.tmpObj.position,
+		this.curContactMarker.setMap(null);
+		this.curContactMarker = 	new google.maps.Marker({
+								position: this.curContactObj.position,
 								map: this.map,
-								title: this.tmpObj.name,
+								title: this.curContactObj.name,
 								draggable: true
 							});
 	}

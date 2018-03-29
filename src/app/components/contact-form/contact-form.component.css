@@ -1,0 +1,22 @@
+input.ng-invalid {
+	border-left: 3px solid #E74C3C;
+}
+input.ng-valid {
+	border-left: 3px solid #1ABB9C;
+}
+
+.myli {
+    margin: 1px;
+    background-color: #eee;
+}
+.mybtn > button{
+	padding:0px;
+	margin:0px;
+	height:34px; 
+	width:34px;
+	background-color: #eee;
+}
+.mybtn > button:hover{
+	background-color: white;
+	transform: rotate(180deg) scaleX(-1);
+}

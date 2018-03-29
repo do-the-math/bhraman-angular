@@ -1,14 +1,13 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { } from '@types/googlemaps';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryService } from '../../services/category.service';
 import { ContactService } from '../../services/contact.service';
-import { CONTACT } from '../../models/contactBO';
-import { CATEGORY } from '../../models/categoryBO';
-import { ActivatedRoute } from '@angular/router';
-import { SelectControlValueAccessor } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
+import { CONTACT } from '../../models/contactBO';
+import {Location} from '@angular/common';
+
+
 
 @Component({
   selector: 'app-sandbox',
@@ -16,275 +15,164 @@ import { USER } from '../../models/userBO';
   styleUrls: ['./sandbox.component.css']
 })
 export class SandboxComponent implements OnInit {
-	@ViewChild('gmap') gmapElement: any;	
-
+	@ViewChild('gmap') gmapElement: any;
 	map: google.maps.Map;
-	// My place on map
-	myOriginalPosition: any;
-	myOriginalMarker: google.maps.Marker;
-	myCurrentPosition = {
-		latitude: 0,
-		longitude: 0
-	};
-	myCurrentMarker: google.maps.Marker;
+	geocoder;
+	userSettings: any;
 
-	myCircleRadius: number;
-	myCircle: google.maps.Circle;
-	markerList: any[];
-	contactList: CONTACT[];
-	filteredContactListByCategory: CONTACT[];
-	searchContactList: CONTACT[];
-	categoryList: CATEGORY[];
-
-	optionSelected: string[];
-	infowindow_open:any = null;
+	myNoteDate: string = "" ;
+	myNoteText: string = "";
+	showInp:boolean = true;
+	nameInputbutton:boolean;
+	categoryID: string;
+	
+	curContactObj: CONTACT;
 	user: USER;
+	curContactMarker:any;
+	
 
-	constructor(
-		private route: ActivatedRoute, 
-		private CategoryService: CategoryService,
-		private ContactService: ContactService,
-		private authService: AuthService) {
-			this.route.params.subscribe( params => console.log(params) );
-			this.myCircleRadius = 1000; // 1km
-		}
-
-	ngOnInit() { 
-		this.user = new USER();
-		this.optionSelected = [];
-		this.myCircleRadius = 1000; // 1km
-		this.infowindow_open = null;
-		this.markerList = []
-
-		var mapProp = {
-			center: new google.maps.LatLng(17.385044, 78.4877),
-			zoom: 15,
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-		};
-			
-		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+    constructor(private route: ActivatedRoute,
+    			private router: Router,
+				private CategoryService: CategoryService,
+				private ContactService: ContactService,
+				private authService: AuthService,
+				private _location: Location) { }
+    
+    ngOnInit() {
+    	this.categoryID = (this.route.snapshot.paramMap.get('categoryID'));
+		this.nameInputbutton = true;
+    	this.curContactObj = new CONTACT();
+    	this.user = new USER();
+		this.geocoder = new google.maps.Geocoder;
 		
-		// service call
 		this.authService.getProfile().subscribe(profile => {
-				this.user = profile.user;
-				this.getCategory(this.user);
-				this.getContact(this.user);
+				this.user = profile.user;	
+				this.createContact(this.user);			
 			},
 			err => {
 				console.log(err);
 				return false;
 		});
-	}
-	getCategory(user: USER){
-		console.log('Categories Fetched from Component');
+		this.userSettings = {
+						"inputString": "Enter Location"
+					}
 		
-		this.CategoryService.fetchCategoryAll(user._id)
+    }
+
+	toggleInput(){
+		if(this.curContactObj.name != null && this.curContactObj.location != null)
+			this.nameInputbutton = false;
+	}
+
+
+
+	createContact(user: USER){
+		this.curContactObj.userID = user._id;
+		this.curContactObj.categoryID = this.categoryID;
+		//this.curContactObj.notes = [];
+
+		navigator.geolocation.getCurrentPosition((position) => {
+			var myPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			var mapProp = {
+				center: myPos,
+				zoom: 13,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			};
+			this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+			
+			this.curContactMarker = new google.maps.Marker({
+					position: myPos,
+					map: this.map,
+					title: this.curContactObj.name,
+					draggable: true
+			});
+		
+			this.curContactMarker.addListener('dragend', (event)=>{
+				this.geocoder.geocode({'location': this.curContactMarker.position}, (results, status)=> {
+					if (status === 'OK') {
+						console.log(results[0].formatted_address)
+						if (results[0]) {
+							this.userSettings = {
+								"inputString": results[0].formatted_address
+							}
+							this.curContactObj.location = results[0].formatted_address;
+							this.curContactObj.position.lat = this.curContactMarker.position.lat();
+							this.curContactObj.position.lng = this.curContactMarker.position.lng();
+						} else {
+							window.alert('No results found');
+						}
+					} else {
+						window.alert('Geocoder failed due to: ' + status);
+					}
+		        });
+			});
+		});
+	}
+
+	addContact(){
+		console.log("Contact Updated from Component");
+
+		this.ContactService.addContact(this.curContactObj)
 			.subscribe(
 				data => {
-					this.categoryList = data;
-					for(var s=0; s< this.categoryList.length;s++){
-						this.optionSelected.push(this.categoryList[s]._id);
-					}					
+					console.log("added contact");
+					console.log(data);
+					this._location.back();
 				},
-				error => {},
+				error => alert(error),
 				()=> console.log("done")
 			); 
-	}
-	getContact(user: USER){
-		console.log("Contacts Fetched from Component");
-		
-		this.ContactService.fetchContactAll(user._id)
-			.subscribe(
-				data => {
-					this.contactList = data;
-					this.filteredContactListByCategory = data;
-					this.displayMapOne();
-				},
-				error => { },
-				()=> console.log("done")
-			);
     }
-	chooseCat(catID){
-		console.log("chooseCat");
+	onSubmit(value: any){
+		console.log("contact saved")
+		console.log(this.curContactObj);
+		console.log(value);
+		this.curContactObj.name = value.name;
 
-		var idx = this.optionSelected.indexOf(catID);
-		if(idx > -1){
-			this.optionSelected.splice(idx, 1);
-			
-		} else {
-			this.optionSelected.push(catID);
-		}
-		this.filterContacts();
-		this.onOptionChange();
-	}
-	getRadius(){
-		return this.myCircleRadius;
-	}
-	setRadius(val: number){
-		this.myCircleRadius = val;
+		this.addContact();
 	}
 
-	clearMap(option: string){
-		for (var i = 0; i < this.markerList.length; i++) {
-          this.markerList[i].setMap(null);
-        }
-        if(option=="all"){
-			this.myCircle.setMap(null);
+
+	addNote(){
+		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
+			this.curContactObj.notes.push({
+				date: this.myNoteDate,
+				note: this.myNoteText
+			});
+			console.log(this.curContactObj.notes)
+			this.myNoteDate = "";
+			this.myNoteText = "";
+		}else{
+			console.log("Enter Some Notes")
 		}
 	}
-
-	clearaOptions(){
-		this.clearMap("");
-		this.optionSelected = [];
+	removeNote(note){
+		console.log("clicked");
+	
+		var idx = this.curContactObj.notes.indexOf(note);
+		this.curContactObj.notes.splice(idx, 1);
 	}
-	drawCircleOnMap(position){
-		console.log("drawCircleOnMap");
 
-		this.myCurrentPosition = position.coords;
-		this.myOriginalPosition = position.coords;
-		let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	autoCompleteCallback1(selectedData:any) {
+		console.log(selectedData);
+		
+		this.curContactObj.position= selectedData.data.geometry.location;
+		this.curContactObj.location = selectedData.data.formatted_address;
+		this.userSettings = {
+						"inputString": this.curContactObj.location
+					}
+		let location = new google.maps.LatLng(this.curContactObj.position.lat, this.curContactObj.position.lng);
 		this.map.panTo(location);
 		
-		var circle = new google.maps.Circle({
-			center: location,
-			map: this.map,
-			radius: this.getRadius(), 
-			fillColor: '#00628B',
-			fillOpacity: 0.2,
-			strokeColor: "#FFF",
-			strokeWeight: 0
-		});
-		this.myCircle = circle;
-
-		this.myCurrentMarker = new google.maps.Marker({
-			position: location,
-			map: this.map,
-			title: 'You are Here!'
-		});
-		this.findNearByContacts();
+		this.curContactMarker.setMap(null);
+		this.curContactMarker = 	new google.maps.Marker({
+								position: this.curContactObj.position,
+								map: this.map,
+								title: this.curContactObj.name,
+								draggable: true
+							});
 	}
-
-	filterContacts(){
-		console.log("filter contact");
-
-		this.filteredContactListByCategory = this.contactList.filter(contact => {
-				for(var s=0;s<this.optionSelected.length;s++){
-					if(contact.categoryID === this.optionSelected[s]) {
-						//console.log(s);
-						return true;
-					}
-				}
-			});
-			//console.log(this.filteredContactListByCategory)
-	}
-	getFilteredContacts(){
-		return this.filteredContactListByCategory;
-	}
-	displayMapOne(){	
-		console.log("display Map One");
-
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition((position) => {
-				console.log("curr location found")
-				this.drawCircleOnMap(position);
-			}, (err) => {
-				console.log(err);
-			});
-		} else {
-			alert("Geolocation is not supported by this browser.");
-		}
-	}
-
-	onOptionChange(){
-		console.log("onOptionChange");
-
-		this.clearMap("marker");
-		this.findNearByContacts();
-	}
-
-	findNearByContacts() {
-		console.log("findNearByContacts");
-
-		var searchContactList = this.getFilteredContacts()
-		searchContactList.forEach(contact => {
-			var dist = this.findDistance(
-										this.myCurrentPosition.latitude, 
-										this.myCurrentPosition.longitude,
-										contact.position.lat, 
-										contact.position.lng);
-			console.log(dist)
-			if (dist < this.getRadius()) {
-				this.showContactInMap(contact);
-			}
-		});
-	}
-
-	showContactInMap(contact: CONTACT) {
-		console.log("showContactInMap");
-
-		var marker = new google.maps.Marker({
-			position: new google.maps.LatLng(contact.position.lat, 
-											contact.position.lng),
-			map: this.map,
-			title: contact.name,
-			icon: this.pinSymbol('blue')
-		});
-
-		var infoWindowContent = this.InfoWinContent(contact)
-		marker.addListener('click',(tmp)=>{
-			if( this.infowindow_open ) {
-			   this.infowindow_open.close();
-			}
-			var myInfowindow = new google.maps.InfoWindow({ content: infoWindowContent });
-			this.infowindow_open = myInfowindow;
-			myInfowindow.open(this.map, marker);
-	    });
-		this.markerList.push(marker);
-	}
-
-	findDistance(lat1, lon1, lat2, lon2, unit="K") {
-		var radlat1 = Math.PI * lat1/180
-		var radlat2 = Math.PI * lat2/180
-		var theta = lon1-lon2
-		var radtheta = Math.PI * theta/180
-		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-		dist = Math.acos(dist)
-		dist = dist * 180/Math.PI
-		dist = dist * 60 * 1.1515
-		if (unit=="K") { dist = dist * 1.609344 }
-		if (unit=="N") { dist = dist * 0.8684 }
-		return dist
-	}
-	
-	InfoWinContent(obj: CONTACT){
-		var listContent = ""
-		for(var t=0;t<obj.notes.length;t++){
-			listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
-		}
-		var infoWindowContent = "<div style='width: 300px' >"+
-									"<h2 class='firstHeading'><b>Name:</b> " + obj.name + "</h2>"+
-									"<hr>"+
-									"<h2> Notes: </h2>"+
-									"<ol style='padding-left:20px'>"+
-										listContent+
-									"</ol>"+
-								"</div>"
-								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
-								// 	"passId("+obj._id+")> Add </a>"
-		
-		return infoWindowContent;
-	}
-	pinSymbol(color) {
-		return {
-			//path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
-			path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
-			fillColor: color,
-			fillOpacity: 1,
-			strokeColor: '#000',
-			strokeWeight: 2,
-			scale: 1
-		};
-	}
+	backClicked() {
+        this._location.back();
+    }
 }
-
-

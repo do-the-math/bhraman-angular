@@ -140,10 +140,12 @@
 <!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
 <!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
 <div class="col-md-12 col-sm-12 col-xs-12">
-	<button  type="button"  class="btn btn-dark btn-sm pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+	
 	<div class="x_panel" >
 	  <div class="x_title">
-		<h2 class="col-md-2 col-sm-2 col-xs-12" > Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
+		<h2 class="col-md-2 col-sm-2 col-xs-12" > 
+			<button  type="button"  class="btn btn-dark btn-xs pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+			Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
 		<ul class="nav navbar-right panel_toolbox">
 		  <li>
 		  </li>

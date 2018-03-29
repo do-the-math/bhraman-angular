@@ -41,7 +41,7 @@ const appRoutes: Routes = [
 		canActivate: [AuthGuard],
 		children: [
 			{path: '', redirectTo: 'home', pathMatch: 'full'},
-			{ path: 'home', component: SandboxComponent },
+			{ path: 'home', component: HomeComponent },
 			{ path: 'category', component: CategoryComponent }, 
 			{ path: 'category/contacts/:categoryID',component: ContactsComponent },
 			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent },
@@ -50,6 +50,7 @@ const appRoutes: Routes = [
 			{ path: '**', component: Error404Component }
 		]
 	},
+	{ path: 'sandbox', component: SandboxComponent },
 	{ path: '**', redirectTo: '/login' }
 ];
 
