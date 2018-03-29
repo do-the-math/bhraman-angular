@@ -28,7 +28,7 @@ export class ContactDetailComponent implements OnInit {
 
 	addedMarker:any;
 	nameInputbutton: boolean = true;
-	
+	draggedObj: CONTACT;
 	user: USER;
     constructor(private route: ActivatedRoute,
     			private router: Router,
@@ -40,6 +40,7 @@ export class ContactDetailComponent implements OnInit {
     ngOnInit() {
 		this.nameInputbutton= true;
     	this.tmpObj = new CONTACT();
+    	this.draggedObj = new CONTACT();
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
 
 		this.user = new USER();
@@ -101,6 +102,10 @@ export class ContactDetailComponent implements OnInit {
 									this.userSettings = {
 										"inputString":results[0].formatted_address
 									}
+									this.draggedObj = this.tmpObj;
+									this.draggedObj.location = results[0].formatted_address;
+									this.draggedObj.position.lat = this.addedMarker.position.lat();
+									this.draggedObj.position.lng = this.addedMarker.position.lng();
 								} else {
 									window.alert('No results found');
 								}
@@ -130,6 +135,18 @@ export class ContactDetailComponent implements OnInit {
 					()=> console.log("done")
 				); 
 		}
+    }
+    updateContact1(){
+		console.log("Contact Updated from Component");
+		this.ContactService.updateContactById(this.tmpObj._id, this.draggedObj)
+			.subscribe(
+				data => {
+					console.log("updated contact");
+					console.log(data);
+				},
+				error => alert(error),
+				()=> console.log("done")
+			); 
     }
 	addNote(){
 		if(this.myNoteDate.length>0 && this.myNoteText.length>0){
@@ -163,6 +180,7 @@ export class ContactDetailComponent implements OnInit {
 					this.userSettings = {
 						"inputString": this.tmpObj.location
 					}
+					this.updateContact1();
 				} else {
 					window.alert('No results found');
 				}
@@ -170,7 +188,7 @@ export class ContactDetailComponent implements OnInit {
 				window.alert('Geocoder failed due to: ' + status);
 			}
         });
-		this.updateContact();
+		
 	}
 
 	autoCompleteCallback1(selectedData:any) {

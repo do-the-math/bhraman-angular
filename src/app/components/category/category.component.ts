@@ -83,6 +83,7 @@ export class CategoryComponent implements OnInit {
 				data => {
 					console.log("added");
 					this.getCategories(this.user);
+					this.newCategoryName=""
 				},
 				error => alert(error),
 				()=> console.log("done")

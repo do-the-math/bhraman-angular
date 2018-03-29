@@ -1,8 +1,105 @@
-<div class="dropdown">
-    <button class="dropdown-toggle" type="button" data-toggle="collapse" data-target="#myList">Drop Down
-    <span class="caret"></span></button>
-    <div id="myList" class="dropdown-menu">
-        <input type="checkbox" name="vehicle" value="Bike"> I have a bike<br>
-        <input type="checkbox" name="vehicle" value="Car"> I have a car<br>
-    </div>
-</div>	
+
+<div class="col-md-12 col-sm-12 col-xs-12" >
+	<!-- <button  type="button"  class="btn btn-dark btn-sm pull-left" disabled><i class="fa fa-backward"></i> Go Back</button> -->
+	<div class="x_panel" style="margin-top: 10px;">
+
+	  <div class="x_title">
+		<h2 style="margin:10px!important;">Map</h2>
+		<ul class="nav navbar-right panel_toolbox">
+		  <li>
+			<div class="form-horizontal form-label-left">
+				<div class="form-group">
+					<button id="myChoice" class="btn btn-default dropdown-toggle" data-toggle="collapse" data-target="#myList">Choose Category <span class="caret"></span></button>
+
+					<ul id="myList" class="dropdown-menu mydropdown"  >
+						<li>
+							<label class="checkboxContainer" (click)="clearaOptions()"> 
+								<input type="checkbox" [checked]="true" [disabled]="true"> 
+								<span class="label-text">
+									Clear All
+								</span>
+							</label>
+						</li>
+						
+						 
+						<!-- <li *ngFor="let cat of categoryList; let i = index"
+							[ngClass]="{'active': selectedIdx.indexOf(i)>=0}">
+							<div >
+								<input type="checkbox"  class="pull-right icheckbox_flat-green" [checked]="selectedIdx.indexOf(i)>=0" id="{{cat.name}}" (click)="chooseCat(cat._id); selectItem(i)"  > <label for="{{cat.name}}" > {{cat.name}} </label>
+							</div>
+						</li> -->
+
+
+						<!--  -->
+						<li *ngFor="let cat of categoryList; let i=index" [ngClass]="{'active':optionSelected.indexOf(cat._id)} ">
+							<label class="checkboxContainer"> 
+								<input type="checkbox" [checked]="optionSelected.indexOf(cat._id)>=0"  (click)="chooseCat(cat._id);"> 
+								<span class="label-text">
+									{{cat.name}} 
+								</span>
+							</label>
+						</li>
+					</ul>
+				</div>
+			</div>
+		  </li> 
+		  
+		</ul>
+		<div class="clearfix"></div>
+		
+		</div>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12 col-md-12 col-xs-12">
+					<div class="">
+						<h3>
+							<div #gmap style="width:100%;height:83%"></div>
+						</h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+	
+<div id="addNotes" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel2">Add Notes</h4>
+			</div>
+			<div class="modal-body">
+				<table class="table" style="table-layout: fixed; width: 100%">
+					<thead>
+						<tr>
+							<th width="5%">#</th>
+							<th width="20%">Topic</th>
+							<th width="60%">Note</th>
+							<th width="15%" style="text-align:center">Edit</th>
+						</tr>
+					</thead>
+						<tbody >
+							<tr>
+								<th width="5%" scope="row" ><div>@</div></th>
+								<td width="20%"><input  type="text"  style="width:90%;"   placeholder="Key.."  [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}" /></td>
+								<td width="60%"><input type="text"  style="width:90%;"  placeholder="Note.."  [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}"/></td>
+
+								<td width="15%" style="text-align:center">
+									<button  type="button" class="btn btn-xs btn-success" style="width:96%" >Save </button>
+								</td>
+							</tr>
+						</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+	
+	
+	
+	
+
