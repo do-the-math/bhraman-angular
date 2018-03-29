@@ -41,6 +41,10 @@ export class ContactDetailComponent implements OnInit {
 		this.nameInputbutton= true;
     	this.tmpObj = new CONTACT();
     	this.draggedObj = new CONTACT();
+    	this.draggedObj.position = {
+    		lat: 0,
+    		lng: 0
+    	}
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
 
 		this.user = new USER();
@@ -51,17 +55,7 @@ export class ContactDetailComponent implements OnInit {
 				console.log(err);
 				return false;
 		});
-		this.getContact();
-		
-		
-		
-		// var mapProp = {
-		// 	center: new google.maps.LatLng(17.385044, 78.4877),
-		// 	zoom: 13,
-		// 	mapTypeId: google.maps.MapTypeId.ROADMAP
-		// };
-		// this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
-		//this.myMarker = navigator.geolocation.getCurrentPosition((position) => {});	
+		this.getContact();	
 		
 		this.geocoder = new google.maps.Geocoder;
     }
@@ -168,17 +162,19 @@ export class ContactDetailComponent implements OnInit {
 		var idx = this.tmpObj.notes.indexOf(note);
 		this.tmpObj.notes.splice(idx, 1);
 		this.updateContact();
-		
 	}
 	saveLocation(){
-		this.tmpObj.position = this.addedMarker.position;
+		//this.tmpObj.position = this.addedMarker.position;
 		this.geocoder.geocode({'location': this.addedMarker.position}, (results, status)=> {
 			if (status === 'OK') {
 				console.log(results[0].formatted_address)
 				if (results[0]) {
-					this.tmpObj.location = results[0].formatted_address;
+					this.draggedObj.location = results[0].formatted_address;
+					this.draggedObj.position.lat = this.addedMarker.position.lat();
+					this.draggedObj.position.lng = this.addedMarker.position.lng();
+
 					this.userSettings = {
-						"inputString": this.tmpObj.location
+						"inputString": results[0].formatted_address
 					}
 					this.updateContact1();
 				} else {

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
 	ngOnInit() {
 		this.user = new USER();
+		this.sideToggle = 'home';
 		this.authService.getProfile().subscribe(profile => {
 		  this.user = profile.user;
 		  console.log("dashboard "+this.user.name)

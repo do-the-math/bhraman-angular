@@ -22,7 +22,10 @@ export class SandboxComponent implements OnInit {
 	// My place on map
 	myOriginalPosition: any;
 	myOriginalMarker: google.maps.Marker;
-	myCurrentPosition: any;
+	myCurrentPosition = {
+		latitude: 0,
+		longitude: 0
+	};
 	myCurrentMarker: google.maps.Marker;
 
 	myCircleRadius: number;

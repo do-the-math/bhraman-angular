@@ -17,6 +17,7 @@ import {Location} from '@angular/common';
 })
 export class ContactsComponent implements OnInit {
 	categoryID: string;
+	addNewLink: string;
     contactList: CONTACT[];
 	newContactName = "";
 	selectedID: any;
@@ -36,6 +37,7 @@ export class ContactsComponent implements OnInit {
 
     ngOnInit() {
 		this.categoryID = (this.route.snapshot.paramMap.get('categoryID'));
+		this.addNewLink = "../../contactform/"+this.categoryID;
 		console.log("passed id "+this.categoryID)
 		
 		this.userSettings = {
