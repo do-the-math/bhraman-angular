@@ -45,13 +45,14 @@ export class SandboxComponent implements OnInit {
 	colorMap : Map<string, string>;
 	CSS_COLOR_NAMES = [
 		
-		"#6dc5dd", //twitter
-		"yellow", "green", "blue", "orange", "brown", "lavender", "navy", "violet",
+		
+		"yellow", "pink", "green", "blue", "orange", "brown", "lavender", "navy", "violet",
 		"#ff0000", //youtube
 		"#6dc993", //instagram
 		"#6e5494", //github
 		"#3b5998", //facebook
 		"#00a9cd", //linkedin
+		"#6dc5dd", //twitter
 		
 	]
 
@@ -86,7 +87,6 @@ export class SandboxComponent implements OnInit {
 		this.authService.getProfile().subscribe(profile => {
 				this.user = profile.user;
 				this.getCategory(this.user);
-				this.getContact(this.user);
 			},
 			err => {
 				console.log(err);
@@ -105,7 +105,7 @@ export class SandboxComponent implements OnInit {
 						this.colorMap.set(this.categoryList[s]._id, this.CSS_COLOR_NAMES[s]);
 						this.optionSelected.push(this.categoryList[s]._id);
 					}	
-					console.log(this.colorMap.get("5abbf0cc80a49a00042ead72"))
+					this.getContact(this.user);
 									
 				},
 				error => {},
@@ -304,7 +304,7 @@ export class SandboxComponent implements OnInit {
 		
 		return infoWindowContent;
 	}
-	pinSymbol(color) {
+	pinSymbol(color="blue") {
 		return {
 			//path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z',
 			path: 'M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z M -2,-30 a 2,2 0 1,1 4,0 2,2 0 1,1 -4,0',
