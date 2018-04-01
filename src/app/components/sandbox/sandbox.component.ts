@@ -44,7 +44,15 @@ export class SandboxComponent implements OnInit {
 	// marker color
 	colorMap : Map<string, string>;
 	CSS_COLOR_NAMES = [
+		
+		"#6dc5dd", //twitter
 		"yellow", "green", "blue", "orange", "brown", "lavender", "navy", "violet",
+		"#ff0000", //youtube
+		"#6dc993", //instagram
+		"#6e5494", //github
+		"#3b5998", //facebook
+		"#00a9cd", //linkedin
+		
 	]
 
 
