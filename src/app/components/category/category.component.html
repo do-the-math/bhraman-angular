@@ -1,114 +1,81 @@
 
-<!-- <div class="container" >
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="x_panel">
-		<div class="x_title">
-			<h2>Manage  <b> Category </b></h2>
-				<button href="#addEmployeeModal" data-toggle="modal" type="button" class="btn btn-success pull-right">Add Category</button>
-			<div class="clearfix"></div>
-		</div>
 
-		  <div class="x_content mytable">
+<div class="">
+    <!-- <div class="page-title">
+          <div class="title_left">
+            <h3>Chart Js <small>Some examples to get you started</small></h3>
+          </div>
+
+          <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+    </div> -->
+    <div class="clearfix"></div>
+
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+		<div class="x_panel">
+		  <div class="x_title">
+			<h2>Manage Category</h2>
+			<ul class="nav navbar-right panel_toolbox">
+			  <li>
+			  </li>
+			  <li></li>
+			  <li>  
+				<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success btn-xs pull-right col-xs-12"><i class="fa fa-plus"></i> Add New </button>
+			  </li>
+			</ul>
+			<div class="clearfix"></div>
+		  </div>
+
+		  <div class="x_content">
 			<div class="table-responsive">
 			  <table class="table table-striped jambo_table bulk_action">
 				<thead>
 				  <tr class="headings">
+					<th class="column-title" style="width: 5%;">
+					  <!-- <input type="checkbox" id="check-all" class="flat"> -->
+					</th>
+					<th class="column-title" style="width: 30%;">Category </th>
 					
-					<th class="column-title"> Name </th>
-					
-					<th class="column-title"><span class="nobr">Actions </span></th>
+					<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
+					</th>
 					
 				  </tr>
 				</thead>
 
-				<tbody *ngFor="let c of mockcategories">
-				  <tr class="even pointer">
-					
-					<td class=" ">
-						<a  routerLink="contacts/{{c._id}}">
-							{{c.categoryName}}
-						</a>
+				<tbody>
+				  <tr *ngFor="let c of mockcategories; let index = index">
+					<td class="a-center ">
+					  <!-- <input type="checkbox" class="flat" name="table_records"> -->
+					</td>
+					<td class=" " style="" routerLink="contacts/{{c._id}}">
+						<a > {{c.name}}</a>
 					</td>
 					
-				   
-					<td>
-						<a href="#editCategoryModal" class="edit" data-toggle="modal" (click)="passID( c )"><i class="fa fa-edit"></i></a>
-							
-						<a href="#deleteCategoryModal" class="delete" data-toggle="modal" (click)="passID( c )">
-							<i class="fa fa-remove"></i>
-						</a>
+					<td class=" " style="text-align:center">
+						<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passObj( c )"><i class="fa fa-pencil"></i> Edit </a>
+						<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passObj( c )"><i class="fa fa-trash-o"></i> Delete </a>
 					</td>
 				  </tr>
 				</tbody>
 			  </table>
 			</div>
+					
+				
 		  </div>
 		</div>
-	</div>
-</div>
- -->
-
-
-
-<!-- /////////////////////////////////// -->
-<div class="col-md-12 col-sm-12 col-xs-12">
-	<!-- <button  type="button"  class="btn btn-dark btn-sm pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button> -->
-	<div class="x_panel">
-	  <div class="x_title">
-		<h2 class="col-md-2 col-sm-2 col-xs-12">Manage Category</h2>
-		<ul class="nav navbar-right panel_toolbox">
-		  <li>
-		  </li>
-		  <li></li>
-		  <li>  
-			<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success btn-xs pull-right col-xs-12"><i class="fa fa-plus"></i> Add New </button>
-		  </li>
-		</ul>
-		<div class="clearfix"></div>
-	  </div>
-
-	  <div class="x_content">
-
 		
-
-		<div class="table-responsive">
-		  <table class="table table-striped jambo_table bulk_action">
-			<thead>
-			  <tr class="headings">
-				<th class="column-title" style="width: 5%;">
-				  <!-- <input type="checkbox" id="check-all" class="flat"> -->
-				</th>
-				<th class="column-title" style="width: 30%;">Category </th>
-				
-				<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
-				</th>
-				
-			  </tr>
-			</thead>
-
-			<tbody>
-			  <tr *ngFor="let c of mockcategories; let index = index">
-				<td class="a-center ">
-				  <!-- <input type="checkbox" class="flat" name="table_records"> -->
-				</td>
-				<td class=" " style="" routerLink="contacts/{{c._id}}">
-					<a > {{c.name}}</a>
-				</td>
-				
-				<td class=" " style="text-align:center">
-					<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passObj( c )"><i class="fa fa-pencil"></i> Edit </a>
-					<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passObj( c )"><i class="fa fa-trash-o"></i> Delete </a>
-				</td>
-			  </tr>
-			</tbody>
-		  </table>
-		</div>
-				
-			
 	  </div>
 	</div>
 </div>
-
 <!-- add category -->
 <div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:200px" >
 	<div class="modal-dialog">

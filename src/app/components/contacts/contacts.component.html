@@ -1,196 +1,75 @@
-<!-- 
-<div class="container" >
-	<div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="x_panel">
-		<div class="x_title">
-			<h2>Manage  <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.categoryName}}</div></h2>
-				<button href="#addContact" data-toggle="modal" type="button" class="btn btn-success pull-right">Add Contact</button>
-			<div class="clearfix"></div>
-		</div>
+<div class="">
+    <!-- <div class="page-title">
+          <div class="title_left">
+            <h3>Chart Js <small>Some examples to get you started</small></h3>
+          </div>
 
-		  <div class="x_content mytable">
-			<div class="table-responsive">
-			  <table class="table table-striped jambo_table bulk_action">
-				<thead>
-				  <tr class="headings">
-					
-					<th class="column-title"> Name </th>
-					<th class="column-title" style="padding-left:180px"> Place </th>
-					<th class="column-title"><span class="nobr">Actions </span></th>
-					
-				  </tr>
-				</thead>
+          <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+    </div> -->
+    <div class="clearfix"></div>
 
-				<tbody *ngFor="let c of contactList">
-				  <tr class="even pointer">
-					
-					<td class=" " ><a >{{c.name}}</a>
-					</td>
-					<td class=" " style="padding-left: 180px"> {{c.location}}  </td>
-				   
-					<td>
-						<a href="#editContactModal" class="edit" data-toggle="modal" (click)="passContact(c)"><i class="fa fa-edit"></i></a>
-						<a href="#deleteContactModal" class="delete" data-toggle="modal" (click)="passContact( c )"><i class="fa fa-remove"></i></a>
-					</td>
-				  </tr>
-				</tbody>
-			  </table>
-			</div>
-		  </div>
-		</div>
-	</div>
-</div>
-
-
-<div id="addContact" class="modal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">                      
-					<h4 class="modal-title">Add Contact</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">                    
-					<div class="form-group">
-						<div class="container">
-							<div class="row p-3">
-								<label>Contact Name</label>
-								<input type="text" class="form-control" required [(ngModel)]="newContactObj.name" [ngModelOptions]="{standalone: true}" placeholder="Enter Name">
-							</div>
-							<div class="row p-3">
-								<label>Enter Location</label>
-								<div style="height: 4px">
-									<ng4geo-autocomplete (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
-								</div>
-							</div>
-						</div>
-					</div>
-									 
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-success" value="Add" (click)="addContact()" data-dismiss="modal">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="editContactModal" class="modal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">                      
-					<h4 class="modal-title">Edit Contact</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">                    
-					<div class="form-group">
-						<div class="container">
-							<div class="row">
-								<label>Contact Name</label>
-								<input type="text" class="form-control" required [(ngModel)]="newContactName" [ngModelOptions]="{standalone: true}" placeholder={{newContactObj.name}}>
-							</div>
-							<div class="row">
-								<label>Enter Location</label>
-								<div style="height: 4px">
-									<ng4geo-autocomplete (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
-								</div>
-							</div>
-						</div>
-					</div>
-									
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-info" value="Save" (click)="updateContact()">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="deleteContactModal" class="modal">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">                      
-					<h4 class="modal-title">Delete Contact</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">                    
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning"><small>This action cannot be undone.</small></p>
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete" (click)="deleteContact()" data-dismiss="modal">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-
-
- -->
-
-
-
-<!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
-<!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
-<!-- ///////////////////////////////////sssssssssssssssssssssssssssssssssssssssssss -->
-<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
 	
-	<div class="x_panel" >
-	  <div class="x_title">
-		<h2 class="col-md-2 col-sm-2 col-xs-12" > 
-			<button  type="button"  class="btn btn-dark btn-xs pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
-			Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
-		<ul class="nav navbar-right panel_toolbox">
-		  <li>
-		  </li>
-		  <li>
-		  	
-		  </li>
-		  <li>  
-			<!-- <button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button> -->
-			<button  type="button" class="btn btn-xs btn-success pull-right" routerLink={{addNewLink}}><i class="fa fa-plus"></i> Add New </button>
-		  </li>
-		</ul>
-		<div class="clearfix"></div>
-	  </div>
+			<div class="x_panel" >
+			  <div class="x_title">
+				<h2 >Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
+				<ul class="nav navbar-right panel_toolbox">
+				  <li>
+				  </li>
+				  <li>
+						<!-- <button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button> -->
+						<button  type="button" class="btn btn-xs btn-success pull-right" routerLink={{addNewLink}}><i class="fa fa-plus"></i> Add New </button>
+					</li>
+					<li>
+						<button  type="button"  class="btn btn-dark btn-xs " (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+					</li>
+				</ul>
+				<div class="clearfix"></div>
+			  </div>
 
-	  <div class="x_content">
-		<div class="table-responsive">
-		  <table class="table table-striped jambo_table bulk_action">
-			<thead>
-			  <tr class="headings">
-				<th class="column-title" style="width: 5%;"></th>
-				<th class="column-title" style="width: 20%;text-align:center">Name </th>
-				<th class="column-title" style="text-align:center"> Place </th>
-				<th class="column-title" style="width: 20%;text-align:center"><span class="nobr">Edit</span></th>
-			  </tr>
-			</thead>
+			  <div class="x_content">
+				<div class="table-responsive">
+				  <table class="table table-striped jambo_table bulk_action">
+					<thead>
+					  <tr class="headings">
+						<th class="column-title" style="width: 5%;"></th>
+						<th class="column-title" style="width: 20%;text-align:center">Name </th>
+						<th class="column-title" style="text-align:center"> Place </th>
+						<th class="column-title" style="width: 20%;text-align:center"><span class="nobr">Edit</span></th>
+					  </tr>
+					</thead>
 
-			<tbody>
-			  <tr *ngFor="let c of contactList">
-				<td class="a-center ">
-				  <!-- <input type="checkbox" class="flat" name="table_records"> -->
-				</td>
-				<td class=" " style="text-align:center" routerLink="../../contactdetail/{{c._id}}">
-					<a >{{c.name}}</a>
-				</td>
-				<td class=" " style="text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
-				
-				<td class=" " style="text-align:center">
-					<!-- <a routerLink="../../contactdetail/{{c._id}}" class=" edit btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a> -->
-					<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passContact(c)"><i class="fa fa-trash-o"></i> Delete </a>
-				</td>
-			  </tr>
-			</tbody>
-		  </table>
+					<tbody>
+					  <tr *ngFor="let c of contactList">
+						<td class="a-center ">
+						  <!-- <input type="checkbox" class="flat" name="table_records"> -->
+						</td>
+						<td class=" " style="text-align:center" routerLink="../../contactdetail/{{c._id}}">
+							<a >{{c.name}}</a>
+						</td>
+						<td class=" " style="text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
+						
+						<td class=" " style="text-align:center">
+							<!-- <a routerLink="../../contactdetail/{{c._id}}" class=" edit btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a> -->
+							<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passContact(c)"><i class="fa fa-trash-o"></i> Delete </a>
+						</td>
+					  </tr>
+					</tbody>
+				  </table>
+				</div>
+			  </div>
+			</div>
 		</div>
-	  </div>
 	</div>
 </div>
 

@@ -1,123 +1,45 @@
-<div class="col-md-12 col-sm-12 col-xs-12" >
-    
-    <div class="x_panel" style="height: 80vh" >
-      <div class="x_title">
-        <h2 style="width:100%"> 
-            Fill details sfsdf TESTssssssss
+<div class="">
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Map <b> Sessions</b></h2>
+                        <ul class="nav navbar-right panel_toolbox" style="position: relative">
+                            <div class="form-group">
+                                <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#myList">Choose Category <span class="caret"></span></button>
+                                <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#">Choose radius <span class="caret"></span></button>
 
-
-        </h2>
-
-        <div class="clearfix"></div>
-      </div>
-
-      <div class="x_content">
-            <form #contactDetailForm="ngForm" (ngSubmit)="onSubmit(contactDetailForm.value)" class="form-horizontal" >
-                <div class="form-group">
-                    <label class="col-sm-2 col-xs-12 control-label">Name:</label>
-                    <div class="col-sm-8  col-xs-12">                   
-                        <input type="text" #tmp class="form-control col-sm-8  col-xs-12" ngModel required placeholder="Enter Name" name="name">
-                    </div>
-                    
-                </div>
-                
-                
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Location:</label>
-                    <div class="col-sm-8">
-                                            
-                        <div class="form-group">
-                            <!-- <div class=""> -->
-                                <div class="input-group">
-                                    <input type="text" class="form-control" required placeholder={{curContactObj.location}} [disabled]="true" >
-                                        <span class="input-group-btn mybtn">
-
-                                        <button  type="button" class="btn btn-default "  data-toggle="modal" data-target="#openMap" [disabled]="false" >
-                                        <i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
-                                        </button>
-                                    </span>
-                                </div>
-                            <!-- </div> -->
-                        </div>
-                        
-                        
-                    </div>
-                </div>
-                
-                
-                <div class="form-group" >
-                    <label class="col-sm-2 col-xs-12  control-label">Notes:</label>
-                    <div class="col-sm-8 col-xs-12" style="overflow: auto; height:40vh">
-                            <div class="col-md-12 col-sm-12 col-xs-12" style="padding:0px">
-                        <!--        <div class="x_panel"> -->
-                                  
-                                  <div class="x_content" >
-                                    <table class="table table-hover" style="table-layout: fixed; width: 100%">
-                                      <thead>
-                                        <tr>
-                                          <th width="5%">#</th>
-                                          <th width="20%">Label</th>
-                                          <th width="60%">Note</th>
-                                          <th width="15%" style="text-align:center">Edit</th>
-                                        </tr>
-                                      </thead>
-                                      <tbody >
-                                        <tr  *ngFor="let note of curContactObj.notes;let idx = index">
-                                            <th width="5%" scope="row">{{idx+1}}</th>
-                                            <td width="20%">{{note.date}}</td>
-                                            <td width="60%" style="word-wrap:break-word">{{note.note}}</td>
-                                            <td width="15%" style="text-align:center"><button  type="button"  class="btn btn-xs btn-danger" (click)="removeNote(note)">Remove </button></td>
-                                        </tr>
-                                        <tr>
-                                            <th width="5%" scope="row" ><div *ngIf=!showInp>#</div></th>
-                                            <td width="20%"><input *ngIf=!showInp type="text"  style="width:90%;" [(ngModel)]="myNoteDate" [ngModelOptions]="{standalone: true}"  placeholder="Key.."/></td>
-
-                                            <td width="60%"><input *ngIf=!showInp type="text"  style="width:90%;" [(ngModel)]="myNoteText" [ngModelOptions]="{standalone: true}" placeholder="Note.."/></td>
-                                            
-                                            <td width="15%" style="text-align:center">
-                                                <div *ngIf=showInp>
-                                                    <input type="button" class="btn btn-xs btn-default" [disabled]="false" value="Add Note"  (click)="showInp=!showInp"/>
-                                                </div>
-                                                <div *ngIf=!showInp>
-                                                    <button  type="button" class="btn btn-xs btn-success"  (click)="addNote();showInp=!showInp" style="width:96%">Save </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                  </div>
-    <!--                            </div> -->
+                                <ul id="myList" class="dropdown-menu mydropdown"  >
+                                    <li>
+                                        <label class="checkboxContainer" (click)="clearaOptions()"> 
+                                            <input type="checkbox" [checked]="true" [disabled]="true"> 
+                                            <span class="label-text">
+                                                Clear All
+                                            </span>
+                                        </label>
+                                    </li>
+                                    <li *ngFor="let cat of categoryList; let i=index" [ngClass]="{'active':optionSelected.indexOf(cat._id)} ">
+                                        <label class="checkboxContainer"> 
+                                            <input type="checkbox" [ngStyle]="{'color':cat.color}" [checked]="optionSelected.indexOf(cat._id)>=0"  (click)="chooseCat(cat._id);"> 
+                                            <span class="label-text">
+                                                    {{cat.name}}  <i class="fa fa-barcode" [ngStyle]="{'color':cat.color}"></i> 
+                                            </span>
+                                        </label>
+                                    </li>
+                                </ul>
                             </div>
+                        </ul>
+                    <div class="clearfix"></div>
                     </div>
-                </div> 
-                <div class="form-group">
-                    <button [disabled]="!contactDetailForm.form.valid || curContactObj.location==null" type="submit" class="btn btn-primary btn-block">Save </button>
-                </div>  
-            </form>
-      </div>
-    </div>
-</div>
-
-
-
-<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:10%" >
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel2">Change Location</h4>
-            </div>
-            <div class="modal-body">
-                <div id="testmodal2" style="padding:20px;">
-                    <ng4geo-autocomplete  [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
-                    <div #gmap style="width:100%;height:40%"></div>
+                    <div class="x_content">
+                        <div id="map_canvas_container">
+                            <div #gmap id="map_canvas"></div>
+                        </div>
+                             
+                    </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary antosubmit2" data-dismiss="modal">Done</button>
-            </div>
-        </div>
     </div>
 </div>
+
 

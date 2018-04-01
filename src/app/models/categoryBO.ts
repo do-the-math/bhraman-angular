@@ -4,6 +4,7 @@ export class CATEGORY {
 	_id: string;
 	userID: string;
 	name: string;
+	color: string;
 	date: string;
 	count: number;
 
@@ -13,5 +14,6 @@ export class CATEGORY {
 		this.name = "";
 		this.date = "";
 		this.count = 0;
+		this.color = "";
 	}
 }

@@ -1,10 +1,10 @@
- <body [ngClass]="{'nav-sm': clicked, 'nav-md': !clicked}">
+<div class="" [ngClass]="{'nav-sm': clicked, 'nav-md': !clicked}">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col">
+        <div class="col-md-3 left_col menu_fixed">
           <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a routerLink="/dashboard"  class="site_title"> <span>GGK Tour App</span></a>
+            <div class="navbar nav_title">
+              <a routerLink="/dashboard"  class="site_title"> <span> Tour App</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -72,19 +72,9 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <!-- <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li> -->
                     <li><a (click)="onLogoutClick()"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
-
-                
               </ul>
             </nav>
           </div>
@@ -92,20 +82,13 @@
        
 
         <!-- page content -->
-        <div class="right_col" role="main" style="height:95vh">
-         <!--  <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12" style="height:93vh;padding-top:20px">
-              <router-outlet></router-outlet>
-            </div>
-          <br />
-
-          </div> -->
+        <div class="right_col" role="main">
           <router-outlet></router-outlet>
         </div>
        
 
         <!-- footer content -->
-        <footer class="footer navbar-fixed-bottom">
+        <footer class="footer navbar-fixed-bottom" style="border-top: 2px solid green">
           <div class="pull-right">
             Tour App By Aman Nidhi
           </div>
@@ -114,4 +97,4 @@
         <!-- /footer content -->
       </div>
     </div>
-</body>
+</div>

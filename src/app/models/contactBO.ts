@@ -20,16 +20,15 @@ export class CONTACT {
 		this.userID = "";
 		this.name = null;
 		this.categoryID = "";
-		this.notes = [
-		{
+		this.notes = [{
 			date: "",
 			note: ""
-		}
-		];
+		}];
 		this.location = null;
-		this.position = {
-							lat: 0.0,
-							lng: 0.0
-						}
+		this.position = {	
+			lat: 0.0,
+			lng: 0.0
+		}
+		this.notes.splice(0, 1);
 	}
 }
