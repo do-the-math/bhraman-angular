@@ -81,17 +81,17 @@ export class SandboxComponent implements OnInit {
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 		};
 			
-		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+		// this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 		
-		// service call
-		this.authService.getProfile().subscribe(profile => {
-				this.user = profile.user;
-				this.getCategory(this.user);
-			},
-			err => {
-				console.log(err);
-				return false;
-		});
+		// // service call
+		// this.authService.getProfile().subscribe(profile => {
+		// 		this.user = profile.user;
+		// 		this.getCategory(this.user);
+		// 	},
+		// 	err => {
+		// 		console.log(err);
+		// 		return false;
+		// });
 	}
 	getCategory(user: USER){
 		console.log('Categories Fetched from Component');

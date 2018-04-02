@@ -1,45 +1,33 @@
-<div class="">
-    <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2 style="width:50px">Map </h2>
-                        <ul class="nav navbar-right panel_toolbox" style="position: relative">
-                            <div class="form-group">
-                                <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#myList">Choose Category <span class="caret"></span></button>
-                                <!-- <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#">Choose radius <span class="caret"></span></button> -->
-
-                                <ul id="myList" class="dropdown-menu mydropdown"  >
-                                    <li>
-                                        <label class="checkboxContainer" (click)="clearaOptions()"> 
-                                            <input type="checkbox" [checked]="true" [disabled]="true"> 
-                                            <span class="label-text">
-                                                Clear All
-                                            </span>
-                                        </label>
-                                    </li>
-                                    <li *ngFor="let cat of categoryList; let i=index" [ngClass]="{'active':optionSelected.indexOf(cat._id)} ">
-                                        <label class="checkboxContainer"> 
-                                            <input type="checkbox" [ngStyle]="{'color':cat.color}" [checked]="optionSelected.indexOf(cat._id)>=0"  (click)="chooseCat(cat._id);"> 
-                                            <span class="label-text">
-                                                <i class="fa fa-barcode" [ngStyle]="{'color':cat.color}"></i>    {{cat.name}}   
-                                            </span>
-                                        </label>
-                                    </li>
-                                </ul>
-                            </div>
-                        </ul>
-                    <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <div id="map_canvas_container">
-                            <div #gmap id="map_canvas"></div>
-                        </div>
-                             
-                    </div>
-                </div>
-            </div>
+<!-- <div class="container"> -->
+  
+    <div class="btn-group">
+      
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="glyphicon glyphicon-plus-sign"></i> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a >Action</a></li>
+          <li><a >Another action</a></li>
+          <li><a >Something else here</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div>
+      
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="#">Action 2</a></li>
+          <li><a href="#">Another action 2</a></li>
+          <li><a href="#">Something else here 2</a></li>
+          <li class="divider"></li>
+          <li><a href="#">Separated link 2</a></li>
+        </ul>
+      </div>
+      
     </div>
-</div>
-
-
+    
+  <!-- </div> -->
