@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit {
 		this.user = new USER();
 		this.optionSelected = [];
 		this.myCircleRadius = 1000; // 1km
+		this.myCircle = new google.maps.Circle();
 		this.infowindow_open = null;
 		this.markerList = []
 		this.colorMap = new Map<string, string>();
@@ -100,13 +101,12 @@ export class HomeComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.categoryList = data;
-					for(var s=0; s< this.categoryList.length;s++){
+					for(var s=0; s< this.categoryList.length; s++){
 						this.categoryList[s].color = this.CSS_COLOR_NAMES[s];
 						this.colorMap.set(this.categoryList[s]._id, this.CSS_COLOR_NAMES[s]);
 						this.optionSelected.push(this.categoryList[s]._id);
 					}	
 					this.getContact(this.user);
-									
 				},
 				error => {},
 				()=> console.log("done")
