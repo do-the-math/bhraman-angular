@@ -27,7 +27,7 @@ export class ContactDetailComponent implements OnInit {
 	user: USER;
 	curContactMarker:any;
 	nameInputbutton: boolean = true;
-	
+	showInp: boolean
 	
     constructor(private route: ActivatedRoute,
     			private router: Router,

@@ -67,7 +67,7 @@ export class ContactFormComponent implements OnInit {
 	createContact(user: USER){
 		this.curContactObj.userID = user._id;
 		this.curContactObj.categoryID = this.categoryID;
-		//this.curContactObj.notes = [];
+		this.curContactObj.location = "Search Location";
 
 		navigator.geolocation.getCurrentPosition((position) => {
 			var myPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);

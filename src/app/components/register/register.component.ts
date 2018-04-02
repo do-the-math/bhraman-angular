@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
 			//this.flashMessage.show('Please use a valid email', {cssClass: 'alert-danger', timeout: 3000});
 			this.notif.error(
 				'Invalid Email',
-				'Enter a vlid Email',
+				'Enter a valid Email',
 				{
 					timeOut: 3000,
 					showProgressBar: true,
@@ -69,6 +69,18 @@ export class RegisterComponent implements OnInit {
 		// Register user
 		this.authService.registerUser(user).subscribe(data => {
 			if(data.success) {
+				this.notif.success(
+					'User Registered',
+					'You may login',
+					{
+						timeOut: 3000,
+						showProgressBar: true,
+						pauseOnHover: false,
+						clickToClose: true,
+						maxLength: 10,
+						preventLastDuplicates: true
+					}
+				)
 				this.router.navigate(['/login']);
 			} else {
 				this.router.navigate(['/register']);

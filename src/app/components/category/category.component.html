@@ -21,58 +21,55 @@
 
     <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-		<div class="x_panel">
-		  <div class="x_title">
-			<h2>Manage Category</h2>
-			<ul class="nav navbar-right panel_toolbox">
-			  <li>
-			  </li>
-			  <li></li>
-			  <li>  
-				<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success btn-xs pull-right col-xs-12"><i class="fa fa-plus"></i> Add New </button>
-			  </li>
-			</ul>
-			<div class="clearfix"></div>
-		  </div>
+				<div class="x_panel">
+					<div class="x_title">
+					<h2>Manage Category</h2>
+					<ul class="nav navbar-right panel_toolbox">
+						<li>
+						</li>
+						<li></li>
+						<li>  
+						<button  type="button"  data-toggle="modal" data-target="#addCategoryModal" class="btn btn-success  pull-right col-xs-12"><i class="fa fa-plus"></i> Add New </button>
+						</li>
+					</ul>
+					<div class="clearfix"></div>
+					</div>
 
-		  <div class="x_content">
-			<div class="table-responsive">
-			  <table class="table table-striped jambo_table bulk_action">
-				<thead>
-				  <tr class="headings">
-					<th class="column-title" style="width: 5%;">
-					  <!-- <input type="checkbox" id="check-all" class="flat"> -->
-					</th>
-					<th class="column-title" style="width: 30%;">Category </th>
-					
-					<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
-					</th>
-					
-				  </tr>
-				</thead>
+					<div class="x_content">
+					<div class="table-responsive">
+						<table class="table table-striped jambo_table bulk_action">
+						<thead>
+							<tr class="headings">
+							<th class="column-title" style="width: 5%;">
+								<!-- <input type="checkbox" id="check-all" class="flat"> -->
+							</th>
+							<th class="column-title" style="width: 30%;">Category </th>
+							
+							<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
+							</th>
+							
+							</tr>
+						</thead>
 
-				<tbody>
-				  <tr *ngFor="let c of mockcategories; let index = index">
-					<td class="a-center ">
-					  <!-- <input type="checkbox" class="flat" name="table_records"> -->
-					</td>
-					<td class=" " style="" routerLink="contacts/{{c._id}}">
-						<a > {{c.name}}</a>
-					</td>
-					
-					<td class=" " style="text-align:center">
-						<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passObj( c )"><i class="fa fa-pencil"></i> Edit </a>
-						<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passObj( c )"><i class="fa fa-trash-o"></i> Delete </a>
-					</td>
-				  </tr>
-				</tbody>
-			  </table>
-			</div>
-					
-				
-		  </div>
-		</div>
-		
+						<tbody>
+							<tr *ngFor="let c of mockcategories; let index = index">
+							<td class="a-center ">
+								<!-- <input type="checkbox" class="flat" name="table_records"> -->
+							</td>
+							<td routerLink="contacts/{{c._id}}">
+								<a > {{c.name}}</a>
+							</td>
+							
+							<td class=" " style="text-align:center">
+								<a href="#editCategoryModal" data-toggle="modal" class=" edit btn btn-info btn-xs" (click)="passObj( c )"><i class="fa fa-pencil"></i> Edit </a>
+								<a href="#deleteCategoryModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passObj( c )"><i class="fa fa-trash-o"></i> Delete </a>
+							</td>
+							</tr>
+						</tbody>
+						</table>
+					</div>
+					</div>
+				</div>
 	  </div>
 	</div>
 </div>
@@ -89,7 +86,7 @@
 					<form id="antoform2" class="form-horizontal calender" role="form">
 					<div class="form-group">
 						<label class="col-sm-3 col-xs-12 control-label">Category name</label>
-						<div class="col-sm-9 col-xs-12">
+						<div class="col-sm-8 col-xs-12">
 							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
 						</div>
 					</div>
@@ -114,12 +111,12 @@
 			<div class="modal-body">
 				<div id="testmodal2" style="top:50%;">
 					<form id="antoform2" class="form-horizontal calender" role="form">
-					<div class="form-group">
-						<label class="col-sm-4 col-xs-12 control-label">New Category name</label>
-						<div class="col-sm-8 col-xs-12">
-							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+						<div class="form-group">
+							<label class="col-sm-3 col-xs-12 control-label">Enter New Name:</label>
+							<div class="col-sm-8 col-xs-12">
+								<input type="text" class="form-control" placeholder={{tmpCatObj.name}} required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" >
+							</div>
 						</div>
-					</div>
 					</form>
 				</div>
 			</div>
@@ -136,12 +133,12 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel2">Delete Category</h4>
+				<h4 class="modal-title" id="myModalLabel2">Delete {{tmpCatObj.name}}</h4>
 			</div>
 			<div class="modal-body">
 				<div id="testmodal2" style="top:50%;">
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning red"><b>This action cannot be undone.</b></p>
+					<p>Are you sure you want to delete this record?</p>
+					
 				</div>
 			</div>
 			<div class="modal-footer">

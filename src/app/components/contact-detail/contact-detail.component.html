@@ -42,9 +42,9 @@
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative;">
-                                        <input #loc class="form-control"  required placeholder={{curContactObj.location}} [disabled]="true" [ngClass]="{'ng-valid': curContactObj.location!=null, 'ng-invalid': curContactObj.location==null}">
+                                        <input #loc class="form-control" data-toggle="modal" data-target="#openMap" required placeholder={{curContactObj.location}}  [disabled]="nameInputbutton" [ngClass]="{'ng-valid': curContactObj.location!=null, 'ng-invalid': curContactObj.location==null}">
                                         <span class="input-group-btn" id="mapBtn">
-                                            <button  type="button" class="btn btn-default "  data-toggle="modal" data-target="#openMap" [disabled]="false" >
+                                            <button  type="button" class="btn btn-default "   [disabled]="false" >
                                         <i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
                                         </button>
                                         </span>
@@ -82,7 +82,7 @@
                                                     <input type="button" class="btn btn-xs btn-default" [disabled]="nameInputbutton" value="Add Note"  (click)="showInp=!showInp"/>
                                                 </div>
                                                 <div *ngIf=showInp>
-                                                    <button  type="button" class="btn btn-xs btn-success"  (click)="addNote();showInp=!showInp" style="width:96%">Save </button>
+                                                    <button  type="button" class="btn btn-xs btn-success"  (click)="addNote();showInp=!showInp" style="width:96%">Done </button>
                                                 </div>
                                             </td>
                                         </tr>

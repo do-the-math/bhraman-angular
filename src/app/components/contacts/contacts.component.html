@@ -22,16 +22,16 @@
 	
 			<div class="x_panel" >
 			  <div class="x_title">
-				<h2 >Manage <div *ngIf='pageCategory!=null' style="display: inline;"  >{{pageCategory.name}}</div></h2>
+				<h2 >Manage <div *ngIf='pageCategory!=null' style="display: inline;">{{pageCategory.name}}</div></h2>
 				<ul class="nav navbar-right panel_toolbox">
 				  <li>
 				  </li>
 				  <li>
 						<!-- <button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button> -->
-						<button  type="button" class="btn btn-xs btn-success pull-right" routerLink={{addNewLink}}><i class="fa fa-plus"></i> Add New </button>
+						<button  type="button" class="btn  btn-success pull-right" routerLink={{addNewLink}}><i class="fa fa-plus"></i> Add New </button>
 					</li>
 					<li>
-						<button  type="button"  class="btn btn-dark btn-xs " (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+						<button  type="button"  class="btn btn-dark " (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
 					</li>
 				</ul>
 				<div class="clearfix"></div>
@@ -173,12 +173,11 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel2">Delete Contact</h4>
+				<h4 class="modal-title" id="myModalLabel2">Delete {{newContactObj.name}}</h4>
 			</div>
 			<div class="modal-body">
 				<div id="testmodal2" style="padding: 20px;">
-					<p>Are you sure you want to delete these Records?</p>
-					<p class="text-warning red"><b>This action cannot be undone.</b></p>
+					<p>Are you sure you want to delete this Record?</p>
 				</div>
 			</div>
 			<div class="modal-footer">
