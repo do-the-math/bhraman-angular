@@ -108,7 +108,7 @@ export class ContactDetailComponent implements OnInit {
 					});
 					console.log(data[0].notes);
 				},
-				error => alert(error),
+				error => {alert(error)},
 				()=> console.log("done")
 			);
     }
@@ -121,7 +121,7 @@ export class ContactDetailComponent implements OnInit {
 					console.log("updated contact");
 					console.log(data);
 				},
-				error => alert(error),
+				error => {alert(error)},
 				()=> console.log("done")
 			); 
     }
@@ -195,7 +195,7 @@ export class ContactDetailComponent implements OnInit {
 					console.log("category deleted and data"+data);
 					this.router.navigate(['/dashboard/category'])
 				},
-				error => alert(error),
+				error => {alert(error)},
 				()=> console.log("done")
 		); 
 		

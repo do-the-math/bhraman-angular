@@ -113,7 +113,7 @@ export class CategoryComponent implements OnInit {
 					console.log("category deleted and data"+data);
 					this.getCategories(this.user);
 				},
-				error => alert(error),
+				error => {alert(error)},
 				()=> console.log("done")
 		); 
 		

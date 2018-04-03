@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SelectControlValueAccessor } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
-
+import { Spinner } from 'spin.js';
 
 @Component({
   selector: 'app-sandbox',
@@ -22,11 +22,11 @@ export class SandboxComponent implements OnInit {
 	// My place on map
 	myOriginalPosition: any;
 	myOriginalMarker: google.maps.Marker;
+	myCurrentMarker: google.maps.Marker;
 	myCurrentPosition = {
 		latitude: 0,
 		longitude: 0
 	};
-	myCurrentMarker: google.maps.Marker;
 
 	myCircleRadius: number;
 	myCircle: google.maps.Circle;
@@ -40,12 +40,10 @@ export class SandboxComponent implements OnInit {
 	optionSelected: string[];
 	infowindow_open:any = null;
 	user: USER;
-
-	// marker color
+	spinner:any;
+	
 	colorMap : Map<string, string>;
-	CSS_COLOR_NAMES = [
-		
-		
+	CSS_COLOR_NAMES = [ // marker color
 		"yellow", "pink", "green", "blue", "orange", "brown", "lavender", "navy", "violet",
 		"#ff0000", //youtube
 		"#6dc993", //instagram
@@ -53,45 +51,65 @@ export class SandboxComponent implements OnInit {
 		"#3b5998", //facebook
 		"#00a9cd", //linkedin
 		"#6dc5dd", //twitter
-		
-	]
+	];
 
-
-
-	constructor(
-		private route: ActivatedRoute, 
-		private CategoryService: CategoryService,
-		private ContactService: ContactService,
-		private authService: AuthService) {
-			this.route.params.subscribe( params => console.log(params) );
-			this.myCircleRadius = 1000; // 1km
-		}
+	constructor(private route: ActivatedRoute, 
+				private CategoryService: CategoryService,
+				private ContactService: ContactService,
+				private authService: AuthService) {
+					this.route.params.subscribe( params => console.log(params) );
+					this.myCircleRadius = 1000; // 1km
+				}
 
 	ngOnInit() { 
 		this.user = new USER();
 		this.optionSelected = [];
 		this.myCircleRadius = 1000; // 1km
+		this.myCircle = new google.maps.Circle();
 		this.infowindow_open = null;
 		this.markerList = []
 		this.colorMap = new Map<string, string>();
-		this.setZoomLevel();
+		this.setZoomLevel(15);
+
 		var mapProp = {
 			center: new google.maps.LatLng(17.385044, 78.4877),
 			zoom: this.getZoomLevel(),
 			mapTypeId: google.maps.MapTypeId.ROADMAP,
 		};
-			
-		// this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 		
-		// // service call
-		// this.authService.getProfile().subscribe(profile => {
-		// 		this.user = profile.user;
-		// 		this.getCategory(this.user);
-		// 	},
-		// 	err => {
-		// 		console.log(err);
-		// 		return false;
-		// });
+		// service call
+		this.authService.getProfile().subscribe(profile => {
+				this.user = profile.user;
+				this.getCategory(this.user);
+			},
+			err => {
+				console.log(err);
+				return false;
+		});
+		var opts = {
+			lines: 20, // The number of lines to draw
+			length: 5, // The length of each line
+			width: 20, // The line thickness
+			radius: 25, // The radius of the inner circle
+			scale: 2, // Scales overall size of the spinner
+			corners: 1, // Corner roundness (0..1)
+			color: '#1ABB9C', // CSS color or array of colors
+			fadeColor: 'transparent', // CSS color or array of colors
+			opacity: 0.1, // Opacity of the lines
+			rotate: 0, // The rotation offset
+			direction: 1, // 1: clockwise, -1: counterclockwise
+			speed: 0.5, // Rounds per second
+			trail: 60, // Afterglow percentage
+			fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
+			zIndex: 2e9, // The z-index (defaults to 2000000000)
+			className: 'spinner', // The CSS class to assign to the spinner
+			top: '50%', // Top position relative to parent
+			left: '50%', // Left position relative to parent
+			position: 'absolute' // Element positioning
+		};
+		var target = document.getElementById('myMap');
+		this.spinner = new Spinner(opts).spin(target);
 	}
 	getCategory(user: USER){
 		console.log('Categories Fetched from Component');
@@ -100,15 +118,19 @@ export class SandboxComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.categoryList = data;
-					for(var s=0; s< this.categoryList.length;s++){
-						this.categoryList[s].color = this.CSS_COLOR_NAMES[s];
-						this.colorMap.set(this.categoryList[s]._id, this.CSS_COLOR_NAMES[s]);
-						this.optionSelected.push(this.categoryList[s]._id);
-					}	
-					this.getContact(this.user);
-									
+					this.categoryList.forEach((value, index)=>{
+						value.color = this.CSS_COLOR_NAMES[index];
+						this.colorMap.set(value._id, this.CSS_COLOR_NAMES[index]);
+						this.optionSelected.push(value._id);
+					});
+					// for(var s=0; s< this.categoryList.length; s++){
+					// 	this.categoryList[s].color = this.CSS_COLOR_NAMES[s];
+					// 	this.colorMap.set(this.categoryList[s]._id, this.CSS_COLOR_NAMES[s]);
+					// 	this.optionSelected.push(this.categoryList[s]._id);
+					// }	
+					this.getContact(this.user); 
 				},
-				error => {},
+				error => {alert(error)},
 				()=> console.log("done")
 			); 
 	}
@@ -122,7 +144,7 @@ export class SandboxComponent implements OnInit {
 					this.filteredContactListByCategory = data;
 					this.displayMapOne();
 				},
-				error => { },
+				error => { alert(error) },
 				()=> console.log("done")
 			);
     }
@@ -142,37 +164,61 @@ export class SandboxComponent implements OnInit {
 	getZoomLevel(){
 		return this.zoomLevel;
 	}
-	setZoomLevel(){
-		if(window.screen.width>700){
-			this.zoomLevel = 15;
-		}
+	setZoomLevel(zml){
+		this.zoomLevel = zml;
 	}
 	getRadius(){
 		return this.myCircleRadius;
 	}
 	setRadius(val: number){
 		this.myCircleRadius = val;
+		if(this.getRadius()<=2*1000){
+			this.setZoomLevel(15);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		else if(this.getRadius()>2*1000 && this.getRadius()<4*1000){
+			this.setZoomLevel(14);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		else if(this.getRadius()>=4*1000 && this.getRadius()<12*1000 ){
+			this.setZoomLevel(13);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		else if(this.getRadius()>=12*1000 && this.getRadius()<=16*1000) {
+			this.setZoomLevel(12);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		else if(this.getRadius()>16*1000 && this.getRadius()<=31*1000) {
+			this.setZoomLevel(11);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		else {
+			this.setZoomLevel(10);
+			this.map.setZoom(this.getZoomLevel());
+		}
+		
+		this.myCircleRadius = val;
 	}
-
 	clearMap(option: string){
-		for (var i = 0; i < this.markerList.length; i++) {
-          this.markerList[i].setMap(null);
-        }
+		this.markerList.forEach((value, index)=>{
+			value.setMap(null);
+		});
+		// for (var i = 0; i < this.markerList.length; i++) {
+        //   this.markerList[i].setMap(null);
+        // }
         if(option=="all"){
 			this.myCircle.setMap(null);
 		}
 	}
-
 	clearaOptions(){
-		this.clearMap("");
+		this.clearMap("only marker");
 		this.optionSelected = [];
 	}
 	drawCircleOnMap(position){
 		console.log("drawCircleOnMap");
+		console.log(this.getRadius());
 
-		this.myCurrentPosition = position.coords;
-		this.myOriginalPosition = position.coords;
-		let location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+		let location = new google.maps.LatLng(position.latitude, position.longitude);
 		this.map.panTo(location);
 		
 		var circle = new google.maps.Circle({
@@ -191,11 +237,11 @@ export class SandboxComponent implements OnInit {
 			map: this.map,
 			title: 'You are Here!'
 		});
+		console.log("drawCircleOnMap Done");
 		this.findNearByContacts();
 	}
-
 	filterContacts(){
-		console.log("filter contact");
+		console.log("filter contact fn");
 
 		this.filteredContactListByCategory = this.contactList.filter(contact => {
 				for(var s=0;s<this.optionSelected.length;s++){
@@ -215,8 +261,10 @@ export class SandboxComponent implements OnInit {
 
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position) => {
-				console.log("curr location found")
-				this.drawCircleOnMap(position);
+				console.log("curr location found");
+				this.myCurrentPosition = position.coords;
+				this.myOriginalPosition = position.coords;
+				this.drawCircleOnMap(this.myCurrentPosition);
 			}, (err) => {
 				console.log(err);
 			});
@@ -224,16 +272,14 @@ export class SandboxComponent implements OnInit {
 			alert("Geolocation is not supported by this browser.");
 		}
 	}
-
 	onOptionChange(){
 		console.log("onOptionChange");
 
 		this.clearMap("marker");
 		this.findNearByContacts();
 	}
-
 	findNearByContacts() {
-		console.log("findNearByContacts");
+		console.log("findNearByContacts fn");
 
 		var searchContactList = this.getFilteredContacts()
 		searchContactList.forEach(contact => {
@@ -247,10 +293,10 @@ export class SandboxComponent implements OnInit {
 				this.showContactInMap(contact);
 			}
 		});
+		this.spinner.stop();
 	}
-
 	showContactInMap(contact: CONTACT) {
-		console.log("showContactInMap");
+		console.log("showContactInMap fn");
 
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(contact.position.lat, 
@@ -271,7 +317,6 @@ export class SandboxComponent implements OnInit {
 	    });
 		this.markerList.push(marker);
 	}
-
 	findDistance(lat1, lon1, lat2, lon2, unit="K") {
 		var radlat1 = Math.PI * lat1/180
 		var radlat2 = Math.PI * lat2/180
@@ -285,17 +330,19 @@ export class SandboxComponent implements OnInit {
 		if (unit=="N") { dist = dist * 0.8684 }
 		return dist
 	}
-	
 	InfoWinContent(obj: CONTACT){
-		var listContent = ""
-		for(var t=0;t<obj.notes.length;t++){
-			listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
-		}
+		var listContent = "";
+		obj.notes.forEach((value, index)=>{
+			listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px;list-style-type: none;font-size:16px'>" + 
+							"<b>"+value.date+":</b> "+
+							value.note  +"</li>"
+		})
+		// for(var t=0;t<obj.notes.length;t++){
+		// 	listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px;list-style-type: none;font-size:16px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
+		// }
 		var infoWindowContent = "<div style='width: 300px' >"+
-									"<h2 class='firstHeading'><b>Name:</b> " + obj.name + "</h2>"+
-									"<hr>"+
-									"<h2> Notes: </h2>"+
-									"<ol style='padding-left:20px'>"+
+									"<h4 class='firstHeading' style='padding-left:20px;'><b>Name:</b> " + obj.name + "</h4>"+
+									"<ol style='padding-left:20px; max-height:100px;overflow-y: scroll;'>"+
 										listContent+
 									"</ol>"+
 								"</div>"
@@ -314,6 +361,15 @@ export class SandboxComponent implements OnInit {
 			strokeWeight: 2,
 			scale: 1
 		};
+	}
+	changeRadius(val: any){
+		console.log("radius changed");
+
+		this.spinner = new Spinner().spin();
+		this.clearMap("all");
+		this.setRadius(parseInt(val)*1000);
+		console.log(this.getRadius())
+		this.drawCircleOnMap(this.myCurrentPosition);
 	}
 }
 
