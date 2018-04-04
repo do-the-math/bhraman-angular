@@ -57,7 +57,7 @@
                                                     </div>
                 
                                                     <input id="slider1" type="range" min="0" max="50" step="2" value="1" #ref (change)="changeRadius(ref.value)"/>
-                                                    {{ref.value}} km
+                                                    <b style="color: #1ABB9C;">{{ref.value}} km</b>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,7 +102,7 @@
                     <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <div id="map_canvas_container">
+                        <div id="map_canvas_container" id="myMap">
                             <div #gmap id="map_canvas"></div>
                         </div>
                              
