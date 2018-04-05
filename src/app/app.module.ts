@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 //import { AlertModule } from 'ng2-bootstrap/ng2-bootstrap'
-import { FormsModule }   from '@angular/forms';
+import { FormsModule,ReactiveFormsModule }   from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
@@ -28,7 +28,7 @@ import { HomeComponent } from './components/home/home.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { ContactDetailComponent } from './components/contact-detail/contact-detail.component';
-import { SandboxComponent } from './components/sandbox/sandbox.component';
+import { SandboxComponent,  ItemsFormArrayComponent, ItemFormControlComponent } from './components/sandbox/sandbox.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { Error404Component } from './components/error404/error404.component';
 
@@ -69,7 +69,9 @@ const appRoutes: Routes = [
     RegisterComponent,
     SandboxComponent,
     ContactFormComponent,
-    Error404Component
+	Error404Component,
+	ItemsFormArrayComponent, 
+	ItemFormControlComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +81,8 @@ const appRoutes: Routes = [
 	HttpModule,
 	FlashMessagesModule.forRoot(),
 	SimpleNotificationsModule.forRoot(),
-	BrowserAnimationsModule
+	BrowserAnimationsModule,
+	ReactiveFormsModule
   ],
   providers: [  ValidateService, 
 				AuthService, 

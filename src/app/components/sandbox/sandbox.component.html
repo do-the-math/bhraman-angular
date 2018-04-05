@@ -1,117 +1,142 @@
 <div class="">
-  <div class="row">
-          <div class="col-md-12 col-sm-12 col-xs-12">
-              <div class="x_panel">
-                  <div class="x_title">
-                      <h2 style="width:50px">Map </h2>
-                      <ul class="nav navbar-right panel_toolbox" style="position: relative">
-                              <div class="btn-group">
-    
-                                      <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                          Category <span class="caret"></span>
-                                        </button>
-                                        <!-- <ul class="dropdown-menu" role="menu">
-                                          <li><a href="#">Action</a></li>
-                                          <li><a href="#">Another action</a></li>
-                                          <li><a href="#">Something else here</a></li>
-                                          <li class="divider"></li>
-                                          <li><a href="#">Separated link</a></li>
-                                        </ul> -->
-                                        <ul class="dropdown-menu mydropdown">
-                                              <li>
-                                                  <label class="checkboxContainer" (click)="clearaOptions()"> 
-                                                      <input type="checkbox" [checked]="true" [disabled]="true"> 
-                                                      <span class="label-text">
-                                                          Clear All
-                                                      </span>
-                                                  </label>
-                                              </li>
-                                              <li *ngFor="let cat of categoryList; let i=index" [ngClass]="{'active':optionSelected.indexOf(cat._id)} ">
-                                                  <label class="checkboxContainer"> 
-                                                      <input type="checkbox" [ngStyle]="{'color':cat.color}" [checked]="optionSelected.indexOf(cat._id)>=0"  (click)="chooseCat(cat._id);"> 
-                                                      <span class="label-text">
-                                                          <i class="fa fa-barcode" [ngStyle]="{'color':cat.color}"></i>    {{cat.name}}   
-                                                      </span>
-                                                  </label>
-                                              </li>
-                                          </ul>
-                                      </div>
-                                      
-                                      <div class="btn-group">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                          Radius <span class="caret"></span>
-                                        </button>
-                                        <!-- <ul class="dropdown-menu" role="menu">
-                                          <li><a href="#">Action 2</a></li>
-                                          <li><a href="#">Another action 2</a></li>
-                                          <li><a href="#">Something else here 2</a></li>
-                                          
-                                          <li><a href="#">Separated link 2</a></li>
-                                        </ul> -->
-                                        <div class="dropdown-menu mydropdown2">
-                                              <div class="rselector ">
-                                                  <div class="row">
-                                                      <div class="col pull-left" style="padding-left: 10px;">1km</div>
-                                                      <div class="col pull-right"  style="padding-right: 10px;">50km</div>
-                                                  </div>
-              
-                                                  <input id="slider1" type="range" min="0" max="50" step="2" value="1" #ref (change)="changeRadius(ref.value)"/>
-                                                  {{ref.value}} km
-                                              </div>
-                                          </div>
-                                      </div>
-                                      
-                                    </div>
-                          <!-- <div class="form-group">
-                              <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#myList">Choose Category <span class="caret"></span></button>
-                              <button id="myChoice" class="btn btn-default btn-xs dropdown-toggle" data-toggle="collapse" data-target="#RadiusRange">Choose Radius <span class="caret"></span></button>
-
-                              <ul id="myList" class="dropdown-menu mydropdown">
-                                  <li>
-                                      <label class="checkboxContainer" (click)="clearaOptions()"> 
-                                          <input type="checkbox" [checked]="true" [disabled]="true"> 
-                                          <span class="label-text">
-                                              Clear All
-                                          </span>
-                                      </label>
-                                  </li>
-                                  <li *ngFor="let cat of categoryList; let i=index" [ngClass]="{'active':optionSelected.indexOf(cat._id)} ">
-                                      <label class="checkboxContainer"> 
-                                          <input type="checkbox" [ngStyle]="{'color':cat.color}" [checked]="optionSelected.indexOf(cat._id)>=0"  (click)="chooseCat(cat._id);"> 
-                                          <span class="label-text">
-                                              <i class="fa fa-barcode" [ngStyle]="{'color':cat.color}"></i>    {{cat.name}}   
-                                          </span>
-                                      </label>
-                                  </li>
-                              </ul>
-
-                              <div id="RadiusRange" class="dropdown-menu mydropdown2">
-                                  <div class="rselector ">
-                                      <div class="row">
-                                          <div class="col pull-left" style="padding-left: 10px;">1km</div>
-                                          <div class="col pull-right"  style="padding-right: 10px;">50km</div>
-                                      </div>
-  
-                                      <input id="slider1" type="range" min="0" max="50" step="2" value="1" #ref (change)="changeRadius(ref.value)"/>
-                                      {{ref.value}} km
-                                  </div>
-                              </div>
-                          </div> -->
-                      </ul>
-                  <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content" id="myMap">
-                      <div id="map_canvas_container" >
-                          <div #gmap id="map_canvas"></div>
-                      </div>
-                           
-                  </div>
-              </div>
+    <!-- <div class="page-title">
+          <div class="title_left">
+            <h3>Chart Js <small>Some examples to get you started</small></h3>
           </div>
-  </div>
+
+          <div class="title_right">
+            <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button">Go!</button>
+                </span>
+              </div>
+            </div>
+          </div>
+    </div> -->
+    <div class="clearfix"></div>
+
+    <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2> Manage 
+                            <!-- <div style="display: inline;">{{curContactObj.name}}</div> -->
+                        </h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            
+                        </ul>
+                    <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                            <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
+                                <div class="item form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control col-md-7  col-xs-12"   formControlName="name" >
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative;">
+                                        <input class="form-control"formControlName="location">
+                                        <span class="input-group-btn" id="mapBtn">
+                                            <button  type="button" class="btn btn-default " >
+                                        <i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
+                                        </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="item form-group">
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required">*</span> </label>
+                                    
+                                    <div  class="col-md-8 col-sm-8 col-xs-12">
+                                        <items-array formArrayName="items" [itemsFormArray]="myForm.get('items')"> </items-array>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group" id="saveBtn" >
+                                    
+                                    <button  type="button"  class="btn btn-dark pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+
+                                    <button href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger pull-right" ><i class="fa fa-trash-o"></i> Delete </button>
+
+                                    <button class="edit btn btn-info pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i>   Edit </button>
+
+                                    <button *ngIf="!nameInputbutton" [disabled]="" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
+                                </div>  
+                                
+                        </form>
+                    </div>
+                </div>
+            </div>
+    </div>
 </div>
 
 
 
 
+
+<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:10%" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel2">Change Location</h4>
+            </div>
+            <div class="modal-body">
+                <div id="testmodal2" style="padding:20px;">
+                    <ng4geo-autocomplete  [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+                    <div #gmap style="width:100%;height:40%;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary antosubmit2" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="deleteContactModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel2">Delete Contact</h4>
+            </div>
+            <div class="modal-body">
+                <div id="testmodal2" style="padding: 20px;">
+                    <p>Are you sure you want to delete these Records?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger antosubmit2" (click)="deleteContact()" data-dismiss="modal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <form [formGroup]="myForm" (ngSubmit)="submit()">
+    <h4>Form</h4>
+    <hr>
+    <items-array
+      formArrayName="items"
+      [itemsFormArray]="myForm.get('items')">
+    </items-array>
+    <hr>
+    <div class="form-group">
+      <input type="submit" class="form-control" value="Submit" [disabled]="myForm.valid">
+    </div>
+  </form>
+  
+  <h6 class="mt-3">FormGroup Model (<code>myForm.value</code>)</h6>
+  <div><pre><code>{{ myForm?.value | json }}</code></pre></div> -->
