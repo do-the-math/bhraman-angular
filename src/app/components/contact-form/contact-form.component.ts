@@ -126,6 +126,8 @@ export class ContactFormComponent implements OnInit {
 		console.log(this.curContactObj);
 		//console.log(value);
 		this.curContactObj.name = value.name;
+		this.curContactObj.createdDate = new Date();
+		this.curContactObj.updatedDate = new Date();
 
 		this.addContact();
 	}

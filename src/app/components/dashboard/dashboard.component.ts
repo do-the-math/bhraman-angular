@@ -27,11 +27,13 @@ export class DashboardComponent implements OnInit {
 			console.log(err);
 			return false;
 		});
+
 	}
+
 	sidebarToggle(){
 	  this.clicked = !this.clicked;
 	}
-    onLogoutClick() {
+  onLogoutClick() {
 		this.authService.logout();
 		/* this.flashMessage.show('You are logged out', {
 		  cssClass: 'alert-success', timeout: 3000

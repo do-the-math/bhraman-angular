@@ -81,7 +81,7 @@ export class SandboxComponent implements OnInit {
 		// service call
 		this.authService.getProfile().subscribe(profile => {
 				this.user = profile.user;
-				this.getCategory(this.user);
+				// this.getCategory(this.user);
 			},
 			err => {
 				console.log(err);
@@ -109,7 +109,10 @@ export class SandboxComponent implements OnInit {
 			position: 'absolute' // Element positioning
 		};
 		var target = document.getElementById('myMap');
-		this.spinner = new Spinner(opts).spin(target);
+
+		var tmp = new Date();
+		console.log(tmp);
+		// this.spinner = new Spinner(opts).spin(target);
 	}
 	getCategory(user: USER){
 		console.log('Categories Fetched from Component');

@@ -83,10 +83,9 @@ export class ContactsComponent implements OnInit {
 	getContacts(categoryID: string){
 		console.log("Contacts fetched from Component");
 		//this.contactList = CONTACTS;
-		this.ContactService.fetchContactByCategoryId(this.user._id, categoryID)
+		this.ContactService.fetchContactByCategoryIdOrderByUpdateAt(this.user._id, categoryID)
 			.subscribe(
 				data => {
-					// this.mockcategories.push(JSON.parse(JSON.stringify(data))),
 					this.contactList = data
 					console.log(data)
 				},

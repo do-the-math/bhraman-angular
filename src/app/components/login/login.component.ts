@@ -21,6 +21,10 @@ export class LoginComponent implements OnInit {
 				  ) { }
 
 	ngOnInit() {
+		if(this.authService.getUser()!=null || this.authService.getUser()!=undefined){
+			this.router.navigate(['/dashboard']);
+			return;
+		}
 		this.notif.info(
 			'Enter Password',
 			'You are not logged in',
@@ -33,6 +37,7 @@ export class LoginComponent implements OnInit {
 				preventLastDuplicates: true
 			}
 		);
+		
 		var opts = {
 			lines: 20, // The number of lines to draw
 			length: 5, // The length of each line
@@ -40,7 +45,7 @@ export class LoginComponent implements OnInit {
 			radius: 25, // The radius of the inner circle
 			scale: 2, // Scales overall size of the spinner
 			corners: 1, // Corner roundness (0..1)
-			color: '#1ABB9C', // CSS color or array of colors
+			color: 'white', // CSS color or array of colors
 			fadeColor: 'transparent', // CSS color or array of colors
 			opacity: 0.1, // Opacity of the lines
 			rotate: 0, // The rotation offset
@@ -50,7 +55,7 @@ export class LoginComponent implements OnInit {
 			fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
 			zIndex: 2e9, // The z-index (defaults to 2000000000)
 			className: 'spinner', // The CSS class to assign to the spinner
-			top: '50%', // Top position relative to parent
+			top: '0%', // Top position relative to parent
 			left: '50%', // Left position relative to parent
 			position: 'absolute' // Element positioning
 		};

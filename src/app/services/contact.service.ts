@@ -30,6 +30,13 @@ export class ContactService {
 		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+uid+'/'+categoryID, {headers: headers})
 			.map(res => res.json())
 	}
+	fetchContactByCategoryIdOrderByUpdateAt(uid: string, categoryID: string) : Observable<CONTACT[]> {
+		console.log("Contact Added from service");
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontact/order/'+uid+'/'+categoryID, {headers: headers})
+			.map(res => res.json())
+	}
 	fetchContactById(contactID: string) : Observable<CONTACT[]> {
 		console.log("Contact Added from service");
 		let headers = new Headers();

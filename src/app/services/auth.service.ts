@@ -59,6 +59,9 @@ export class AuthService {
   loggedIn() {
     return tokenNotExpired('id_token');
   }
+  getUser(){
+    return localStorage.getItem('user');
+  }
 
   logout() {
     this.authToken = null;

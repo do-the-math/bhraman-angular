@@ -15,9 +15,12 @@
 }
 .mydropdown {
 	width: 300px;
-	margin-top: 5px;
-	margin-right: 10px;
+	right: 0; 
+	left: auto;
 }
+/* .mydropdown2 {
+
+} */
 .dropdown-menu li:hover {
 	color: white;
 	background-color: #eee;
@@ -46,7 +49,9 @@ li label input[type="checkbox"] {
 }
 .checkboxContainer span {
 	font-weight: 400;
-	font-size: 18px;
+	font-size: 16px!important;
+	color: rgb(90,115,142);
+	text-decoration-style: none;
 }
 label > input[type="checkbox"] + .label-text:before{
 	content: "\f096" ;
@@ -100,6 +105,14 @@ label > input[type="checkbox"]:not(:checked) + .label-text:before {
 	padding: 5px;
 	width: 400px;
 	height: 70px;
+}
+@media only screen and (max-width: 560px) {
+	.mydropdown {
+		width: 300px
+	}
+    .rselector {
+		width: 300px;
+	}
 }
 input[type="range"] {
 	height: 28px;

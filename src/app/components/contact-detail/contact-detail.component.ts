@@ -45,7 +45,8 @@ export class ContactDetailComponent implements OnInit {
     	this.curContactObj = new CONTACT();
     	this.user = new USER();
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
-
+		
+		// this.user = this.authService.getUser();
 		
 		// this.authService.getProfile().subscribe(profile => {
 		// 		this.user = profile.user;
@@ -90,6 +91,7 @@ export class ContactDetailComponent implements OnInit {
 					this.curContactMarker.addListener('dragend', (event)=>{
 						this.geocoder.geocode({'location': this.curContactMarker.position}, (results, status)=> {
 							if (status === 'OK') {
+								google.maps.event.trigger(this.curContactMarker, 'click');
 								console.log(results[0].formatted_address)
 								if (results[0]) {
 									this.userSettings = {
@@ -98,6 +100,7 @@ export class ContactDetailComponent implements OnInit {
 									this.curContactObj.location = results[0].formatted_address;
 									this.curContactObj.position.lat = this.curContactMarker.position.lat();
 									this.curContactObj.position.lng = this.curContactMarker.position.lng();
+									
 								} else {
 									window.alert('No results found');
 								}
@@ -114,7 +117,7 @@ export class ContactDetailComponent implements OnInit {
     }
 	updateContact(contactObj: CONTACT){
 		console.log("Contact Updated from Component");
-
+		
 		this.ContactService.updateContactById(contactObj._id, contactObj)
 			.subscribe(
 				data => {
@@ -134,7 +137,7 @@ export class ContactDetailComponent implements OnInit {
     	submitContact.name = this.curContactObj.name;
     	submitContact.notes = this.curContactObj.notes;
     	submitContact.location = this.curContactObj.location;
-    	submitContact.position = this.curContactObj.position;
+		submitContact.position = this.curContactObj.position;
 
     	console.log(submitContact);
     	this.updateContact(submitContact);

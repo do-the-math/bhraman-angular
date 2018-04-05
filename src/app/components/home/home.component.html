@@ -18,7 +18,7 @@
                                             <li class="divider"></li>
                                             <li><a href="#">Separated link</a></li>
                                           </ul> -->
-                                          <ul class="dropdown-menu mydropdown">
+                                          <ul class="dropdown-menu mydropdown" >
                                                 <li>
                                                     <label class="checkboxContainer" (click)="clearaOptions()"> 
                                                         <input type="checkbox" [checked]="true" [disabled]="true"> 
@@ -49,15 +49,18 @@
                                             
                                             <li><a href="#">Separated link 2</a></li>
                                           </ul> -->
-                                          <div class="dropdown-menu mydropdown2">
+                                          <div class="dropdown-menu" style="right: 0; left: auto;">
                                                 <div class="rselector ">
                                                     <div class="row">
                                                         <div class="col pull-left" style="padding-left: 10px;">1km</div>
                                                         <div class="col pull-right"  style="padding-right: 10px;">50km</div>
                                                     </div>
                 
-                                                    <input id="slider1" type="range" min="0" max="50" step="2" value="1" #ref (change)="changeRadius(ref.value)"/>
-                                                    <b style="color: #1ABB9C;">{{ref.value}} km</b>
+                                                    <!-- <input  name="points" id="slider1" data-show-value="true" type="range" min="0" max="50" step="2" value="1" #ref (change)="changeRadius(ref.value)"/> -->
+                                                    
+                                                    <input id="slider1"  type="range" min="0" max="50" step="2" data-show-value="true" value="1" #ref [(ngModel)]="myCircleRadius" (change)="changeRadius($event.target.value)"/>                                                    
+                                                    <b style="color: #1ABB9C;">{{myCircleRadius}} km</b>
+                                                    <!-- <label for="points">Points:</label> -->
                                                 </div>
                                             </div>
                                         </div>

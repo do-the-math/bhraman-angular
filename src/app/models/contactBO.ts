@@ -13,7 +13,12 @@ export class CONTACT {
 	position: {
 		lat: number;
 		lng: number;
-	}
+	};
+	createdDate: Date;
+	updatedDate: Date;
+	
+	createdAt: any;
+	updatedAt: any;
 
 	constructor(){
 		this._id = "";
@@ -30,5 +35,7 @@ export class CONTACT {
 			lng: 0.0
 		}
 		this.notes.splice(0, 1);
+		this.createdDate = new Date();
+		this.updatedDate = new Date();
 	}
 }

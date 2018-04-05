@@ -29,7 +29,10 @@ export class CategoryComponent implements OnInit {
 		) { }
 
 	ngOnInit() {
-		
+		if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+			this.router.navigate(['/login']);
+			return;
+		}
 		this.authService.getProfile().subscribe(profile => {
 			this.user = profile.user;
 			console.log(this.user._id);

@@ -9,6 +9,7 @@ import { SelectControlValueAccessor } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
 import { Spinner } from 'spin.js';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -56,15 +57,20 @@ export class HomeComponent implements OnInit {
 	constructor(private route: ActivatedRoute, 
 				private CategoryService: CategoryService,
 				private ContactService: ContactService,
-				private authService: AuthService) {
+				private authService: AuthService,
+				private router: Router) {
 					this.route.params.subscribe( params => console.log(params) );
 					this.myCircleRadius = 1000; // 1km
 				}
 
 	ngOnInit() { 
+		if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+			this.router.navigate(['/login']);
+			return;
+		}
 		this.user = new USER();
 		this.optionSelected = [];
-		this.myCircleRadius = 1000; // 1km
+		this.myCircleRadius = 1; // 1km
 		this.myCircle = new google.maps.Circle();
 		this.infowindow_open = null;
 		this.markerList = []
@@ -172,23 +178,23 @@ export class HomeComponent implements OnInit {
 	}
 	setRadius(val: number){
 		this.myCircleRadius = val;
-		if(this.getRadius()<=2*1000){
+		if(this.getRadius()<=2){
 			this.setZoomLevel(15);
 			this.map.setZoom(this.getZoomLevel());
 		}
-		else if(this.getRadius()>2*1000 && this.getRadius()<4*1000){
+		else if(this.getRadius()>2 && this.getRadius()<4){
 			this.setZoomLevel(14);
 			this.map.setZoom(this.getZoomLevel());
 		}
-		else if(this.getRadius()>=4*1000 && this.getRadius()<12*1000 ){
+		else if(this.getRadius()>=4 && this.getRadius()<12 ){
 			this.setZoomLevel(13);
 			this.map.setZoom(this.getZoomLevel());
 		}
-		else if(this.getRadius()>=12*1000 && this.getRadius()<=16*1000) {
+		else if(this.getRadius()>=12 && this.getRadius()<=16) {
 			this.setZoomLevel(12);
 			this.map.setZoom(this.getZoomLevel());
 		}
-		else if(this.getRadius()>16*1000 && this.getRadius()<=31*1000) {
+		else if(this.getRadius()>16 && this.getRadius()<=31) {
 			this.setZoomLevel(11);
 			this.map.setZoom(this.getZoomLevel());
 		}
@@ -224,7 +230,7 @@ export class HomeComponent implements OnInit {
 		var circle = new google.maps.Circle({
 			center: location,
 			map: this.map,
-			radius: this.getRadius(), 
+			radius: this.getRadius()*1000, 
 			fillColor: '#00628B',
 			fillOpacity: 0.2,
 			strokeColor: "#FFF",
@@ -289,7 +295,7 @@ export class HomeComponent implements OnInit {
 										contact.position.lat, 
 										contact.position.lng);
 			console.log(dist)
-			if (dist*1000 < this.getRadius()) {
+			if (dist*1000 < this.getRadius()*1000) {
 				this.showContactInMap(contact);
 			}
 		});
@@ -363,11 +369,10 @@ export class HomeComponent implements OnInit {
 		};
 	}
 	changeRadius(val: any){
-		console.log("radius changed");
+		console.log("radius changed to= "+val);
 
-		this.spinner = new Spinner().spin();
 		this.clearMap("all");
-		this.setRadius(parseInt(val)*1000);
+		this.setRadius(parseInt(val));
 		console.log(this.getRadius())
 		this.drawCircleOnMap(this.myCurrentPosition);
 	}

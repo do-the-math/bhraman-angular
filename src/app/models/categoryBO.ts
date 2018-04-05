@@ -7,6 +7,8 @@ export class CATEGORY {
 	color: string;
 	date: string;
 	count: number;
+	createdAt: any;
+	updatedAt: any;
 
 	constructor(){
 		this._id = "";

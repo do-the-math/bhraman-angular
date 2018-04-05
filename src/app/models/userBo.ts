@@ -5,6 +5,9 @@ export class USER {
 	email: string;
 	username: string;
 	password: string;
+	createdAt: any;
+	updatedAt: any;
+	
 	constructor(){
 		this._id = "";
 		this.name = "";
