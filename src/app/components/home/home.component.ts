@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
 import { Spinner } from 'spin.js';
 import { Router } from '@angular/router';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-home',
@@ -68,6 +69,8 @@ export class HomeComponent implements OnInit {
 			this.router.navigate(['/login']);
 			return;
 		}
+		this.mydropDownEvent();
+
 		this.user = new USER();
 		this.optionSelected = [];
 		this.myCircleRadius = 1; // 1km
@@ -375,6 +378,15 @@ export class HomeComponent implements OnInit {
 		this.setRadius(parseInt(val));
 		console.log(this.getRadius())
 		this.drawCircleOnMap(this.myCurrentPosition);
+	}
+	mydropDownEvent() {
+		$("document").ready(function() {
+			$('.dropdown-menu').on('click', function(e) {
+				if($(this).hasClass('mydropdown')) {
+					e.stopPropagation();
+				}
+			});
+		});
 	}
 }
 

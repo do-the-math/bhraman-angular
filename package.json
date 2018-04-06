@@ -27,6 +27,7 @@
     "angular2-notifications": "0.9.7",
     "bootstrap": "4.0.0",
     "core-js": "^2.4.1",
+    "jquery": "^3.3.1",
     "ng2-bootstrap": "1.6.3",
     "ng4-geoautocomplete": "0.1.0",
     "npm": "^5.7.1",

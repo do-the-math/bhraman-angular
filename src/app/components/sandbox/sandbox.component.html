@@ -19,17 +19,17 @@
 
     <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
+                <div class="x_panel" style="overflow:auto!important;">
                     <div class="x_title">
                         <h2> Manage 
-                            <!-- <div style="display: inline;">{{curContactObj.name}}</div> -->
+                            <div style="display: inline;">{{curContactObj.name}}</div>
                         </h2>
                         <ul class="nav navbar-right panel_toolbox">
                             
                         </ul>
                     <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">
+                    <div class="x_content ">
                             <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
                                 <div class="item form-group">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
@@ -42,18 +42,18 @@
                                 <div class="item form-group">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
                                     </label>
-                                    <div class="col-md-8 col-sm-8 col-xs-12" style="position: relative;">
-                                        <input class="form-control"formControlName="location">
-                                        <span class="input-group-btn" id="mapBtn">
+                                    <div class="col-md-8 col-sm-8 col-xs-12">
+                                        <input class="form-control" formControlName="location"  data-toggle="modal" data-target="#openMap">
+                                        <!-- <span class="input-group-btn" id="mapBtn">
                                             <button  type="button" class="btn btn-default " >
                                         <i class="fa fa-map-marker" style="font-size:25px;color:#d9534f" ></i>
                                         </button>
-                                        </span>
+                                        </span> -->
                                     </div>
                                 </div>
 
                                 <div class="item form-group">
-                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required">*</span> </label>
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required"></span> </label>
                                     
                                     <div  class="col-md-8 col-sm-8 col-xs-12">
                                         <items-array formArrayName="items" [itemsFormArray]="myForm.get('items')"> </items-array>
@@ -63,14 +63,16 @@
 
                                 <div class="form-group" id="saveBtn" >
                                     
-                                    <button  type="button"  class="btn btn-dark pull-left" (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
+                                    <button  type="button"  class="btn btn-dark pull-left" ><i class="fa fa-backward"></i> Go Back</button>
 
                                     <button href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger pull-right" ><i class="fa fa-trash-o"></i> Delete </button>
 
-                                    <button class="edit btn btn-info pull-right" *ngIf="nameInputbutton" (click)="toggleInput()" ><i class="fa fa-pencil"></i>   Edit </button>
+                                    <button class="edit btn btn-info pull-right"  ><i class="fa fa-pencil"></i>   Edit </button>
 
-                                    <button *ngIf="!nameInputbutton" [disabled]="" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
-                                </div>  
+                                    <button [disabled]="myForm.pristine || myForm.untouched" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
+                                    
+                                </div>
+                                {{myForm.pristine}} {{myForm.untouched}} {{myForm.status}}  
                                 
                         </form>
                     </div>
@@ -91,7 +93,7 @@
                 <h4 class="modal-title" id="myModalLabel2">Change Location</h4>
             </div>
             <div class="modal-body">
-                <div id="testmodal2" style="padding:20px;">
+                <div id="testmodal2">
                     <ng4geo-autocomplete  [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
                     <div #gmap style="width:100%;height:40%;"></div>
                 </div>
@@ -112,7 +114,7 @@
             </div>
             <div class="modal-body">
                 <div id="testmodal2" style="padding: 20px;">
-                    <p>Are you sure you want to delete these Records?</p>
+                    <p>Are you sure you want to delete this Record?</p>
                 </div>
             </div>
             <div class="modal-footer">

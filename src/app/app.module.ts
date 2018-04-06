@@ -44,7 +44,7 @@ const appRoutes: Routes = [
 			{ path: 'home', component: HomeComponent },
 			{ path: 'category', component: CategoryComponent }, 
 			{ path: 'category/contacts/:categoryID',component: ContactsComponent },
-			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent },
+			{ path: 'category/contactdetail/:contactID', component: SandboxComponent },
 			{ path: 'category/contactform/:categoryID', component: ContactFormComponent },
 			{ path: 'sandbox', component: SandboxComponent },
 			{ path: '**', component: Error404Component }

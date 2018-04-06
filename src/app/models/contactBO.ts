@@ -5,10 +5,8 @@ export class CONTACT {
 	name: string;
 	userID: string;
 	categoryID: string;
-	notes: [{
-			date: string;
-			note: string;
-	}];
+	notes: NOTE[];
+	
 	location: string;
 	position: {
 		lat: number;
@@ -38,4 +36,9 @@ export class CONTACT {
 		this.createdDate = new Date();
 		this.updatedDate = new Date();
 	}
+}
+
+export class NOTE{
+	date: string;
+	note: string;
 }
