@@ -380,7 +380,7 @@ export class HomeComponent implements OnInit {
 		this.drawCircleOnMap(this.myCurrentPosition);
 	}
 	mydropDownEvent() {
-		$("document").ready(function() {
+		$("document").ready(()=> {
 			$('.dropdown-menu').on('click', function(e) {
 				if($(this).hasClass('mydropdown')) {
 					e.stopPropagation();

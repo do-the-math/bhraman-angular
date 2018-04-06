@@ -38,7 +38,7 @@ export class ContactService {
 			.map(res => res.json())
 	}
 	fetchContactById(contactID: string) : Observable<CONTACT[]> {
-		console.log("Contact Added from service");
+		console.log("Contact fetched from service");
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		return this.http.get(GlobalVariable.BASE_API_URL+'/contact/usercontact/'+contactID, {headers: headers})

@@ -68,7 +68,7 @@
                                       <tbody >
                                         <tr *ngFor="let note of curContactObj.notes;let idx = index">
                                             <th width="5%" scope="row">{{idx+1}}</th>
-                                            <td width="20%">{{note.date}}</td>
+                                            <td width="20%"><input placeholder={{note.date}}> </td>
                                             <td width="60%" style="word-wrap:break-word">{{note.note}}</td>
                                             <td width="15%" style="text-align:center"><button  type="button"  class="btn btn-xs btn-danger" (click)="removeNote(note)" [disabled]="nameInputbutton">Remove </button></td>
                                         </tr>

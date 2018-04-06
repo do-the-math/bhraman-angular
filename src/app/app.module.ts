@@ -31,6 +31,7 @@ import { ContactDetailComponent } from './components/contact-detail/contact-deta
 import { SandboxComponent,  ItemsFormArrayComponent, ItemFormControlComponent } from './components/sandbox/sandbox.component';
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { Error404Component } from './components/error404/error404.component';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 
 const appRoutes: Routes = [ 
 	{ path: 'login', component: LoginComponent },  	
@@ -44,7 +45,7 @@ const appRoutes: Routes = [
 			{ path: 'home', component: HomeComponent },
 			{ path: 'category', component: CategoryComponent }, 
 			{ path: 'category/contacts/:categoryID',component: ContactsComponent },
-			{ path: 'category/contactdetail/:contactID', component: SandboxComponent },
+			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent },
 			{ path: 'category/contactform/:categoryID', component: ContactFormComponent },
 			{ path: 'sandbox', component: SandboxComponent },
 			{ path: '**', component: Error404Component }
@@ -82,7 +83,8 @@ const appRoutes: Routes = [
 	FlashMessagesModule.forRoot(),
 	SimpleNotificationsModule.forRoot(),
 	BrowserAnimationsModule,
-	ReactiveFormsModule
+	ReactiveFormsModule,
+	TooltipModule.forRoot()
   ],
   providers: [  ValidateService, 
 				AuthService, 
