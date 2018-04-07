@@ -20,7 +20,7 @@ import * as $ from 'jquery';
 })
 export class SandboxComponent implements OnInit {
 	@ViewChild('gmap') gmapElement: any;
-	@ViewChild('dummyModal') dummyModal: any;
+
 	map: google.maps.Map;
 	geocoder;
 	userSettings: any;
@@ -34,8 +34,9 @@ export class SandboxComponent implements OnInit {
 	nameInputbutton: boolean = true;
 	showInp: boolean;
 	disableSaveBtn = true;
+	editBtn = false;
 	display: string = 'none';
-
+	
 	constructor(
 		private fb: FormBuilder,
 		private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class SandboxComponent implements OnInit {
   
 	ngOnInit() {
 		this.nameInputbutton= true;
+		this.editBtn = false;
 		this.curContactObj = new CONTACT();
 		this.user = new USER();
 		this.contactID = (this.route.snapshot.paramMap.get('contactID'));
@@ -61,7 +63,9 @@ export class SandboxComponent implements OnInit {
 		this.getContact(this.contactID);	
 		
 		this.geocoder = new google.maps.Geocoder;
-		
+		this.userSettings = {
+			"inputString": this.curContactObj.location
+		}
 		
 	}
 	
@@ -106,6 +110,12 @@ export class SandboxComponent implements OnInit {
 			);
 	}
 	addListerToMarker(marker){
+
+		marker.addListener('dragstart', (event)=>{
+			this.userSettings = {
+				"inputString": this.curContactObj.location
+			}
+		});
 		marker.addListener('dragend', (event)=>{
 			this.geocoder.geocode({'location': marker.position}, (results, status)=> {
 				if (status === 'OK') {
@@ -118,8 +128,7 @@ export class SandboxComponent implements OnInit {
 
 						this.curContactObj.location = results[0].formatted_address;
 						this.curContactObj.position.lat = marker.position.lat();
-						this.curContactObj.position.lng = marker.position.lng();
-						google.maps.event.trigger(marker, 'dblclick');
+						this.curContactObj.position.lng = marker.position.lng();				
 						
 					} else {
 						window.alert('No results found');
@@ -127,8 +136,11 @@ export class SandboxComponent implements OnInit {
 				} else {
 					window.alert('Geocoder failed due to: ' + status);
 				}
-					});
+				
+			});
+			google.maps.event.trigger(marker, 'click');
 		});
+		
 	}
 	valuesMatch (val1,val2):boolean {
 		if(val1.name == val2.name){
@@ -137,14 +149,16 @@ export class SandboxComponent implements OnInit {
 					return true;
 				}
 				else if(val1.items.length == val2.notes.length){
+					var flag = true;
 					for(var e=0; e<val1.items.length; e++){
-						if(val1.items[e].date != val2.notes[e].date &&
-							val1.items[e].note != val2.notes[e].note){
-								return false;
+						if(val1.items[e].date === val2.notes[e].date &&
+							val1.items[e].note === val2.notes[e].note){
+								flag = true;
 						}else{
-							return true;
+							flag = false;
 						}
 					}
+					return flag;
 				}else 
 					return false;
 			} else{
@@ -155,15 +169,24 @@ export class SandboxComponent implements OnInit {
 	}
 	createForm(obj: CONTACT){
 		this.myForm = this.fb.group({
-			name: new FormControl({value: obj.name, disabled: true}),
+			name: new FormControl({value: obj.name, disabled: false}),
 			items: ItemsFormArrayComponent.buildItems(),
-			location: obj.location,
+			location: new FormControl({value: obj.location, disabled: false}),
 		});
 		
 		this.setNotes(this.curContactObj.notes);
-		
-		this.myForm.disable()
-		this.myForm.get('name').disable();
+	}
+	toggleEditBtn(){
+		console.log("sdasd")
+		this.editBtn = !this.editBtn;
+		// if(this.editBtn){
+		// 	this.myForm.controls['name'].enable();
+		// 	this.myForm.controls['location'].enable();
+		// }
+		// else{
+		// 	this.myForm.controls['name'].disable();
+		// 	this.myForm.controls['location'].disable();
+		// }
 	}
 	setNotes(notes: NOTE[]) {
     	const notesFGs = notes.map(address => this.fb.group(address));
@@ -183,6 +206,19 @@ export class SandboxComponent implements OnInit {
 				()=> console.log("done")
 			); 
   }
+  deleteContact(){
+		console.log('Contact Deleted from Component');
+		
+		this.ContactService.deleteContactById(this.curContactObj._id)
+			.subscribe(
+				data => {
+					console.log("Contact deleted and data"+data);
+					this._location.back();
+				},
+				error => {alert(error)},
+				()=> console.log("done")
+		); 
+	}
   submit(){
 		var submitContact: CONTACT = new CONTACT();
 		submitContact._id = this.curContactObj._id;
@@ -197,6 +233,7 @@ export class SandboxComponent implements OnInit {
 		this.updateContact(submitContact);
 		this.disableSaveBtn = true;
 	}
+	
 	autoCompleteCallback1(selectedData:any) {
 		console.log(selectedData);
 		
@@ -241,7 +278,6 @@ export class SandboxComponent implements OnInit {
 			document.getElementById("my-element").remove();
 		}
 	}
-	
 }
 
 
@@ -300,14 +336,16 @@ export class SandboxComponent implements OnInit {
 	<div class="form-group row" [formGroup]="item">
 		<div class="col-sm-3 col-xs-12" style="padding-left:0" >
 			<label [attr.for]="'date'+index"></label>
-			<textarea placeholder="label" type="text" class="form-control" [attr.id]="'date'+index" formControlName="date"></textarea>
+			<textarea placeholder="label" type="text" class="form-control" required [attr.id]="'date'+index" formControlName="date" style="resize:vertical;" #nam1></textarea>
+	
 		</div>
 		<div class="col-sm-8 col-xs-11" style="padding-left:0" >
 			<label [attr.for]="'note'+index"></label>
-			<textarea placeholder="Note"  type="text" class="form-control" [attr.id]="'note'+index" formControlName="note"></textarea>
+			<textarea placeholder="Note"  type="text" class="form-control" required [attr.id]="'note'+index" formControlName="note" style="resize:vertical;" #nam2></textarea>
+		
 		</div>
-		<div class="col-sm-1 col-xs-1" style="top:1em">
-			<button type="button" class="btn btn-sm btn-danger" (click)="removed.emit(index)">X</button>
+		<div class="col-sm-1 col-xs-1" style="padding:0px; height: 59px;padding-top:1em">
+			<button type="button" class="btn btn-sm btn-danger" (click)="removed.emit(index)" >X</button>
 		</div>
 	</div>
 	`
@@ -326,7 +364,7 @@ export class SandboxComponent implements OnInit {
 	static buildItem(val: string) {
 	  return new FormGroup({
 			date: new FormControl(val, Validators.required),
-			note: new FormControl()
+			note: new FormControl(val,  Validators.required)
 	  })
 	}
   }

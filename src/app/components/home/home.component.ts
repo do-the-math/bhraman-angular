@@ -349,11 +349,13 @@ export class HomeComponent implements OnInit {
 		// for(var t=0;t<obj.notes.length;t++){
 		// 	listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px;list-style-type: none;font-size:16px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
 		// }
-		var infoWindowContent = "<div style='width: 300px' >"+
-									"<h4 class='firstHeading' style='padding-left:20px;'><b>Name:</b> " + obj.name + "</h4>"+
-									"<ol style='padding-left:20px; max-height:100px;overflow-y: scroll;'>"+
-										listContent+
-									"</ol>"+
+		var infoWindowContent = "<div class='container-fluid'>"+
+									"<div style='width: 300px' >"+
+										"<h2 class='' style='padding-left:20px;'>Name: " + obj.name + "</h2>"+
+										"<ol style='padding-left:20px; max-height:150px;overflow-y: scroll;'>"+
+											listContent+
+										"</ol>"+
+									"</div>"+
 								"</div>"
 								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
 								// 	"passId("+obj._id+")> Add </a>"
