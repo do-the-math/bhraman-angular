@@ -44,7 +44,13 @@ export class SandboxComponent implements OnInit {
 		private ContactService: ContactService,
 		private authService: AuthService,
 		private _location: Location,
-	) {	}
+	) {
+		this.myForm = this.fb.group({
+			name: new FormControl(),
+			items: {value: ItemsFormArrayComponent.buildItems(),  disabled:true},
+			location: new FormControl()
+		});
+	}
   
 	ngOnInit() {
 		this.nameInputbutton= true;
@@ -55,11 +61,7 @@ export class SandboxComponent implements OnInit {
 		this.getContact(this.contactID);	
 		
 		this.geocoder = new google.maps.Geocoder;
-		this.myForm = this.fb.group({
-			name: new FormControl(),
-			items: {value: ItemsFormArrayComponent.buildItems(),  disabled:true},
-			location: new FormControl()
-		});
+		
 		
 	}
 	

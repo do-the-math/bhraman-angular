@@ -1,0 +1,23 @@
+<form class="form-horizontal form-label-left" #myForm="ngForm">
+  <div class="item form-group">
+      <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
+      </label>
+      <div class="col-md-8 col-sm-8 col-xs-12">
+          <input name="name" ngModel class="form-control col-md-7  col-xs-12">
+      </div>
+  </div>
+
+  <div ngModelGroup="notes">
+    <h3>Phone numbers</h3>
+    <div *ngFor="let not of obj.notes; let i=index;">
+      <label>Phone number {{i + 1}}</label>
+      {{obj.notes[i].date}}
+      <input type="text" name="date"  [(ngModel)]="obj.notes[i].date"/>
+      <input type="text" name="note" [(ngModel)]="obj.notes[i].note"/>
+      <button type="button" (click)="remove(i); myForm.control.markAsTouched()">remove</button>
+    </div>
+    <button type="button" (click)="add(); myForm.control.markAsTouched()">Add phone number</button>
+  </div>
+</form>
+
+<pre>{{myForm.value | json}}</pre>
