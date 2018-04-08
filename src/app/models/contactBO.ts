@@ -27,7 +27,7 @@ export class CONTACT {
 			date: "",
 			note: ""
 		}];
-		this.location = null;
+		this.location = "";
 		this.position = {	
 			lat: 0.0,
 			lng: 0.0

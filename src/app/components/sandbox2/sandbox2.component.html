@@ -1,23 +1,172 @@
-<form class="form-horizontal form-label-left" #myForm="ngForm">
-  <div class="item form-group">
-      <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
-      </label>
-      <div class="col-md-8 col-sm-8 col-xs-12">
-          <input name="name" ngModel class="form-control col-md-7  col-xs-12">
+
+<div class="">
+  <!-- <div class="page-title">
+        <div class="title_left">
+          <h3>Chart Js <small>Some examples to get you started</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+  </div> -->
+  <div class="clearfix"></div>
+
+  <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel" style="overflow:auto!important; position: relative;">
+                  <div class="x_title">
+                      <h2> Manage2
+                          <div style="display: inline;">{{curContactObj.name}}</div>
+                      </h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                          
+                          <div class="btn-group">
+                              <button class="delete btn btn-danger pull-right"  type="button" class="btn btn-dark pull-left"  (click)="backClicked()" ><i class="fa fa-backward"></i> Go Back</button>
+                          </div>
+                          
+                          <div class="btn-group">
+                              <button href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger pull-right" ><i class="fa fa-trash-o"></i> Delete </button>
+                          </div>
+                          
+                      </ul>
+                  <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content ">
+                          <button  *ngIf="!editBtn" value="dfsd" class="btn btn-default pull-right" (click)="toggleEditBtn()" > Edit</button>
+                          <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
+                              <div class="item form-group">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <button *ngIf="editBtn" [disabled]="( myForm.pristine || myForm.invalid)" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
+                                    <!-- <button *ngIf="!editBtn" value="dfsd" class="btn btn-primary pull-right" (click)="toggleEditBtn()" > Edit</button> -->
+                                    
+                                </div>
+                              </div>
+                              <div class="item form-group">
+                                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
+                                  </label>
+                                  <div class="col-md-8 col-sm-8 col-xs-12">
+                                      <input #nam class="form-control col-md-7  col-xs-12"  formControlName="name">
+                                  </div>                                
+                              </div>
+
+                              <div class="item form-group">
+                                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
+                                  </label>
+                                  <div class="col-md-8 col-sm-8 col-xs-12">
+                                      <input class="form-control" formControlName="location" data-toggle="modal" data-target="#openMap" >
+                                  </div>                                  
+                              </div>
+
+                              <div class="item form-group">
+                                  <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required"></span> </label>
+                                  
+                                  <div  class="col-md-8 col-sm-8 col-xs-12">
+                                    
+                                    <div formArrayName="items">`
+                                        <div class="form-group row" *ngFor="let itemrow of myForm.controls.items.controls; let i=index"  [formGroupName]="i">
+                                            <div class="col-sm-3 col-xs-12" style="padding-left:0" >
+                                                <label ></label>
+                                                <textarea placeholder="label" type="text" class="form-control" formControlName="date" #nam1 ></textarea>
+    
+                                            </div>
+                                            <div class="col-sm-8 col-xs-11" style="padding-left:0" >
+                                                <label [attr.for]="'note'+index"></label>
+                                                <textarea placeholder="Note"  type="text" class="form-control" formControlName="note" #nam2 ></textarea>
+                                                
+                                            </div>
+                                            <div class="col-sm-1 col-xs-1" style="padding:0px; height: 59px;padding-top:1em">
+                                                <button type="button" class="btn btn-sm btn-danger"  (click)="deleteRow(i)">X</button>
+                                            </div>
+                                            
+                                        </div>   
+                                        <button *ngIf="editBtn" type="button" class="btn btn-default" (click)="addNewRow()">Add another note</button>  
+                                    </div>
+                                     
+                                  </div>
+                                  
+                                  
+                              </div>                              
+                      </form>
+                  </div>
+              </div>
+          </div>
+  </div>
+</div>
+
+
+<div>valid {{myForm.valid}}</div>
+<div>pristine  {{myForm.pristine}}</div>
+<div>dirty {{myForm.dirty}}</div>
+<pre>{{myForm.value | json}}</pre>
+
+
+
+
+
+
+<div id="openMap" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:10%" >
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title" id="myModalLabel2">Change Location</h4>
+          </div>
+          <div class="modal-body">
+              <div id="testmodal2">
+                  <ng4geo-autocomplete  [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+                  <div #gmap style="width:100%;height:40%;"></div>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary antosubmit2" data-dismiss="modal">Done</button>
+          </div>
       </div>
   </div>
-
-  <div ngModelGroup="notes">
-    <h3>Phone numbers</h3>
-    <div *ngFor="let not of obj.notes; let i=index;">
-      <label>Phone number {{i + 1}}</label>
-      {{obj.notes[i].date}}
-      <input type="text" name="date"  [(ngModel)]="obj.notes[i].date"/>
-      <input type="text" name="note" [(ngModel)]="obj.notes[i].note"/>
-      <button type="button" (click)="remove(i); myForm.control.markAsTouched()">remove</button>
-    </div>
-    <button type="button" (click)="add(); myForm.control.markAsTouched()">Add phone number</button>
+</div>
+<div id="deleteContactModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title" id="myModalLabel2">Delete Contact</h4>
+          </div>
+          <div class="modal-body">
+              <div id="testmodal2" style="padding: 20px;">
+                  <p>Are you sure you want to delete this Record?</p>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger antosubmit2" (click)="deleteContact()" data-dismiss="modal">Delete</button>
+          </div>
+      </div>
   </div>
-</form>
+</div>
 
-<pre>{{myForm.value | json}}</pre>
+<div id="myModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="stay('stay')">×</button>
+              <h4 class="modal-title" id="myModalLabel2">Confirm Navigation</h4>
+          </div>
+          <div class="modal-body">
+              <div id="testmodal2" style="padding: 20px;">
+                  <p>You have unsaved changes. Are you sure you want to leave this page?</p>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-default antoclose2" data-dismiss="modal" (click)="stay('stay')"><i class="fa fa-close"></i> No</button>
+              <button type="button" class="btn btn-primary antosubmit2" data-dismiss="modal" (click)="stay('back')"><i class="fa fa-check"></i> Yes</button>
+          </div>
+      </div>
+  </div>
+</div>

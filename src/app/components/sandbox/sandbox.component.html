@@ -44,7 +44,7 @@
                             <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
                                 <div class="item form-group">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <button *ngIf="editBtn" [disabled]="disableSaveBtn || myForm.invalid" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
+                                        <button *ngIf="editBtn" [disabled]="disableSaveBtn &&( myForm.pristine|| myForm.invalid)" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
                                         <button *ngIf="!editBtn" value="dfsd" class="btn btn-primary pull-right" (click)="toggleEditBtn()" > Edit</button>
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@
                                                     <div class="col-sm-1 col-xs-1" style="padding:0px; height: 59px;padding-top:1em">
                                                         <button type="button" class="btn btn-sm btn-danger" disabled>X</button>
                                                     </div>
-                                                </div>
+                                            </div>
                                         </div>
                                        
                                     </div>
@@ -114,7 +114,11 @@
     </div>
 </div>
 
-<!-- <pre><div>{{myForm.invalid}}</div>{{myForm.value | json}}</pre> -->
+
+<div>valid {{myForm.valid}}</div>
+<div>pristine  {{myForm.pristine}}</div>
+<div>dirty {{myForm.dirty}}</div>
+<pre>{{myForm.value | json}}</pre>
 
 
 

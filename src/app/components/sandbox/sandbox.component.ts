@@ -46,11 +46,7 @@ export class SandboxComponent implements OnInit {
 		private authService: AuthService,
 		private _location: Location,
 	) {
-		this.myForm = this.fb.group({
-			name: new FormControl(),
-			items: {value: ItemsFormArrayComponent.buildItems(),  disabled:true},
-			location: new FormControl()
-		});
+		
 	}
   
 	ngOnInit() {
