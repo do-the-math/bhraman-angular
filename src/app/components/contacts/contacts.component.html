@@ -28,7 +28,7 @@
 				  </li>
 				  <li>
 						<!-- <button  type="button"  data-toggle="modal" data-target="#addContactModal" class="btn btn-xs btn-success pull-right"><i class="fa fa-plus"></i> Add New </button> -->
-						<button  type="button" class="btn  btn-success pull-right" routerLink={{addNewLink}}><i class="fa fa-plus"></i> Add New </button>
+						<button  type="button" class="btn  btn-success pull-right" routerLink="../../contactform/{{categoryID}}"><i class="fa fa-plus"></i> Add New </button>
 					</li>
 					<li>
 						<button  type="button"  class="btn btn-dark " (click)="backClicked()"><i class="fa fa-backward"></i> Go Back</button>
@@ -38,28 +38,28 @@
 			  </div>
 
 			  <div class="x_content">
-				<div class="table-responsive">
+				<div class="">
 				  <table class="table table-striped jambo_table bulk_action">
 					<thead>
 					  <tr class="headings">
-						<th class="column-title" style="width: 5%;"></th>
-						<th class="column-title" style="width: 20%;text-align:center">Name </th>
-						<th class="column-title" style="text-align:center"> Place </th>
-						<th class="column-title" style="width: 20%;text-align:center"><span class="nobr">Edit</span></th>
+							<th class="column-title" style="width: 5%;"></th>
+							<th class="column-title" style="width: 20%;text-align:center">Name </th>
+							<th class="column-title" style="width: 55%;text-align:center"> Place </th>
+							<th class="column-title" style="width: 20%;text-align:center"><span class="nobr">Edit</span></th>
 					  </tr>
 					</thead>
 
 					<tbody>
 					  <tr *ngFor="let c of contactList">
-						<td class="a-center ">
+						<td class="a-center " style="width: 5%;">
 						  <!-- <input type="checkbox" class="flat" name="table_records"> -->
 						</td>
-						<td class=" " style="text-align:center" routerLink="../../contactdetail/{{c._id}}">
+						<td class=" " style="width: 20%;text-align:center" routerLink="../../contactdetail/{{c._id}}">
 							<a >{{c.name}}</a>
 						</td>
-						<td class=" " style="text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
+						<td class=" " style="width: 55%;text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
 						
-						<td class=" " style="text-align:center">
+						<td class=" " style="width: 20%;text-align:center">
 							<!-- <a routerLink="../../contactdetail/{{c._id}}" class=" edit btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a> -->
 							<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passContact(c)"><i class="fa fa-trash-o"></i> Delete </a>
 						</td>

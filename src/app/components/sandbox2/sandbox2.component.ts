@@ -113,12 +113,11 @@ export class Sandbox2Component implements OnInit {
 			);
 	}
 	addListerToMarker(marker){
-
-		marker.addListener('dragstart', (event)=>{
-			this.userSettings = {
-				"inputString": this.curContactObj.location
-			}
-		});
+		// marker.addListener('dragstart', (event)=>{
+		// 	this.userSettings = {
+		// 		"inputString": this.curContactObj.location
+		// 	}
+		// });
 		marker.addListener('dragend', (event)=>{
 			this.geocoder.geocode({'location': marker.position}, (results, status)=> {
 				if (status === 'OK') {
@@ -131,7 +130,8 @@ export class Sandbox2Component implements OnInit {
 
 						this.curContactObj.location = results[0].formatted_address;
 						this.curContactObj.position.lat = marker.position.lat();
-						this.curContactObj.position.lng = marker.position.lng();				
+						this.curContactObj.position.lng = marker.position.lng();	
+						this.disableSaveBtn = false;			
 						
 					} else {
 						window.alert('No results found');
@@ -201,8 +201,8 @@ export class Sandbox2Component implements OnInit {
 	}
 	initItemRows() {
         return this.fb.group({
-			date: new FormControl("hjkh", Validators.required),
-			note: new FormControl("jhkj",  Validators.required)
+			date: new FormControl("", Validators.required),
+			note: new FormControl("",  Validators.required)
         });
 	}
 	addNewRow() {

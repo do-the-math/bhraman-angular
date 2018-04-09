@@ -22,15 +22,13 @@
           <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel" style="overflow:auto!important; position: relative;">
                   <div class="x_title">
-                      <h2> Manage2
+                      <h2> Manage test
                           <div style="display: inline;">{{curContactObj.name}}</div>
                       </h2>
                       <ul class="nav navbar-right panel_toolbox">
-                          
                           <div class="btn-group">
                               <button class="delete btn btn-danger pull-right"  type="button" class="btn btn-dark pull-left"  (click)="backClicked()" ><i class="fa fa-backward"></i> Go Back</button>
                           </div>
-                          
                           <div class="btn-group">
                               <button href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger pull-right" ><i class="fa fa-trash-o"></i> Delete </button>
                           </div>
@@ -39,13 +37,12 @@
                   <div class="clearfix"></div>
                   </div>
                   <div class="x_content ">
-                          <button  *ngIf="!editBtn" value="dfsd" class="btn btn-default pull-right" (click)="toggleEditBtn()" > Edit</button>
+                          <!-- <button  *ngIf="!editBtn" value="dfsd" class="btn btn-default pull-right" (click)="toggleEditBtn()" > Edit</button> -->
                           <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
                               <div class="item form-group">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
-                                    <button *ngIf="editBtn" [disabled]="( myForm.pristine || myForm.invalid)" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
-                                    <!-- <button *ngIf="!editBtn" value="dfsd" class="btn btn-primary pull-right" (click)="toggleEditBtn()" > Edit</button> -->
-                                    
+                                    <button *ngIf="editBtn" [disabled]="disableSaveBtn==true && (myForm.pristine || myForm.invalid)" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
+                                    <a type="button" *ngIf="!editBtn" value="dfsd" class="btn btn-primary pull-right" (click)="toggleEditBtn()" > Edit</a>
                                 </div>
                               </div>
                               <div class="item form-group">
@@ -55,7 +52,6 @@
                                       <input #nam class="form-control col-md-7  col-xs-12"  formControlName="name">
                                   </div>                                
                               </div>
-
                               <div class="item form-group">
                                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
                                   </label>
@@ -63,7 +59,6 @@
                                       <input class="form-control" formControlName="location" data-toggle="modal" data-target="#openMap" >
                                   </div>                                  
                               </div>
-
                               <div class="item form-group">
                                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required"></span> </label>
                                   
@@ -71,12 +66,12 @@
                                     
                                     <div formArrayName="items">`
                                         <div class="form-group row" *ngFor="let itemrow of myForm.controls.items.controls; let i=index"  [formGroupName]="i">
-                                            <div class="col-sm-3 col-xs-12" style="padding-left:0" >
+                                            <div class="col-sm-3 col-xs-3" style="padding-left:0" >
                                                 <label ></label>
                                                 <textarea placeholder="label" type="text" class="form-control" formControlName="date" #nam1 ></textarea>
     
                                             </div>
-                                            <div class="col-sm-8 col-xs-11" style="padding-left:0" >
+                                            <div class="col-sm-8 col-xs-8" style="padding-left:0" >
                                                 <label [attr.for]="'note'+index"></label>
                                                 <textarea placeholder="Note"  type="text" class="form-control" formControlName="note" #nam2 ></textarea>
                                                 
@@ -84,14 +79,10 @@
                                             <div class="col-sm-1 col-xs-1" style="padding:0px; height: 59px;padding-top:1em">
                                                 <button type="button" class="btn btn-sm btn-danger"  (click)="deleteRow(i)">X</button>
                                             </div>
-                                            
                                         </div>   
                                         <button *ngIf="editBtn" type="button" class="btn btn-default" (click)="addNewRow()">Add another note</button>  
-                                    </div>
-                                     
-                                  </div>
-                                  
-                                  
+                                    </div> 
+                                  </div>   
                               </div>                              
                       </form>
                   </div>
@@ -101,10 +92,10 @@
 </div>
 
 
-<div>valid {{myForm.valid}}</div>
+<!-- <div>valid {{myForm.valid}}</div>
 <div>pristine  {{myForm.pristine}}</div>
 <div>dirty {{myForm.dirty}}</div>
-<pre>{{myForm.value | json}}</pre>
+<pre>{{myForm.value | json}}</pre>  -->
 
 
 

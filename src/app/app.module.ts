@@ -45,11 +45,11 @@ const appRoutes: Routes = [
 			{ path: 'home', component: HomeComponent },
 			{ path: 'category', component: CategoryComponent }, 
 			{ path: 'category/contacts/:categoryID',component: ContactsComponent },
-			{ path: 'category/contactdetail/:contactID', component: Sandbox2Component },
+			{ path: 'category/contactdetail/:contactID', component: ContactDetailComponent },
 			{ path: 'category/contactform/:categoryID', component: ContactFormComponent },
 			
-			{ path: 'sandbox', component: SandboxComponent },
-			{ path: 'sandbox2', component: Sandbox2Component },
+			// { path: 'sandbox', component: SandboxComponent },
+			// { path: 'sandbox2', component: Sandbox2Component },
 			{ path: '**', component: Error404Component }
 		]
 	},	

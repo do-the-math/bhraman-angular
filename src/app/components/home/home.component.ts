@@ -351,7 +351,7 @@ export class HomeComponent implements OnInit {
 		// }
 		var infoWindowContent = "<div class='container-fluid'>"+
 									"<div style='width: 300px' >"+
-										"<h2 class='' style='padding-left:20px;'>Name: " + obj.name + "</h2>"+
+										"<h2 class='' style='padding-left:20px;font-size:16px'>Name: " + obj.name + "</h2>"+
 										"<ol style='padding-left:20px; max-height:150px;overflow-y: scroll;'>"+
 											listContent+
 										"</ol>"+
