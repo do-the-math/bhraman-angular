@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { Router } from "@angular/router";
 import { CategoryService } from '../../services/category.service';
@@ -128,5 +128,8 @@ export class CategoryComponent implements OnInit {
 	}
 	backClicked() {
         this._location.back();
-    }
+	}
+	// @HostListener(Tou){
+
+	// }
 }

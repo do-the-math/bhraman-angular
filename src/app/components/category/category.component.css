@@ -229,9 +229,10 @@ table.table .avatar {
 }	
 .modal form label {
 	font-weight: normal;
-}	
-
-
-
-
+}
  */
+ @media only screen and (max-width: 450px) {
+	#addCategoryModal {
+		
+	}
+}

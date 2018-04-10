@@ -39,10 +39,10 @@
 
 			  <div class="x_content">
 				<div class="">
-				  <table class="table table-striped jambo_table bulk_action">
+				  <table class="table table-striped jambo_table bulk_action table-bordered">
 					<thead>
 					  <tr class="headings">
-							<th class="column-title" style="width: 5%;"></th>
+							<!-- <th class="column-title" style="width: 5%;"></th> -->
 							<th class="column-title" style="width: 20%;text-align:center">Name </th>
 							<th class="column-title" style="width: 55%;text-align:center"> Place </th>
 							<th class="column-title" style="width: 20%;text-align:center"><span class="nobr">Edit</span></th>
@@ -51,9 +51,8 @@
 
 					<tbody>
 					  <tr *ngFor="let c of contactList">
-						<td class="a-center " style="width: 5%;">
-						  <!-- <input type="checkbox" class="flat" name="table_records"> -->
-						</td>
+						<!-- <td class="a-center " style="width: 5%;">
+						</td> -->
 						<td class=" " style="width: 20%;text-align:center" routerLink="../../contactdetail/{{c._id}}">
 							<a >{{c.name}}</a>
 						</td>

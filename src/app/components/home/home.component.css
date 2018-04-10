@@ -106,12 +106,12 @@ label > input[type="checkbox"]:not(:checked) + .label-text:before {
 	width: 400px;
 	height: 70px;
 }
-@media only screen and (max-width: 560px) {
+@media only screen and (max-width: 450px) {
 	.mydropdown {
-		width: 300px
+		width: 285px
 	}
     .rselector {
-		width: 300px;
+		width: 345px;
 	}
 }
 input[type="range"] {

@@ -37,25 +37,25 @@
 
 					<div class="x_content">
 					<div class="table-responsive">
-						<table class="table table-striped jambo_table bulk_action">
+						<table class="table table-striped jambo_table bulk_action table-bordered">
 						<thead>
 							<tr class="headings">
-							<th class="column-title" style="width: 5%;">
-								<!-- <input type="checkbox" id="check-all" class="flat"> -->
-							</th>
-							<th class="column-title" style="width: 30%;">Category </th>
-							
-							<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
-							</th>
+								<!-- <th class="column-title" style="width: 5%;">
+									
+								</th> -->
+								<th class="column-title" style="width: 30%;">Category </th>
+								
+								<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
+								</th>
 							
 							</tr>
 						</thead>
 
 						<tbody>
 							<tr *ngFor="let c of mockcategories; let index = index">
-							<td class="a-center ">
-								<!-- <input type="checkbox" class="flat" name="table_records"> -->
-							</td>
+							<!-- <td class="a-center ">
+								
+							</td> -->
 							<td routerLink="contacts/{{c._id}}">
 								<a > {{c.name}}</a>
 							</td>
@@ -101,7 +101,7 @@
 	</div>
 </div>
 <!-- edit category -->
-<div id="editCategoryModal" class="modal fade" style="margin-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="editCategoryModal" class="modal fade" style="position: absolute; top:50%;bottom:50%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -128,7 +128,7 @@
 	</div>
 </div>
 <!-- delete category -->
-<div id="deleteCategoryModal" class="modal fade" style="margin-top:200px" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="deleteCategoryModal" class="modal fade" style="position: absolute; top:50%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
