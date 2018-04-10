@@ -47,23 +47,25 @@
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Name <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input #nam class="form-control col-md-7  col-xs-12"  formControlName="name">
+                                        <input #nam class="form-control col-md-7  col-xs-12" placeholder="Enter Name" formControlName="name">
                                     </div>                                
                                 </div>
                                 <div class="item form-group">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input class="form-control" formControlName="location" data-toggle="modal" data-target="#openMap" >
+                                        <input class="form-control" placeholder="Search Location" formControlName="location" data-toggle="modal" data-target="#openMap" >
                                     </div>                                  
                                 </div>
                                 <div class="item form-group">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Notes <span class="required"></span> </label>
                                     
                                     <div  class="col-md-8 col-sm-8 col-xs-12">
+                                        <!-- {{myForm.controls.items.length}} -->
                                       
                                       <div formArrayName="items">`
-                                          <div class="form-group row" *ngFor="let itemrow of myForm.controls.items.controls; let i=index"  [formGroupName]="i">
+                                          <div class="form-group row" *ngFor="let itemrow of getControls(myForm, 'items'); let i=index"  [formGroupName]="i">
+                                              
                                               <div class="col-sm-3 col-xs-3" style="padding-left:0" >
                                                   <label ></label>
                                                   <textarea placeholder="label" type="text" class="form-control" formControlName="date" #nam1 ></textarea>
@@ -90,11 +92,11 @@
   </div>
   
   
-   <div>valid {{myForm.valid}}</div>
+   <!-- <div>valid {{myForm.valid}}</div>
   <div>pristine  {{myForm.pristine}}</div>
   <div>dirty {{myForm.dirty}}</div>
   <pre>{{myForm.value | json}}</pre> 
-  
+   -->
   
   
   
@@ -120,7 +122,7 @@
         </div>
     </div>
   </div>
-  <div id="deleteContactModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <!-- <div id="deleteContactModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,7 +140,7 @@
             </div>
         </div>
     </div>
-  </div>
+  </div> -->
   
   <div id="myModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">

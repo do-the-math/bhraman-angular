@@ -71,6 +71,7 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     SandboxComponent,
+    Sandbox2Component,
     ContactFormComponent,
 	Error404Component,
 	ItemsFormArrayComponent, 

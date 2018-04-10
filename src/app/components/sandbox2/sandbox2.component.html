@@ -65,7 +65,7 @@
                                   <div  class="col-md-8 col-sm-8 col-xs-12">
                                     
                                     <div formArrayName="items">`
-                                        <div class="form-group row" *ngFor="let itemrow of myForm.controls.items.controls; let i=index"  [formGroupName]="i">
+                                        <div class="form-group row" *ngFor="let itemrow of myForm.controls.items; let i=index"  [formGroupName]="i">
                                             <div class="col-sm-3 col-xs-3" style="padding-left:0" >
                                                 <label ></label>
                                                 <textarea placeholder="label" type="text" class="form-control" formControlName="date" #nam1 ></textarea>

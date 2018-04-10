@@ -205,6 +205,10 @@ import * as $ from 'jquery';
     	const notesFormArray = this.fb.array(notesFGs);
 		this.myForm.setControl('items', notesFormArray);
 	}
+	getControls(frmGrp: FormGroup, key: string) {
+		return (<FormArray>frmGrp.controls[key]).controls;
+	  }
+
 	initItemRows() {
         return this.fb.group({
 			date: new FormControl("", Validators.required),
@@ -262,7 +266,7 @@ import * as $ from 'jquery';
 		console.log(submitContact);
 		this.toggleForm('disable');
 		this.toggleEditBtn();
-		// this.updateContact(submitContact);
+		this.updateContact(submitContact);
 		this.disableSaveBtn = true;
 	}
 	
