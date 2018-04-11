@@ -8,27 +8,16 @@
 
 
 
-#myChoice  {
-	font-size: 17px;
-	font-family: Arial, Helvetica neue, sans-serif;
-	color: rgb(115, 135, 156);
-}
+
 .mydropdown {
 	width: 300px;
 	right: 0; 
 	left: auto;
 }
-/* .mydropdown2 {
-
-} */
 .dropdown-menu li:hover {
 	color: white;
 	background-color: #eee;
 }
-/* .dropdown-menu li.active {
-	border-top: .3px white solid; 
-	background-color: #eee;
-} */
 .dropdown-menu li {
 	padding: 0px;
 	padding-top:5px;
@@ -87,7 +76,6 @@ label > input[type="checkbox"]:not(:checked) + .label-text:before {
 	animation: notick 150ms ease-out;
 	/*background-color: #2a3f54;*/
 }
-
 @keyframes tick {
 	0% {transform: scale(0);}
 	80% {transform: scale(1.5);}
@@ -139,7 +127,28 @@ input[type="range"]::-webkit-slider-thumb {
 	border: 5px solid white;
 	background-clip: padding-box;
   	cursor: pointer;
-
 }
 
 
+
+.mydropdown2 {
+	width: 300px;
+	height: 150px;
+	overflow: auto;
+	position: absolute;
+	top: 40px;
+	left: 0;
+	z-index: 9999;
+	background-color: white;
+	border-color: rgb(217, 222, 228);
+}
+
+.mydropdown2 li {
+	color: rgb(90,115,142);
+	background-color: white;
+	border-color: rgb(217, 222, 228);	
+}
+.mydropdown2 li:hover {
+	color: rgb(90,115,142);
+	background-color: #eee;
+}

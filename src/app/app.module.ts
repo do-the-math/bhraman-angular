@@ -32,6 +32,7 @@ import { SandboxComponent,  ItemsFormArrayComponent, ItemFormControlComponent } 
 import { ContactFormComponent } from './components/contact-form/contact-form.component';
 import { Error404Component } from './components/error404/error404.component';
 import { Sandbox2Component } from './components/sandbox2/sandbox2.component';
+import { ResetComponent } from './components/reset/reset.component';
 
 const appRoutes: Routes = [ 
 	{ path: 'login', component: LoginComponent },  	
@@ -53,6 +54,7 @@ const appRoutes: Routes = [
 			{ path: '**', component: Error404Component }
 		]
 	},	
+	{ path: 'reset/:link', component: ResetComponent },
 	{ path: '**', redirectTo: '/login' }
 	
 ];
@@ -75,7 +77,7 @@ const appRoutes: Routes = [
     ContactFormComponent,
 	Error404Component,
 	ItemsFormArrayComponent, 
-	ItemFormControlComponent, Sandbox2Component
+	ItemFormControlComponent, Sandbox2Component, ResetComponent
   ],
   imports: [
     BrowserModule,

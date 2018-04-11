@@ -68,4 +68,25 @@ export class AuthService {
     this.user = null;
     localStorage.clear();
   }
+
+
+
+  resetPassword(userId, user){
+    console.log("password reset from service ");
+    console.log(user);
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.patch(GlobalVariable.BASE_API_URL+'/users/resetpassword/'+userId, user, {headers: headers})
+      .map(res => res.json());
+  }
+  forgotPassword(username: string){
+    console.log("Forgot Password UserName submitted from service");
+
+    let headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post(GlobalVariable.BASE_API_URL+'/users/forgotpassword/'+username, {headers: headers})
+      .map(res => res.json());
+  }
+
 }

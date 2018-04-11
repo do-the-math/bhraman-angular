@@ -75,6 +75,7 @@ export class HomeComponent implements OnInit {
 		this.optionSelected = [];
 		this.myCircleRadius = 1; // 1km
 		this.myCircle = new google.maps.Circle();
+		console.log(this.myCircle)
 		this.infowindow_open = null;
 		this.markerList = []
 		this.colorMap = new Map<string, string>();
@@ -96,32 +97,10 @@ export class HomeComponent implements OnInit {
 				console.log(err);
 				return false;
 		});
-		// var opts = {
-		// 	lines: 20, // The number of lines to draw
-		// 	length: 5, // The length of each line
-		// 	width: 20, // The line thickness
-		// 	radius: 25, // The radius of the inner circle
-		// 	scale: 2, // Scales overall size of the spinner
-		// 	corners: 1, // Corner roundness (0..1)
-		// 	color: '#1ABB9C', // CSS color or array of colors
-		// 	fadeColor: 'transparent', // CSS color or array of colors
-		// 	opacity: 0.1, // Opacity of the lines
-		// 	rotate: 0, // The rotation offset
-		// 	direction: 1, // 1: clockwise, -1: counterclockwise
-		// 	speed: 0.5, // Rounds per second
-		// 	trail: 60, // Afterglow percentage
-		// 	fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
-		// 	zIndex: 2e9, // The z-index (defaults to 2000000000)
-		// 	className: 'spinner', // The CSS class to assign to the spinner
-		// 	top: '50%', // Top position relative to parent
-		// 	left: '50%', // Left position relative to parent
-		// 	position: 'absolute' // Element positioning
-		// };
 		var opts = {
 			top: "50%",
 			color: '#5cb85c',
 			radius: 10
-
 		};
 		var target = document.getElementById('myMap');
 		this.spinner = new Spinner(opts).spin(target);
@@ -137,12 +116,7 @@ export class HomeComponent implements OnInit {
 						value.color = this.CSS_COLOR_NAMES[index];
 						this.colorMap.set(value._id, this.CSS_COLOR_NAMES[index]);
 						this.optionSelected.push(value._id);
-					});
-					// for(var s=0; s< this.categoryList.length; s++){
-					// 	this.categoryList[s].color = this.CSS_COLOR_NAMES[s];
-					// 	this.colorMap.set(this.categoryList[s]._id, this.CSS_COLOR_NAMES[s]);
-					// 	this.optionSelected.push(this.categoryList[s]._id);
-					// }	
+					});	
 					this.getContact(this.user); 
 				},
 				error => {alert(error)},
@@ -218,9 +192,7 @@ export class HomeComponent implements OnInit {
 		this.markerList.forEach((value, index)=>{
 			value.setMap(null);
 		});
-		// for (var i = 0; i < this.markerList.length; i++) {
-        //   this.markerList[i].setMap(null);
-        // }
+		
         if(option=="all"){
 			this.myCircle.setMap(null);
 		}
@@ -291,6 +263,9 @@ export class HomeComponent implements OnInit {
 		console.log("onOptionChange");
 
 		this.clearMap("marker");
+		if(this.myCircle.getMap()==null){
+			this.drawCircleOnMap(this.myCurrentPosition);
+		}
 		this.findNearByContacts();
 	}
 	findNearByContacts() {
@@ -352,9 +327,6 @@ export class HomeComponent implements OnInit {
 							"<b>"+value.date+":</b> "+
 							value.note  +"</li>"
 		})
-		// for(var t=0;t<obj.notes.length;t++){
-		// 	listContent  = listContent + "<li style='word-wrap: break-word; padding-top: 7px;list-style-type: none;font-size:16px'>" + "<b>"+obj.notes[t].date+":</b> " + obj.notes[t].note  +"</li>"
-		// }
 		var infoWindowContent = "<div class='container-fluid'>"+
 									"<div style='width: 250px' >"+
 										"<h2 class='' style='padding-left:20px;font-size:16px'>Name: " + obj.name + "</h2>"+
@@ -395,6 +367,37 @@ export class HomeComponent implements OnInit {
 				}
 			});
 		});
+	}
+
+
+	// searchContactCode
+	searchContactName;
+	searchedContactList1: any= this.contactList;
+
+	SearchContactFn(){
+		// console.log(this.searchContactName);
+		this.searchedContactList1 = this.contactList.filter(contact => {
+			if(contact.name.toLowerCase().startsWith(this.searchContactName.toLowerCase())){
+				return true;
+			}
+		});
+		console.log(this.myCircle);
+		// console.log(this.searchedContactList1);
+	}
+	plotSearchedMarker(obj: CONTACT){
+		console.log("plotSearchedMarker");
+
+		this.searchContactName = obj.name;
+		this.clearMap('all');
+		
+		this.clearaOptions();
+		// this.optionSelected = [];
+		this.filterContacts();
+		this.filteredContactListByCategory = [];
+		this.showContactInMap(obj);
+
+
+		console.log(this.myCircle);
 	}
 }
 

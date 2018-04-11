@@ -15,6 +15,9 @@ export class LoginComponent implements OnInit {
 	spinner:any;
 	opts: any;
 	target: any;
+
+	usernameFP: string;
+
 	constructor(  private authService: AuthService,
 			      private router: Router,
 				   private notif: NotificationsService
@@ -37,28 +40,6 @@ export class LoginComponent implements OnInit {
 				preventLastDuplicates: true
 			}
 		);
-		
-		// this.opts = {
-		// 	lines: 2, // The number of lines to draw
-		// 	length: 5, // The length of each line
-		// 	width: 20, // The line thickness
-		// 	radius: 10, // The radius of the inner circle
-		// 	scale: 2, // Scales overall size of the spinner
-		// 	corners: 1, // Corner roundness (0..1)
-		// 	color: 'white', // CSS color or array of colors
-		// 	fadeColor: 'transparent', // CSS color or array of colors
-		// 	opacity: 0.1, // Opacity of the lines
-		// 	rotate: 0, // The rotation offset
-		// 	direction: 1, // 1: clockwise, -1: counterclockwise
-		// 	speed: 0.5, // Rounds per second
-		// 	trail: 60, // Afterglow percentage
-		// 	fps: 20, // Frames per second when using setTimeout() as a fallback in IE 9
-		// 	zIndex: 2e9, // The z-index (defaults to 2000000000)
-		// 	className: 'spinner', // The CSS class to assign to the spinner
-		// 	top: '50%', // Top position relative to parent
-		// 	left: '50%', // Left position relative to parent
-		// 	position: 'absolute' // Element positioning
-		// };
 		this.opts = {
 			top: "25%",
 			color: '#5cb85c',
@@ -107,6 +88,13 @@ export class LoginComponent implements OnInit {
 				this.spinner.stop();
 			}
 		});
+	}
+
+	onSubmit(){
+		console.log("Forgot Password UserName submitted from componet "+this.usernameFP);
+		
+		this.authService.forgotPassword(this.usernameFP);
+		this.usernameFP = "";
 	}
 }
 
