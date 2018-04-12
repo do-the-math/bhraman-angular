@@ -30,7 +30,6 @@ export class ContactFormComponent implements OnInit {
 		curContactObj: CONTACT;
 		curContactMarker:any;
 
-		oriContactMarker: any;
 		tmpContactMarker = {
 			position: {
 				lat: 0,
@@ -39,10 +38,9 @@ export class ContactFormComponent implements OnInit {
 			location: ""
 		}
 		nameInputbutton: boolean = true;
-		showInp: boolean;
+		searchTyp: boolean = true;
 		disableSaveBtn = true;
-		editBtn = false;
-		display: string = 'none';
+		
 		categoryID: string;
 		itemsFormArray: FormArray;
 		myPos: any; 
@@ -60,8 +58,6 @@ export class ContactFormComponent implements OnInit {
 	  
 		ngOnInit() {
 			this.categoryID = (this.route.snapshot.paramMap.get('categoryID'));
-			this.nameInputbutton= true;
-			this.editBtn = false;
 			this.curContactObj = new CONTACT();
 			this.user = new USER();
 		
@@ -100,44 +96,149 @@ export class ContactFormComponent implements OnInit {
 				};
 				this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 				
+				this.tmpContactMarker.location = "You did not search location..";
+				this.tmpContactMarker.position.lat = position.coords.latitude;
+				this.tmpContactMarker.position.lng = position.coords.longitude;
 
-				// Create Contact Marker on the Map with current location
 				this.curContactMarker = new google.maps.Marker({
-						position: this.myPos,
-						map: this.map,
-						title: "You are here!",
-						draggable: true
+					position: this.myPos,
+					map: this.map,
+					title: "You are here!",
+					draggable: true
 				});
-			
-				this.curContactMarker.addListener('dragend', (event)=>{
-					this.geocoder.geocode({'location': this.curContactMarker.position}, (results, status)=> {
-						if (status === 'OK') {
-							console.log(results[0].formatted_address)
-							if (results[0]) {
-								this.userSettings = {
-									"inputString": results[0].formatted_address
-								}
-								// OLD CODE
-								// this.curContactObj.location = results[0].formatted_address;
-								// this.curContactObj.position.lat = this.curContactMarker.position.lat();
-								// this.curContactObj.position.lng = this.curContactMarker.position.lng();
-								// this.myForm.controls['location'].patchValue(results[0].formatted_address);
-
-								// added a tmp marker which will update curContactMaker then locationSelection() is triggered
-								this.tmpContactMarker.location = results[0].formatted_address;
-								this.tmpContactMarker.position.lat = this.curContactMarker.position.lat();
-								this.tmpContactMarker.position.lng = this.curContactMarker.position.lng();
-							} else {
-								window.alert('No results found');
+				this.addListerToMarker(this.curContactMarker);
+			});
+		}
+		addListerToMarker(marker){
+			marker.addListener('dragend', (event)=>{
+				this.geocoder.geocode({'location': marker.position}, (results, status)=> {
+					if (status === 'OK') {
+						console.log(results[0].formatted_address)
+						if (results[0]) {
+							this.userSettings = {
+								"inputString": results[0].formatted_address
 							}
+							
+							this.tmpContactMarker.location = results[0].formatted_address;
+							this.tmpContactMarker.position.lat = marker.position.lat();
+							this.tmpContactMarker.position.lng= marker.position.lng();
 						} else {
-							window.alert('Geocoder failed due to: ' + status);
+							window.alert('No results found');
 						}
-					});
+					} else {
+						window.alert('Geocoder failed due to: ' + status);
+					}
 				});
 			});
 		}
 		
+		locationSelected(){
+			console.log("location selected")
+			
+			this.curContactObj.location = this.tmpContactMarker.location;
+			this.curContactObj.position = this.tmpContactMarker.position;
+			this.myForm.controls['location'].patchValue(this.tmpContactMarker.location);
+			this.disableSaveBtn = false;
+
+			// this.curContactMarker.setPosition(this.myPos);
+			this.userSettings.inputString = this.tmpContactMarker.location;
+			let location = new google.maps.LatLng(this.tmpContactMarker.position.lat, this.tmpContactMarker.position.lng);
+			this.map.panTo(location);
+		}
+		mapClosed(){
+			this.curContactMarker.setPosition(this.myPos);
+			this.userSettings.inputString =  "search location again";
+			this.map.panTo(this.myPos);
+		}
+		
+		autoCompleteCallback1(selectedData:any) {
+			console.log(selectedData);
+			this.tmpContactMarker.position = selectedData.data.geometry.location;
+			this.tmpContactMarker.location = selectedData.data.formatted_address;
+			this.userSettings = {
+				"inputString": selectedData.data.formatted_address
+			}	
+
+			let location = new google.maps.LatLng(this.tmpContactMarker.position.lat, this.tmpContactMarker.position.lng);
+			this.map.panTo(location);
+			
+			this.curContactMarker.setMap(null);
+			this.curContactMarker = new google.maps.Marker({
+				position: this.tmpContactMarker.position,
+				map: this.map,
+				title: this.curContactObj.name,
+				draggable: true
+			});
+			this.addListerToMarker(this.curContactMarker);
+		}
+		get formData() { return this.myForm.get('items'); }
+
+		latLngSubmit(value){
+			console.log(value.lng+" "+ value.lat)
+
+			var latlng = {lat: parseFloat(value.lat), lng: parseFloat(value.lng)};
+			this.geocoder.geocode({'location': latlng}, (results, status) =>{
+				if (status === 'OK') {
+					if (results[0]) {
+						let location = new google.maps.LatLng(latlng.lat, latlng.lng);
+						// this.map.panTo(location);
+						
+						this.curContactMarker.setMap(null);
+						this.curContactMarker = new google.maps.Marker({
+							position: location,
+							map: this.map,
+							title: this.curContactObj.name,
+							draggable: true
+						});
+						this.addListerToMarker(this.curContactMarker);
+
+						this.userSettings.inputString = results[0].formatted_address;
+						this.tmpContactMarker.location = results[0].formatted_address;
+						this.tmpContactMarker.position = latlng;
+						this.map.panTo(location);
+
+					} else {
+						window.alert('No results found');
+					}
+				} else {
+				  window.alert('Geocoder failed due to: ' + status);
+				}
+			});
+		}
+
+		// Contact Form Code
+		createForm(obj: CONTACT){
+			this.myForm = this.fb.group({
+				name: new FormControl({value: this.curContactObj.name, disabled: false}),
+				items: this.fb.array([]),
+				location: new FormControl({value: this.curContactObj.location, disabled: false}),
+			});
+			this.setNotes(this.curContactObj.notes);
+		}
+		
+		setNotes(notes: NOTE[]) {
+			const notesFGs = notes.map(address => this.fb.group(address));
+			const notesFormArray = this.fb.array(notesFGs);
+			this.myForm.setControl('items', notesFormArray);
+		}
+		initItemRows() {
+			return this.fb.group({
+				date: new FormControl("", Validators.required),
+				note: new FormControl("",  Validators.required)
+			});
+		}
+		addNewRow() {
+		   	// this.myForm.controls['item'].enable();
+			const control = <FormArray>this.myForm.controls['items'];
+			control.push(this.initItemRows());
+		}
+		getControls(frmGrp: FormGroup, key: string) {
+			return (<FormArray>frmGrp.controls[key]).controls;
+		}
+		deleteRow(index: number) {
+			const control = <FormArray>this.myForm.controls['items'];
+			control.removeAt(index);
+		}
 		
 		submit(){
 			var submitContact: CONTACT = new CONTACT();
@@ -167,41 +268,7 @@ export class ContactFormComponent implements OnInit {
 					()=> console.log("done")
 				); 
 		}
-		createForm(obj: CONTACT){
-			this.myForm = this.fb.group({
-				name: new FormControl({value: this.curContactObj.name, disabled: false}),
-				items: this.fb.array([]),
-				location: new FormControl({value: this.curContactObj.location, disabled: false}),
-			});
-			this.setNotes(this.curContactObj.notes);
-		}
-		
-		setNotes(notes: NOTE[]) {
-			const notesFGs = notes.map(address => this.fb.group(address));
-			const notesFormArray = this.fb.array(notesFGs);
-			this.myForm.setControl('items', notesFormArray);
-		}
-		initItemRows() {
-			return this.fb.group({
-				date: new FormControl("", Validators.required),
-				note: new FormControl("",  Validators.required)
-			});
-		}
-		addNewRow() {
-		   	// this.myForm.controls['item'].enable();
-			const control = <FormArray>this.myForm.controls['items'];
-			control.push(this.initItemRows());
-		}
 
-		////////////
-		getControls(frmGrp: FormGroup, key: string) {
-			return (<FormArray>frmGrp.controls[key]).controls;
-		}
-
-		deleteRow(index: number) {
-			const control = <FormArray>this.myForm.controls['items'];
-			control.removeAt(index);
-		}
 		backClicked(){
 			if(this.myForm.dirty || this.disableSaveBtn==false){
 				// $('#myModal').addClass('in');
@@ -226,86 +293,5 @@ export class ContactFormComponent implements OnInit {
 				$('#myModal').css('display','none');
 				document.getElementById("my-element").remove();
 			}
-		}
-		locationSelected(){
-			console.log("location selected")
-			this.curContactMarker.location = this.tmpContactMarker.location;
-			this.curContactMarker.postion = this.tmpContactMarker.position;
-			this.curContactObj.location = this.curContactMarker.location;
-			this.curContactObj.position.lat = this.tmpContactMarker.position.lat
-			this.curContactObj.position.lng = this.tmpContactMarker.position.lng;
-
-			this.myForm.controls['location'].patchValue(this.curContactMarker.location);
-			this.disableSaveBtn = false;
-
-			this.curContactMarker.setPosition(this.myPos);
-			this.userSettings.inputString = this.curContactMarker.location;
-		}
-		mapClosed(){
-			this.curContactMarker.setPosition(this.myPos);
-			this.userSettings = {
-				"inputString": "search location again"
-			}
-		}
-		addListerToMarker(marker){
-			marker.addListener('dragend', (event)=>{
-				this.geocoder.geocode({'location': marker.position}, (results, status)=> {
-					if (status === 'OK') {
-						console.log(results[0].formatted_address)
-						if (results[0]) {
-							this.userSettings = {
-								"inputString": results[0].formatted_address
-							}
-							this.myForm.controls['location'].patchValue(results[0].formatted_address);
-							
-							// OLD CODE , updating the current marker
-							// this.curContactObj.location = results[0].formatted_address;
-							// this.curContactObj.position.lat = marker.position.lat();
-							// this.curContactObj.position.lng = marker.position.lng();	
-							// this.disableSaveBtn = false;
-							
-							// added a tmp marker which will update curContactMaker then locationSelection() is triggered
-							this.tmpContactMarker.location = results[0].formatted_address;
-							this.tmpContactMarker.position.lat = marker.position.lat();
-							this.tmpContactMarker.position.lng= marker.position.lng();
-							
-						} else {
-							window.alert('No results found');
-						}
-					} else {
-						window.alert('Geocoder failed due to: ' + status);
-					}
-					
-				});
-				google.maps.event.trigger(marker, 'click');
-			});
-			
-		}
-		autoCompleteCallback1(selectedData:any) {
-			console.log(selectedData);
-			
-			this.curContactObj.position= selectedData.data.geometry.location;
-			this.curContactObj.location = selectedData.data.formatted_address;
-			this.myForm.controls['location'].patchValue(this.curContactObj.location);
-			this.userSettings = {
-				"inputString": this.curContactObj.location
-			}
-	
-			let location = new google.maps.LatLng(this.curContactObj.position.lat, this.curContactObj.position.lng);
-			this.map.panTo(location);
-			
-			this.curContactMarker.setMap(null);
-			this.curContactMarker = new google.maps.Marker({
-				position: this.curContactObj.position,
-				map: this.map,
-				title: this.curContactObj.name,
-				draggable: true
-			});
-			this.addListerToMarker(this.curContactMarker);
-		}
-		get formData() { return this.myForm.get('items'); }
-
-		onSubmit(value){
-			console.log(value.lng+" "+ value.lat)
 		}
 	}
