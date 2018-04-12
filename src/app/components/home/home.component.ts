@@ -274,10 +274,10 @@ export class HomeComponent implements OnInit {
 		var searchContactList = this.getFilteredContacts()
 		searchContactList.forEach(contact => {
 			var dist = this.findDistance(
-										this.myCurrentPosition.latitude, 
-										this.myCurrentPosition.longitude,
-										contact.position.lat, 
-										contact.position.lng);
+								this.myCurrentPosition.latitude, 
+								this.myCurrentPosition.longitude,
+								contact.position.lat, 
+								contact.position.lng);
 			console.log(dist)
 			if (dist*1000 < this.getRadius()*1000) {
 				this.showContactInMap(contact);
@@ -306,6 +306,10 @@ export class HomeComponent implements OnInit {
 			myInfowindow.open(this.map, marker);
 	    });
 		this.markerList.push(marker);
+		
+
+		/// testing
+		return marker;
 	}
 	findDistance(lat1, lon1, lat2, lon2, unit="K") {
 		var radlat1 = Math.PI * lat1/180
@@ -388,16 +392,24 @@ export class HomeComponent implements OnInit {
 		console.log("plotSearchedMarker");
 
 		this.searchContactName = obj.name;
-		this.clearMap('all');
-		
-		this.clearaOptions();
-		// this.optionSelected = [];
-		this.filterContacts();
-		this.filteredContactListByCategory = [];
-		this.showContactInMap(obj);
 
+		// NOT CLEARING THE MAP TO DISPLAY THE SELECTED MARKER
+		// this.clearMap('all');
+		// this.clearaOptions();
+		// this.filterContacts();
+		// this.filteredContactListByCategory = [];
+
+		let myMarker = this.showContactInMap(obj);
 		this.map.panTo(obj.position);
 
+
+		var infoWindowContent = this.InfoWinContent(obj)
+		if( this.infowindow_open ) {
+			this.infowindow_open.close();
+		}
+		var myInfowindow = new google.maps.InfoWindow({ content: infoWindowContent });
+		this.infowindow_open = myInfowindow;
+		myInfowindow.open(this.map, myMarker);
 		console.log(this.myCircle);
 	}
 }

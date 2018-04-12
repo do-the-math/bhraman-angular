@@ -304,4 +304,8 @@ export class ContactFormComponent implements OnInit {
 			this.addListerToMarker(this.curContactMarker);
 		}
 		get formData() { return this.myForm.get('items'); }
+
+		onSubmit(value){
+			console.log(value.lng+" "+ value.lat)
+		}
 	}
