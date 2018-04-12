@@ -35,18 +35,26 @@ export class ResetComponent implements OnInit {
   userId: string;
 
   ngOnInit() {
-    this.myLink = (this.route.snapshot.paramMap.get('link'));
-    this.userId = this.myLink.slice(0,24)
-    this.myLink = this.myLink.slice(24,this.myLink.length)
+    this.userId = (this.route.snapshot.paramMap.get('link'));
   }
 
   onSubmit(myForm: any){
     console.log("password reset from component");
 
-    var obj = new USER();
-    obj.password = myForm.password1;
-    console.log(this.userId + " "+this.myLink );
-    this.authService.resetPassword(this.userId, obj);
+    var obj = {
+      password: myForm.password1
+    }
+
+    console.log(this.userId);
+    this.authService.resetPassword(this.userId, obj)
+      .subscribe(data => {
+        if(data.success) {
+          console.log("sucess");
+          console.log(data);
+        } else {
+          console.log("bad")
+        }
+      });
   }
 
 }

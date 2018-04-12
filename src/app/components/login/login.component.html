@@ -15,8 +15,11 @@
           <button [disabled]="!userForm.form.valid" type="submit" class="btn btn-primary btn-lg btn-block">Login </button>
         </div>
       </form>
-    <div class="text-center">Dont have an account? <a routerLink="/register">Sign Up</a></div>
-    <button href="#forgotPassword" data-toggle="modal" class="delete btn btn-danger" style="text-align: center" >Forgot Password </button>
+      <div class="text-center">
+        <button href="#forgotPassword" data-toggle="modal" class="delete btn btn-danger text-center"  >Forgot Password </button>
+      </div>
+      <div class="text-center">Dont have an account? <a routerLink="/register">Sign Up</a></div>
+    
   </div>
 </div>
 
@@ -37,7 +40,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button  type="submit" class="btn btn-success antosubmit2" (click)="onSubmit()" data-dismiss="modal">Submit</button>
+                <button  type="submit" class="btn btn-success antosubmit2" (click)="submit()" data-dismiss="modal">Submit</button>
               </div>
             </form>
           </div>

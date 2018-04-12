@@ -20,7 +20,7 @@ export class RegisterComponent implements OnInit {
 
 	ngOnInit() {
 		if(this.authService.getUser()!=null || this.authService.getUser()!=undefined){
-			this.router.navigate(['/dashboard']);
+			this.router.navigate(['/dashboard/home']);
 			return;
 		}
 	}

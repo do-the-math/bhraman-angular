@@ -90,10 +90,18 @@ export class LoginComponent implements OnInit {
 		});
 	}
 
-	onSubmit(){
+	submit(){
 		console.log("Forgot Password UserName submitted from componet "+this.usernameFP);
-		
-		this.authService.forgotPassword(this.usernameFP);
+		// this.usernameFP = "test"
+		this.authService.forgotPassword(this.usernameFP)
+			.subscribe(data => {
+				if(data.success) {
+					console.log("sucess");
+					console.log(data);
+				} else {
+					console.log("bad")
+				}
+			});
 		this.usernameFP = "";
 	}
 }

@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { tokenNotExpired } from 'angular2-jwt';
 import { GlobalVariable } from '../services/general.js';
+import 'rxjs/add/operator/map';
+import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class AuthService {
@@ -72,20 +74,27 @@ export class AuthService {
 
 
   resetPassword(userId, user){
-    console.log("password reset from service ");
+    console.log("password reset from service "+userId);
     console.log(user);
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.patch(GlobalVariable.BASE_API_URL+'/users/resetpassword/'+userId, user, {headers: headers})
+    let obj = {
+      password: user.password
+    }
+    return this.http.patch(GlobalVariable.BASE_API_URL+'/users/resetpassword/'+userId, obj, {headers: headers})
       .map(res => res.json());
   }
-  forgotPassword(username: string){
-    console.log("Forgot Password UserName submitted from service");
+
+  forgotPassword(username1: string){
+    console.log("Forgot Password UserName submitted from service "+username1);
 
     let headers = new Headers();
     headers.append('Content-Type', 'application/json');
-    return this.http.post(GlobalVariable.BASE_API_URL+'/users/forgotpassword/'+username, {headers: headers})
+    let obj = {
+      username: username1
+    }
+    return this.http.post(GlobalVariable.BASE_API_URL+'/users/fp', obj, {headers: headers})
       .map(res => res.json());
   }
 
