@@ -26,10 +26,18 @@ export class ContactFormComponent implements OnInit {
 		myForm: FormGroup;
 	
 		contactID: string;
-		curContactObj: CONTACT;
-		oriContactObj: CONTACT;
 		user: USER;
+		curContactObj: CONTACT;
 		curContactMarker:any;
+
+		oriContactMarker: any;
+		tmpContactMarker = {
+			position: {
+				lat: 0,
+				lng: 0
+			},
+			location: ""
+		}
 		nameInputbutton: boolean = true;
 		showInp: boolean;
 		disableSaveBtn = true;
@@ -37,7 +45,8 @@ export class ContactFormComponent implements OnInit {
 		display: string = 'none';
 		categoryID: string;
 		itemsFormArray: FormArray;
-	
+		myPos: any; 
+
 		constructor(
 			private fb: FormBuilder,
 			private route: ActivatedRoute,
@@ -65,7 +74,7 @@ export class ContactFormComponent implements OnInit {
 			});
 
 			this.userSettings = {
-				"inputString": this.curContactObj.location
+				"inputString": "Search Location.."
 			}
 			this.authService.getProfile().subscribe(profile => {
 				this.user = profile.user;	
@@ -75,8 +84,6 @@ export class ContactFormComponent implements OnInit {
 				console.log(err);
 				return false;
 			});
-	
-		
 		}
 
 		createContact(user: USER){
@@ -85,18 +92,20 @@ export class ContactFormComponent implements OnInit {
 			this.curContactObj.location = "Search Location";
 	
 			navigator.geolocation.getCurrentPosition((position) => {
-				var myPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				this.myPos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 				var mapProp = {
-					center: myPos,
+					center: this.myPos,
 					zoom: 13,
 					mapTypeId: google.maps.MapTypeId.ROADMAP
 				};
 				this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 				
+
+				// Create Contact Marker on the Map with current location
 				this.curContactMarker = new google.maps.Marker({
-						position: myPos,
+						position: this.myPos,
 						map: this.map,
-						title: this.curContactObj.name,
+						title: "You are here!",
 						draggable: true
 				});
 			
@@ -108,11 +117,16 @@ export class ContactFormComponent implements OnInit {
 								this.userSettings = {
 									"inputString": results[0].formatted_address
 								}
-								this.curContactObj.location = results[0].formatted_address;
-								this.curContactObj.position.lat = this.curContactMarker.position.lat();
-								this.curContactObj.position.lng = this.curContactMarker.position.lng();
+								// OLD CODE
+								// this.curContactObj.location = results[0].formatted_address;
+								// this.curContactObj.position.lat = this.curContactMarker.position.lat();
+								// this.curContactObj.position.lng = this.curContactMarker.position.lng();
+								// this.myForm.controls['location'].patchValue(results[0].formatted_address);
 
-								this.myForm.controls['location'].patchValue(results[0].formatted_address);
+								// added a tmp marker which will update curContactMaker then locationSelection() is triggered
+								this.tmpContactMarker.location = results[0].formatted_address;
+								this.tmpContactMarker.position.lat = this.curContactMarker.position.lat();
+								this.tmpContactMarker.position.lng = this.curContactMarker.position.lng();
 							} else {
 								window.alert('No results found');
 							}
@@ -124,6 +138,21 @@ export class ContactFormComponent implements OnInit {
 			});
 		}
 		
+		
+		submit(){
+			var submitContact: CONTACT = new CONTACT();
+			submitContact.userID = this.user._id;
+			submitContact.categoryID = this.categoryID;
+			submitContact.name = this.myForm.value.name;
+			submitContact.notes = this.myForm.value.items;
+			submitContact.location = this.myForm.value.location;
+			submitContact.position.lat = this.curContactObj.position.lat;
+			submitContact.position.lng = this.curContactObj.position.lng;
+			console.log(submitContact);
+
+			this.disableSaveBtn = true;
+			// this.addContact(submitContact);
+		}
 		addContact(obj: CONTACT){
 			console.log("Contact Updated from Component");
 	
@@ -138,20 +167,6 @@ export class ContactFormComponent implements OnInit {
 					()=> console.log("done")
 				); 
 		}
-		submit(){
-			var submitContact: CONTACT = new CONTACT();
-			submitContact.userID = this.user._id;
-			submitContact.categoryID = this.categoryID;
-			submitContact.name = this.myForm.value.name;
-			submitContact.notes = this.myForm.value.items;
-			submitContact.location = this.curContactObj.location;
-			submitContact.position = this.curContactObj.position;
-			console.log(submitContact);
-
-			this.disableSaveBtn = true;
-			this.addContact(submitContact);
-		}
-		
 		createForm(obj: CONTACT){
 			this.myForm = this.fb.group({
 				name: new FormControl({value: this.curContactObj.name, disabled: false}),
@@ -173,7 +188,7 @@ export class ContactFormComponent implements OnInit {
 			});
 		}
 		addNewRow() {
-		//    this.myForm.controls['item'].enable();
+		   	// this.myForm.controls['item'].enable();
 			const control = <FormArray>this.myForm.controls['items'];
 			control.push(this.initItemRows());
 		}
@@ -181,7 +196,7 @@ export class ContactFormComponent implements OnInit {
 		////////////
 		getControls(frmGrp: FormGroup, key: string) {
 			return (<FormArray>frmGrp.controls[key]).controls;
-		  }
+		}
 
 		deleteRow(index: number) {
 			const control = <FormArray>this.myForm.controls['items'];
@@ -212,12 +227,27 @@ export class ContactFormComponent implements OnInit {
 				document.getElementById("my-element").remove();
 			}
 		}
+		locationSelected(){
+			console.log("location selected")
+			this.curContactMarker.location = this.tmpContactMarker.location;
+			this.curContactMarker.postion = this.tmpContactMarker.position;
+			this.curContactObj.location = this.curContactMarker.location;
+			this.curContactObj.position.lat = this.tmpContactMarker.position.lat
+			this.curContactObj.position.lng = this.tmpContactMarker.position.lng;
+
+			this.myForm.controls['location'].patchValue(this.curContactMarker.location);
+			this.disableSaveBtn = false;
+
+			this.curContactMarker.setPosition(this.myPos);
+			this.userSettings.inputString = this.curContactMarker.location;
+		}
+		mapClosed(){
+			this.curContactMarker.setPosition(this.myPos);
+			this.userSettings = {
+				"inputString": "search location again"
+			}
+		}
 		addListerToMarker(marker){
-			// marker.addListener('dragstart', (event)=>{
-			// 	this.userSettings = {
-			// 		"inputString": this.curContactObj.location
-			// 	}
-			// });
 			marker.addListener('dragend', (event)=>{
 				this.geocoder.geocode({'location': marker.position}, (results, status)=> {
 					if (status === 'OK') {
@@ -227,11 +257,17 @@ export class ContactFormComponent implements OnInit {
 								"inputString": results[0].formatted_address
 							}
 							this.myForm.controls['location'].patchValue(results[0].formatted_address);
-	
-							this.curContactObj.location = results[0].formatted_address;
-							this.curContactObj.position.lat = marker.position.lat();
-							this.curContactObj.position.lng = marker.position.lng();	
-							this.disableSaveBtn = false;			
+							
+							// OLD CODE , updating the current marker
+							// this.curContactObj.location = results[0].formatted_address;
+							// this.curContactObj.position.lat = marker.position.lat();
+							// this.curContactObj.position.lng = marker.position.lng();	
+							// this.disableSaveBtn = false;
+							
+							// added a tmp marker which will update curContactMaker then locationSelection() is triggered
+							this.tmpContactMarker.location = results[0].formatted_address;
+							this.tmpContactMarker.position.lat = marker.position.lat();
+							this.tmpContactMarker.position.lng= marker.position.lng();
 							
 						} else {
 							window.alert('No results found');

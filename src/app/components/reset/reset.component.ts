@@ -51,8 +51,10 @@ export class ResetComponent implements OnInit {
         if(data.success) {
           console.log("sucess");
           console.log(data);
+          this.router.navigate(['/login']);
         } else {
-          console.log("bad")
+          console.log("bad");
+          this.router.navigate(['/login']);
         }
       });
   }

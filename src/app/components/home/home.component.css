@@ -136,7 +136,7 @@ input[type="range"]::-webkit-slider-thumb {
 	height: 150px;
 	overflow: auto;
 	position: absolute;
-	top: 40px;
+	top: 35px;
 	left: 0;
 	z-index: 9999;
 	background-color: white;

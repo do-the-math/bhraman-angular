@@ -266,7 +266,7 @@ import * as $ from 'jquery';
 		console.log(submitContact);
 		this.toggleForm('disable');
 		this.toggleEditBtn();
-		this.updateContact(submitContact);
+		// this.updateContact(submitContact);
 		this.disableSaveBtn = true;
 	}
 	

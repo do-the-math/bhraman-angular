@@ -396,6 +396,7 @@ export class HomeComponent implements OnInit {
 		this.filteredContactListByCategory = [];
 		this.showContactInMap(obj);
 
+		this.map.panTo(obj.position);
 
 		console.log(this.myCircle);
 	}
