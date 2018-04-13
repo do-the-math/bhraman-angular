@@ -34,6 +34,10 @@
                     </div>
                     <div class="x_content ">
                             <form class="form-horizontal form-label-left" [formGroup]="myForm" (ngSubmit)="submit()">
+                                <div class="alert alert-info" *ngIf="myForm.valid==false && myForm.dirty==true">
+                                    <strong>Warning!</strong> All fields are required
+                                </div>
+                                
                                 <div class="item form-group">
                                   <div class="col-md-12 col-sm-12 col-xs-12">
                                       <button [disabled]="disableSaveBtn==true || myForm.invalid" type="submit" class="btn btn-success pull-right"  value="Submit"><i class="fa fa-save"></i> Save </button>
@@ -51,7 +55,7 @@
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="name">Location <span class="required">*</span>
                                     </label>
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        <input class="form-control" placeholder="Search Location" formControlName="location" data-toggle="modal" data-target="#openMap" >
+                                        <input id="BUTN" class="form-control" placeholder="Search Location" formControlName="location" data-toggle="modal" data-target="#openMap">
                                     </div>                                  
                                 </div>
                                 <div class="item form-group">

@@ -152,11 +152,17 @@ export class ContactFormComponent implements OnInit {
 			this.userSettings.inputString = this.tmpContactMarker.location;
 			let location = new google.maps.LatLng(this.tmpContactMarker.position.lat, this.tmpContactMarker.position.lng);
 			this.map.panTo(location);
+
+			$('openMap').removeClass('in');
+			$('openMap').css('display','none');
 		}
 		mapClosed(){
 			this.curContactMarker.setPosition(this.myPos);
 			this.userSettings.inputString =  "search location again";
 			this.map.panTo(this.myPos);
+
+			$('openMap').removeClass('in');
+			$('openMap').css('display','none');
 		}
 		
 		autoCompleteCallback1(selectedData:any) {
@@ -302,4 +308,8 @@ export class ContactFormComponent implements OnInit {
 				document.getElementById("my-element").remove();
 			}
 		}
+		// BTNFOCUS(){
+		// 	document.getElementById('openMap').classList.add('in');
+		// 	document.getElementById('openMap').style.display = 'block'
+		// }
 	}

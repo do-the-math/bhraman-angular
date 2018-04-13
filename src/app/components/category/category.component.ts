@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { CATEGORY } from '../../models/categoryBO';
 import { USER } from '../../models/userBO';
 import {Location} from '@angular/common';
+import { Spinner } from 'spin.js';
 
 @Component({
   selector: 'app-category',
@@ -15,7 +16,8 @@ import {Location} from '@angular/common';
 export class CategoryComponent implements OnInit {
 	mockcategories: CATEGORY[] = [];
 	newCategoryName: string;
-	user: USER = new USER();;
+	user: USER = new USER();
+	spinner:any;
 	//tmp: any;
 	//selectedID: any;
 	
@@ -52,8 +54,16 @@ export class CategoryComponent implements OnInit {
 		let userTmp = JSON.parse(this.authService.getUser());
 		this.user = userTmp;
 		this.user._id = userTmp.id;
-		console.log(this.user);
+		// console.log(this.user);
 		this.getCategories(this.user);
+
+		var opts = {
+			top: "50%",
+			color: '#5cb85c',
+			radius: 20
+		};
+		var target = document.getElementById('myPage');
+		this.spinner = new Spinner(opts).spin(target);
 	}
 
 	passObj(passedCategory: CATEGORY){
@@ -62,13 +72,14 @@ export class CategoryComponent implements OnInit {
 
 	
 	getCategories(user: USER){
-		console.log('Categories Fetched from Component');		
+		// console.log('Categories Fetched from Component');		
 
 		this.CategoryService.fetchCategoryAll(this.user._id)
 			.subscribe(
 				data => {
-					this.mockcategories = data
-					// console.log(data)
+					this.mockcategories = data;
+					// console.log(data);
+					this.spinner.stop();
 				},
 				error => { alert(error) },
 				()=> console.log("done")

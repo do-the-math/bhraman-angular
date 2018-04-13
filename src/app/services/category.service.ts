@@ -18,7 +18,7 @@ export class CategoryService {
 	
 	//Category Services
 	fetchCategoryAll(uid) : Observable<CATEGORY[]> {
-		console.log('category fetched from service '+uid);
+		// console.log('category fetched from service '+uid);
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -26,7 +26,7 @@ export class CategoryService {
 			.map(res => res.json())
 	}
 	fetchCategoryById(id: any) : Observable<CATEGORY> {
-		console.log('perticular category fetched from service');
+		// console.log('perticular category fetched from service');
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -34,7 +34,7 @@ export class CategoryService {
 			.map(res => res.json())
 	}
 	addCategory(newCategory: CATEGORY){
-		console.log('category added from service');
+		// console.log('category added from service');
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -42,7 +42,7 @@ export class CategoryService {
 			.map(res => res.json())
 	}
 	updateCategoryById(id: any, updatedCategory: CATEGORY){
-		console.log('category updated from service');
+		// console.log('category updated from service');
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
@@ -50,7 +50,7 @@ export class CategoryService {
 			.map(res => res.json())
 	}
 	deleteCategoryById(id: string){
-		console.log('category deleted from service');
+		// console.log('category deleted from service');
 		
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');

@@ -20,7 +20,7 @@
   
     <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel" style="overflow:auto!important; position: relative;">
+                <div class="x_panel" style="overflow:auto!important; position: relative;" id="myPage">
                     <div class="x_title">
                         <h2> Manage
                             <div style="display: inline;">{{curContactObj.name}}</div>
@@ -64,7 +64,7 @@
                                     
                                     <div  class="col-md-8 col-sm-8 col-xs-12">
                                       
-                                      <div formArrayName="items">`
+                                      <div formArrayName="items">
                                           <div class="form-group row" *ngFor="let itemrow of getControls(myForm, 'items'); let i=index"  [formGroupName]="i">
                                               <div class="col-sm-3 col-xs-3" style="padding-left:0" >
                                                   <label ></label>

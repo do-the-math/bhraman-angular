@@ -21,7 +21,7 @@
 
     <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
-				<div class="x_panel" style="overflow:auto!important; position: relative;">
+				<div class="x_panel" style="overflow:auto!important; position: relative;" id="myPage">
 					<div class="x_title">
 					<h2>Manage Category</h2>
 					<ul class="nav navbar-right panel_toolbox">
@@ -41,21 +41,16 @@
 						<thead>
 							<tr class="headings">
 								<!-- <th class="column-title" style="width: 5%;">
-									
 								</th> -->
 								<th class="column-title" style="width: 30%;">Category </th>
-								
 								<th class="column-title" style="width: 20%;text-align:center" ><span class="nobr">Edit</span>
 								</th>
-							
 							</tr>
 						</thead>
 
-						<tbody>
+						<tbody *ngIf="mockcategories.length>0">
 							<tr *ngFor="let c of mockcategories; let index = index">
-							<!-- <td class="a-center ">
-								
-							</td> -->
+							
 							<td routerLink="contacts/{{c._id}}">
 								<a > {{c.name}}</a>
 							</td>
@@ -66,6 +61,11 @@
 							</td>
 							</tr>
 						</tbody>
+						<tbody *ngIf="mockcategories.length==0" >
+							<tr><td colspan="2" style="text-align: center">
+									NO Records
+							</td></tr>
+						</tbody>
 						</table>
 					</div>
 					</div>
@@ -74,7 +74,7 @@
 	</div>
 </div>
 <!-- add category -->
-<div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:200px" >
+<div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="top:10%;" >
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -85,23 +85,23 @@
 				<div id="testmodal2" style="top:50%;">
 					<form id="antoform2" class="form-horizontal calender" role="form">
 					<div class="form-group">
-						<label class="col-sm-3 col-xs-12 control-label">Category name</label>
+						<label class="col-sm-3 col-xs-12 control-label">Category Name</label>
 						<div class="col-sm-8 col-xs-12">
-							<input type="text" class="form-control" required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name">
+							<input type="text" class="form-control"  required [(ngModel)]="newCategoryName" [ngModelOptions]="{standalone: true}" placeholder="Enter Category Name" autofocus>
 						</div>
 					</div>
 					</form>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-default antoclose2" data-dismiss="modal" (click)="newCategoryName=''">Close</button>
 				<button type="button" class="btn btn-primary antosubmit2" (click)="addCategory()" data-dismiss="modal">Add</button>
 			</div>
 		</div>
 	</div>
 </div>
 <!-- edit category -->
-<div id="editCategoryModal" class="modal fade" style="position: absolute; top:50%;bottom:50%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="editCategoryModal" class="modal fade" style="position: absolute; top:10%;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -128,7 +128,7 @@
 	</div>
 </div>
 <!-- delete category -->
-<div id="deleteCategoryModal" class="modal fade" style="position: absolute; top:50%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="deleteCategoryModal" class="modal fade" style="position: absolute; top:10%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

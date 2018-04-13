@@ -20,7 +20,7 @@
     <div class="row">
             <div class="col-md-12 col-sm-12 col-xs-12">
 	
-			<div class="x_panel" style="overflow:auto!important; position: relative;">
+			<div class="x_panel" style="overflow:auto!important; position: relative;" id="myPage">
 			  <div class="x_title">
 				<h2 >Manage <div *ngIf='pageCategory!=null' style="display: inline;">{{pageCategory.name}}</div></h2>
 				<ul class="nav navbar-right panel_toolbox">
@@ -49,20 +49,21 @@
 					  </tr>
 					</thead>
 
-					<tbody>
-					  <tr *ngFor="let c of contactList">
-						<!-- <td class="a-center " style="width: 5%;">
-						</td> -->
-						<td class=" " style="width: 20%;text-align:center" routerLink="../../contactdetail/{{c._id}}">
-							<a >{{c.name}}</a>
-						</td>
-						<td class=" " style="width: 55%;text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
-						
-						<td class=" " style="width: 20%;text-align:center">
-							<!-- <a routerLink="../../contactdetail/{{c._id}}" class=" edit btn btn-info btn-xs" ><i class="fa fa-pencil"></i> Edit </a> -->
-							<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passContact(c)"><i class="fa fa-trash-o"></i> Delete </a>
-						</td>
-					  </tr>
+					<tbody *ngIf="contactList.length>0">
+							<tr *ngFor="let c of contactList">
+								<td class=" " style="width: 20%;text-align:center" routerLink="../../contactdetail/{{c._id}}">
+									<a >{{c.name}}</a>
+								</td>
+								<td class=" " style="width: 55%;text-align:center"><a routerLink="../../contactdetail/{{c._id}}"> {{c.location}}</a></td>
+								<td class=" " style="width: 20%;text-align:center">
+									<a href="#deleteContactModal" data-toggle="modal" class="delete btn btn-danger btn-xs" (click)="passContact(c)"><i class="fa fa-trash-o"></i> Delete </a>
+								</td>
+							</tr>
+					</tbody>
+					<tbody *ngIf="contactList.length==0" >
+							<tr><td colspan="3" style="text-align: center">
+									NO Records
+							</td></tr>
 					</tbody>
 				  </table>
 				</div>

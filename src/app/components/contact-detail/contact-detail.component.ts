@@ -11,6 +11,7 @@ import { AuthService } from '../../services/auth.service';
 import { CategoryService } from '../../services/category.service';
 import { ContactService } from '../../services/contact.service';
 import * as $ from 'jquery';
+import { Spinner } from 'spin.js';
 
 @Component({
 	selector: 'app-contact-detail',
@@ -43,6 +44,7 @@ import * as $ from 'jquery';
 	searchTyp: boolean = true;
 	myPos: any;
 	itemsFormArray: FormArray;
+	spinner: any;
 
 	constructor(
 		private fb: FormBuilder,
@@ -60,6 +62,14 @@ import * as $ from 'jquery';
 			this.router.navigate(['/login']);
 			return;
 		}
+		var opts = {
+			top: "50%",
+			color: '#5cb85c',
+			radius: 20
+		};
+		var target = document.getElementById('myPage');
+		this.spinner = new Spinner(opts).spin(target);
+
 		this.nameInputbutton= true;
 		this.editBtn = false;
 		this.curContactObj = new CONTACT();
@@ -78,6 +88,7 @@ import * as $ from 'jquery';
 			"inputString": this.curContactObj.location
 		}
 		this.toggleForm('disable');
+		
 	}
 	getContact(contactID){
 		// console.log("Contact fetched from Component");
@@ -115,6 +126,7 @@ import * as $ from 'jquery';
 						draggable: true
 					});
 					this.addListerToMarker(this.curContactMarker);
+					this.spinner.stop();
 				},
 				error => {alert(error)},
 				()=> console.log("done")
