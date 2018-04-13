@@ -91,17 +91,16 @@ export class LoginComponent implements OnInit {
 	}
 
 	submit(){
-		console.log("Forgot Password UserName submitted from componet "+this.usernameFP);
-		// this.usernameFP = "test"
+		// console.log("Forgot Password UserName submitted from componet "+this.usernameFP);
+
 		this.spinner = new Spinner(this.opts).spin(this.target);
 		this.authService.forgotPassword(this.usernameFP)
 			.subscribe(data => {
 				if(data.success) {
-					console.log("sucess");
-					console.log(data);
-					
+					// console.log("sucess");
+					// console.log(data);
 				} else {
-					console.log("bad");
+					// console.log("bad");
 					
 				}
 			});

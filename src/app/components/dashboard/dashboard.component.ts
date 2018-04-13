@@ -19,14 +19,25 @@ export class DashboardComponent implements OnInit {
 	ngOnInit() {
 		this.user = new USER();
 		this.sideToggle = 'home';
-		this.authService.getProfile().subscribe(profile => {
-		  this.user = profile.user;
-		  console.log("dashboard "+this.user.name)
-		},
-		err => {
-			console.log(err);
-			return false;
-		});
+
+		// OLD CODE | NOT NEED FOR USER SERVICE CALL
+		// this.authService.getProfile().subscribe(profile => {
+		//   this.user = profile.user;
+		//   console.log("dashboard "+this.user.name)
+		// },
+		// err => {
+		// 	console.log(err);
+		// 	return false;
+		// });
+		if(this.authService.loggedIn()==false){
+			console.log("YOU WERE LOGGED OUT | JWT EXPIRED")
+			this.router.navigate(['/login']);
+			return;
+		}
+		else{
+			this.user = JSON.parse(this.authService.getUser())
+			// console.log(JSON.parse(this.authService.getUser()));
+		}
 
 	}
 
@@ -35,9 +46,6 @@ export class DashboardComponent implements OnInit {
 	}
   onLogoutClick() {
 		this.authService.logout();
-		/* this.flashMessage.show('You are logged out', {
-		  cssClass: 'alert-success', timeout: 3000
-		}); */
 		this.router.navigate(['/login']);
 		return false;
 	}

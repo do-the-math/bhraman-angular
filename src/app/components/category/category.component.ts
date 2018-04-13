@@ -29,42 +29,53 @@ export class CategoryComponent implements OnInit {
 		) { }
 
 	ngOnInit() {
-		if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+		// if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+		// 	this.router.navigate(['/login']);
+		// 	return;
+		// }
+		if(this.authService.loggedIn()==false){
+			console.log("YOU WERE LOGGED OUT | JWT EXPIRED")
 			this.router.navigate(['/login']);
 			return;
 		}
-		this.authService.getProfile().subscribe(profile => {
-			this.user = profile.user;
-			console.log(this.user._id);
-			this.getCategories(this.user);
-		},
-		err => {
-			console.log(err);
-			return false;
-		});
+
+		// OLD CODE | NO  NEED FOR SERVICE CALL FOR USER
+		// this.authService.getProfile().subscribe(profile => {
+		// 	this.user = profile.user;
+		// 	console.log(this.user._id);
+		// 	this.getCategories(this.user);
+		// },
+		// err => {
+		// 	console.log(err);
+		// 	return false;
+		// });
+		let userTmp = JSON.parse(this.authService.getUser());
+		this.user = userTmp;
+		this.user._id = userTmp.id;
+		console.log(this.user);
+		this.getCategories(this.user);
 	}
 
 	passObj(passedCategory: CATEGORY){
-	  //this.selectedID = passedCategory._id;
 	  this.tmpCatObj = passedCategory;
 	}
 
 	
 	getCategories(user: USER){
 		console.log('Categories Fetched from Component');		
-		console.log("xxxxxxxx "+this.user.name+" "+this.user._id);
+
 		this.CategoryService.fetchCategoryAll(this.user._id)
 			.subscribe(
 				data => {
 					this.mockcategories = data
-					console.log(data)
+					// console.log(data)
 				},
 				error => { alert(error) },
 				()=> console.log("done")
 			);
 	}
 	addCategory() {
-		console.log('Categories Added from Component');
+		// console.log('Categories Added from Component');
 
 		if(this.newCategoryName==='' || this.newCategoryName==undefined){
 			// no body
@@ -78,13 +89,11 @@ export class CategoryComponent implements OnInit {
 		  newObj.count = 0;
 		  newObj.date = "12 May";
 
-		  console.log(this.user._id);
-
 		  // save this on database
 		  this.CategoryService.addCategory(newObj)
 			.subscribe(
 				data => {
-					console.log("added");
+					// console.log("added");
 					this.getCategories(this.user);
 					this.newCategoryName=""
 				},
@@ -100,20 +109,20 @@ export class CategoryComponent implements OnInit {
 		this.CategoryService.updateCategoryById(this.tmpCatObj._id, this.tmpCatObj)
 			.subscribe(
 				data => {
-					console.log("updated contact");
-					console.log(data)
+					// console.log("updated contact");
+					// console.log(data);
 				},
 				error => alert(error),
 				()=> console.log("done")
 			); 
     }
 	deleteCategory(){
-		console.log('Categories Deleted from Component');
+		// console.log('Categories Deleted from Component');
 		
 		this.CategoryService.deleteCategoryById(this.tmpCatObj._id)
 			.subscribe(
 				data => {
-					console.log("category deleted and data"+data);
+					// console.log("category deleted and data"+data);
 					this.getCategories(this.user);
 				},
 				error => {alert(error)},
@@ -123,13 +132,12 @@ export class CategoryComponent implements OnInit {
 	}
 
 	autoCompleteCallback1(selectedData:any) {
-	  //do any necessery stuff.
-	  console.log(selectedData);
+		//  do any necessery stuff.
+		//  console.log(selectedData);
 	}
+
 	backClicked() {
         this._location.back();
 	}
-	// @HostListener(Tou){
-
-	// }
+	// @HostListener(){}
 }

@@ -8,12 +8,13 @@ import { tokenNotExpired } from 'angular2-jwt';
 import { GlobalVariable } from '../services/general.js';
 import 'rxjs/add/operator/map';
 import { of } from 'rxjs/observable/of';
+// import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthService {
   authToken: any;
   user: any;
-  isDev;
+  isDev: boolean;
 
   constructor(private http: Http) {
       this.isDev = true;  // Change to false before deployment
@@ -49,6 +50,7 @@ export class AuthService {
   storeUserData(token, user) {
     localStorage.setItem('id_token', token);
     localStorage.setItem('user', JSON.stringify(user));
+
     this.authToken = token;
     this.user = user;
   }
@@ -57,14 +59,12 @@ export class AuthService {
     const token = localStorage.getItem('id_token');
     this.authToken = token;
   }
-
   loggedIn() {
     return tokenNotExpired('id_token');
   }
   getUser(){
     return localStorage.getItem('user');
   }
-
   logout() {
     this.authToken = null;
     this.user = null;

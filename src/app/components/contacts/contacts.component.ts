@@ -44,15 +44,25 @@ export class ContactsComponent implements OnInit {
 			"inputString":"Bangalore,karnataka"
 		}
 		this.user = new USER();
-		this.authService.getProfile().subscribe(profile => {
-			this.user = profile.user;
-			this.getCategory(this.categoryID );
-			this.getContacts(this.categoryID);
-		},
-		err => {
-			console.log(err);
-			return false;
-		});
+
+		// OLD CODE | NO  NEED FOR SERVICE CALL FOR USER
+		// this.authService.getProfile().subscribe(profile => {
+		// 	this.user = profile.user;
+		// 	this.getCategory(this.categoryID );
+		// 	this.getContacts(this.categoryID);
+		// },
+		// err => {
+		// 	console.log(err);
+		// 	return false;
+		// });
+
+
+		let userTmp = JSON.parse(this.authService.getUser());
+		this.user = userTmp;
+		this.user._id = userTmp.id;
+		console.log(this.user);
+		this.getCategory(this.categoryID );
+		this.getContacts(this.categoryID);
     }
 	
 	passContact(passedContact: CONTACT){
@@ -82,7 +92,7 @@ export class ContactsComponent implements OnInit {
     }
 	getContacts(categoryID: string){
 		console.log("Contacts fetched from Component");
-		//this.contactList = CONTACTS;
+		
 		this.ContactService.fetchContactByCategoryIdOrderByUpdateAt(this.user._id, categoryID)
 			.subscribe(
 				data => {

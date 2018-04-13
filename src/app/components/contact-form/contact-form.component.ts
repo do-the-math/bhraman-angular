@@ -72,14 +72,22 @@ export class ContactFormComponent implements OnInit {
 			this.userSettings = {
 				"inputString": "Search Location.."
 			}
-			this.authService.getProfile().subscribe(profile => {
-				this.user = profile.user;	
-				this.createContact(this.user);			
-			},
-			err => {
-				console.log(err);
-				return false;
-			});
+
+			// OLD CODE | No Need for User Service Call
+			// this.authService.getProfile().subscribe(profile => {
+			// 	this.user = profile.user;	
+			// 	this.createContact(this.user);			
+			// },
+			// err => {
+			// 	console.log(err);
+			// 	return false;
+			// });
+
+			let userTmp = JSON.parse(this.authService.getUser());
+			this.user = userTmp;
+			this.user._id = userTmp.id;
+			// console.log(this.user);
+			this.createContact(this.user);
 		}
 
 		createContact(user: USER){
@@ -113,7 +121,7 @@ export class ContactFormComponent implements OnInit {
 			marker.addListener('dragend', (event)=>{
 				this.geocoder.geocode({'location': marker.position}, (results, status)=> {
 					if (status === 'OK') {
-						console.log(results[0].formatted_address)
+						// console.log(results[0].formatted_address)
 						if (results[0]) {
 							this.userSettings = {
 								"inputString": results[0].formatted_address
@@ -133,7 +141,7 @@ export class ContactFormComponent implements OnInit {
 		}
 		
 		locationSelected(){
-			console.log("location selected")
+			// console.log("location selected")
 			
 			this.curContactObj.location = this.tmpContactMarker.location;
 			this.curContactObj.position = this.tmpContactMarker.position;
@@ -152,7 +160,7 @@ export class ContactFormComponent implements OnInit {
 		}
 		
 		autoCompleteCallback1(selectedData:any) {
-			console.log(selectedData);
+			// console.log(selectedData);
 			this.tmpContactMarker.position = selectedData.data.geometry.location;
 			this.tmpContactMarker.location = selectedData.data.formatted_address;
 			this.userSettings = {
@@ -174,7 +182,7 @@ export class ContactFormComponent implements OnInit {
 		get formData() { return this.myForm.get('items'); }
 
 		latLngSubmit(value){
-			console.log(value.lng+" "+ value.lat)
+			// console.log(value.lng+" "+ value.lat)
 
 			var latlng = {lat: parseFloat(value.lat), lng: parseFloat(value.lng)};
 			this.geocoder.geocode({'location': latlng}, (results, status) =>{
@@ -249,19 +257,19 @@ export class ContactFormComponent implements OnInit {
 			submitContact.location = this.myForm.value.location;
 			submitContact.position.lat = this.curContactObj.position.lat;
 			submitContact.position.lng = this.curContactObj.position.lng;
-			console.log(submitContact);
+			// console.log(submitContact);
 
 			this.disableSaveBtn = true;
-			// this.addContact(submitContact);
+			this.addContact(submitContact);
 		}
 		addContact(obj: CONTACT){
-			console.log("Contact Updated from Component");
+			// console.log("Contact Updated from Component");
 	
 			this.ContactService.addContact(obj)
 				.subscribe(
 					data => {
-						console.log("added contact");
-						console.log(data);
+						// console.log("added contact");
+						// console.log(data);
 						this._location.back();
 					},
 					error => alert(error),

@@ -16,10 +16,15 @@ export class RegisterComponent implements OnInit {
 			     private authService: AuthService,
 			     private router: Router,
 				 private notif: NotificationsService
-					) { }
+				) { }
 
 	ngOnInit() {
-		if(this.authService.getUser()!=null || this.authService.getUser()!=undefined){
+		// if(this.authService.getUser()!=null || this.authService.getUser()!=undefined){
+		// 	this.router.navigate(['/dashboard/home']);
+		// 	return;
+		// }
+		if(this.authService.loggedIn()==true){
+			console.log("YOU ARE ALREADY LOGGED IN")
 			this.router.navigate(['/dashboard/home']);
 			return;
 		}
@@ -34,9 +39,7 @@ export class RegisterComponent implements OnInit {
 		}
 
 		// Required Fields
-		if(!this.validateService.validateRegister(user)) {
-			//this.flashMessage.show('Please fill in all fields', {cssClass: 'alert-danger', timeout: 3000});
-			
+		if(!this.validateService.validateRegister(user)) {			
 			this.notif.error(
 				'Incomplete Form',
 				'Please fill in all fields',
@@ -54,7 +57,6 @@ export class RegisterComponent implements OnInit {
 
 		// Validate Email
 		if(!this.validateService.validateEmail(user.email)) {
-			//this.flashMessage.show('Please use a valid email', {cssClass: 'alert-danger', timeout: 3000});
 			this.notif.error(
 				'Invalid Email',
 				'Enter a valid Email',

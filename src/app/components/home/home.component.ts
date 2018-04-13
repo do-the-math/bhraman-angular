@@ -65,7 +65,12 @@ export class HomeComponent implements OnInit {
 				}
 
 	ngOnInit() { 
-		if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+		// if(this.authService.getUser()==null || this.authService.getUser()==undefined){
+		// 	this.router.navigate(['/login']);
+		// 	return;
+		// }
+		if(this.authService.loggedIn()==false){
+			console.log("YOU WERE LOGGED OUT | JWT EXPIRED")
 			this.router.navigate(['/login']);
 			return;
 		}
@@ -75,7 +80,7 @@ export class HomeComponent implements OnInit {
 		this.optionSelected = [];
 		this.myCircleRadius = 1; // 1km
 		this.myCircle = new google.maps.Circle();
-		console.log(this.myCircle)
+		// console.log(this.myCircle)
 		this.infowindow_open = null;
 		this.markerList = []
 		this.colorMap = new Map<string, string>();
@@ -88,25 +93,32 @@ export class HomeComponent implements OnInit {
 		};
 		this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
 		
-		// service call
-		this.authService.getProfile().subscribe(profile => {
-				this.user = profile.user;
-				this.getCategory(this.user);
-			},
-			err => {
-				console.log(err);
-				return false;
-		});
+		// service call OLD CODE 
+		// this.authService.getProfile().subscribe(profile => {
+		// 		this.user = profile.user;
+		// 		this.getCategory(this.user);
+		// 	},
+		// 	err => {
+		// 		console.log(err);
+		// 		return false;
+		// });
+
+		// new Code for user
+		let userTmp = JSON.parse(this.authService.getUser());
+		this.user._id = userTmp.id;
+		this.getCategory(this.user);
+
+
 		var opts = {
 			top: "50%",
 			color: '#5cb85c',
-			radius: 10
+			radius: 20
 		};
 		var target = document.getElementById('myMap');
 		this.spinner = new Spinner(opts).spin(target);
 	}
 	getCategory(user: USER){
-		console.log('Categories Fetched from Component');
+		// console.log('Categories Fetched from Component');
 		
 		this.CategoryService.fetchCategoryAll(user._id)
 			.subscribe(
@@ -124,7 +136,7 @@ export class HomeComponent implements OnInit {
 			); 
 	}
 	getContact(user: USER){
-		console.log("Contacts Fetched from Component");
+		// console.log("Contacts Fetched from Component");
 		
 		this.ContactService.fetchContactAll(user._id)
 			.subscribe(
@@ -138,7 +150,7 @@ export class HomeComponent implements OnInit {
 			);
     }
 	chooseCat(catID){
-		console.log("chooseCat");
+		// console.log("chooseCat");
 
 		var idx = this.optionSelected.indexOf(catID);
 		if(idx > -1){
@@ -202,8 +214,8 @@ export class HomeComponent implements OnInit {
 		this.optionSelected = [];
 	}
 	drawCircleOnMap(position){
-		console.log("drawCircleOnMap");
-		console.log(this.getRadius());
+		// console.log("drawCircleOnMap");
+		// console.log(this.getRadius());
 
 		let location = new google.maps.LatLng(position.latitude, position.longitude);
 		this.map.panTo(location);
@@ -224,11 +236,11 @@ export class HomeComponent implements OnInit {
 			map: this.map,
 			title: 'You are Here!'
 		});
-		console.log("drawCircleOnMap Done");
+		// console.log("drawCircleOnMap Done");
 		this.findNearByContacts();
 	}
 	filterContacts(){
-		console.log("filter contact fn");
+		// console.log("filter contact fn");
 
 		this.filteredContactListByCategory = this.contactList.filter(contact => {
 				for(var s=0;s<this.optionSelected.length;s++){
@@ -244,11 +256,11 @@ export class HomeComponent implements OnInit {
 		return this.filteredContactListByCategory;
 	}
 	displayMapOne(){	
-		console.log("display Map One");
+		// console.log("display Map One");
 
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition((position) => {
-				console.log("curr location found");
+				// console.log("curr location found");
 				this.myCurrentPosition = position.coords;
 				this.myOriginalPosition = position.coords;
 				this.drawCircleOnMap(this.myCurrentPosition);
@@ -260,7 +272,7 @@ export class HomeComponent implements OnInit {
 		}
 	}
 	onOptionChange(){
-		console.log("onOptionChange");
+		// console.log("onOptionChange");
 
 		this.clearMap("marker");
 		if(this.myCircle.getMap()==null){
@@ -269,7 +281,7 @@ export class HomeComponent implements OnInit {
 		this.findNearByContacts();
 	}
 	findNearByContacts() {
-		console.log("findNearByContacts fn");
+		// console.log("findNearByContacts fn");
 
 		var searchContactList = this.getFilteredContacts()
 		searchContactList.forEach(contact => {
@@ -278,7 +290,7 @@ export class HomeComponent implements OnInit {
 								this.myCurrentPosition.longitude,
 								contact.position.lat, 
 								contact.position.lng);
-			console.log(dist)
+			// console.log(dist)
 			if (dist*1000 < this.getRadius()*1000) {
 				this.showContactInMap(contact);
 			}
@@ -286,7 +298,7 @@ export class HomeComponent implements OnInit {
 		this.spinner.stop();
 	}
 	showContactInMap(contact: CONTACT) {
-		console.log("showContactInMap fn");
+		// console.log("showContactInMap fn");
 
 		var marker = new google.maps.Marker({
 			position: new google.maps.LatLng(contact.position.lat, 
@@ -339,8 +351,8 @@ export class HomeComponent implements OnInit {
 										"</ol>"+
 									"</div>"+
 								"</div>"
-								// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
-								// 	"passId("+obj._id+")> Add </a>"
+		// "<a href='#addNotes' data-toggle='modal' class='delete btn btn-danger btn-xs'"+
+		// 	"passId("+obj._id+")> Add </a>"
 		
 		return infoWindowContent;
 	}
@@ -356,11 +368,10 @@ export class HomeComponent implements OnInit {
 		};
 	}
 	changeRadius(val: any){
-		console.log("radius changed to= "+val);
+		// console.log("radius changed to= "+val);
 
 		this.clearMap("all");
 		this.setRadius(parseInt(val));
-		console.log(this.getRadius())
 		this.drawCircleOnMap(this.myCurrentPosition);
 	}
 	mydropDownEvent() {
@@ -381,15 +392,16 @@ export class HomeComponent implements OnInit {
 	SearchContactFn(){
 		// console.log(this.searchContactName);
 		this.searchedContactList1 = this.contactList.filter(contact => {
-			if(contact.name.toLowerCase().startsWith(this.searchContactName.toLowerCase())){
+			// user startsWith if prefix match is used
+			if(contact.name.toLowerCase().includes(this.searchContactName.toLowerCase())){ 
 				return true;
 			}
 		});
-		console.log(this.myCircle);
+		// console.log(this.myCircle);
 		// console.log(this.searchedContactList1);
 	}
 	plotSearchedMarker(obj: CONTACT){
-		console.log("plotSearchedMarker");
+		// console.log("plotSearchedMarker");
 
 		this.searchContactName = obj.name;
 
@@ -401,8 +413,6 @@ export class HomeComponent implements OnInit {
 
 		let myMarker = this.showContactInMap(obj);
 		this.map.panTo(obj.position);
-
-
 		var infoWindowContent = this.InfoWinContent(obj)
 		if( this.infowindow_open ) {
 			this.infowindow_open.close();
@@ -410,7 +420,6 @@ export class HomeComponent implements OnInit {
 		var myInfowindow = new google.maps.InfoWindow({ content: infoWindowContent });
 		this.infowindow_open = myInfowindow;
 		myInfowindow.open(this.map, myMarker);
-		console.log(this.myCircle);
 	}
 }
 

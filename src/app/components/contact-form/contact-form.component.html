@@ -104,27 +104,26 @@
         <div class="modal-content">
             <div class="modal-header">
                 <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> -->
-                <h4 class="modal-title" id="myModalLabel2">Change Location</h4>
+                <h4 class="modal-title" id="myModalLabel2">Change Location
+                    <button  type="button" class="btn btn-success pull-right" (click)="searchTyp=!searchTyp">
+                        <div *ngIf="searchTyp">Search By Coordinates</div>
+                        <div *ngIf="!searchTyp">Search By Address</div>
+                    </button>
+                </h4>
             </div>
             <div class="modal-body">
                 <div id="testmodal2">
-                    <div>
-                        <button  type="button" class="btn btn-success btn-xs btn-block" (click)="searchTyp=!searchTyp">
-                            <div *ngIf="searchTyp">Search By lat/lng</div>
-                            <div *ngIf="!searchTyp">Search By Address</div>
-                        </button>
-                    </div>
                     <form *ngIf="!searchTyp" class="aman" style="margin: 0px!important;" #latLngForm="ngForm" (ngSubmit)="latLngSubmit(latLngForm.value)">
                         <div class="form-group"style="margin: 6px!important;" >
-                                <div class="col-md-5 col-sm-4 col-xs-12 form-group">
-                                    <input type="number" placeholder="latitude" class="form-control" name="lat" [(ngModel)]="tmpContactMarker.position.lat">
-                                </div>
-                                <div class="col-md-5 col-sm-4 col-xs-12 form-group">
-                                    <input type="number" placeholder="longitude" class="form-control" name="lng" [(ngModel)]="tmpContactMarker.position.lng">
-                                </div>
-                                <div class="col-md-2 col-sm-4 col-xs-12 form-group">
-                                    <button  type="submit" class="btn btn-primary btn-block antosubmit2">Search</button>
-                                </div>
+                            <div class="col-md-5 col-sm-4 col-xs-12 form-group">
+                                <input type="number" placeholder="latitude" class="form-control" name="lat" [(ngModel)]="tmpContactMarker.position.lat">
+                            </div>
+                            <div class="col-md-5 col-sm-4 col-xs-12 form-group">
+                                <input type="number" placeholder="longitude" class="form-control" name="lng" [(ngModel)]="tmpContactMarker.position.lng">
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-xs-12 form-group">
+                                <button  type="submit" class="btn btn-primary btn-block antosubmit2">Search</button>
+                            </div>
                         </div>
                     </form>
                     
@@ -143,7 +142,7 @@
     </div>
   </div>
 
-  <div id="myModal" class="modal fade" style="top:20%" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+  <div id="myModal" class="modal fade" style="top:20%;z-index:10000;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
