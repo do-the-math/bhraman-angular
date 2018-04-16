@@ -88,6 +88,20 @@ export class ContactFormComponent implements OnInit {
 			this.user._id = userTmp.id;
 			// console.log(this.user);
 			this.createContact(this.user);
+
+			$( "#BUTN" ).focus(function() {
+				console.log("focus");
+				$('#my-element').each(function() {
+					$(this).remove();
+				});
+
+
+				document.getElementById('openMap').classList.add('in');
+				document.getElementById('openMap').style.display = 'block';
+				$(document.body).addClass("modal-open");
+				$('body').append("<div id='my-element'class='modal-backdrop fade in'></div>");
+
+			});
 		}
 
 		createContact(user: USER){
@@ -152,17 +166,19 @@ export class ContactFormComponent implements OnInit {
 			this.userSettings.inputString = this.tmpContactMarker.location;
 			let location = new google.maps.LatLng(this.tmpContactMarker.position.lat, this.tmpContactMarker.position.lng);
 			this.map.panTo(location);
-
-			$('openMap').removeClass('in');
-			$('openMap').css('display','none');
+			
+			document.getElementById('openMap').classList.remove('in');
+			document.getElementById('openMap').style.display = 'none';
+			document.getElementById("my-element").remove();
 		}
 		mapClosed(){
 			this.curContactMarker.setPosition(this.myPos);
 			this.userSettings.inputString =  "search location again";
 			this.map.panTo(this.myPos);
 
-			$('openMap').removeClass('in');
-			$('openMap').css('display','none');
+			document.getElementById('openMap').classList.remove('in');
+			document.getElementById('openMap').style.display = 'none';
+			document.getElementById("my-element").remove();
 		}
 		
 		autoCompleteCallback1(selectedData:any) {
@@ -288,7 +304,7 @@ export class ContactFormComponent implements OnInit {
 				// $('#myModal').addClass('in');
 				// $('#myModal').css('display','block');
 				$(document.body).addClass("modal-open")
-				$('body').append("<div id='my-element'class='modal-backdrop fade in'></div>");
+				$('body').append("<div id='my-element' class='modal-backdrop fade in'></div>");
 	
 				document.getElementById('myModal').classList.add('in');
 				document.getElementById('myModal').style.display = 'block'
@@ -313,3 +329,4 @@ export class ContactFormComponent implements OnInit {
 		// 	document.getElementById('openMap').style.display = 'block'
 		// }
 	}
+

@@ -64,6 +64,8 @@ export class CategoryComponent implements OnInit {
 		};
 		var target = document.getElementById('myPage');
 		this.spinner = new Spinner(opts).spin(target);
+
+		console.log("sdfsdf")
 	}
 
 	passObj(passedCategory: CATEGORY){

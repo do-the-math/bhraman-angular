@@ -88,6 +88,18 @@ import { Spinner } from 'spin.js';
 			"inputString": this.curContactObj.location
 		}
 		this.toggleForm('disable');
+
+		$( "#BUTN" ).focus(function() {
+			console.log("sdfsdf");
+
+			$('#my-element').each(function() {
+				$(this).remove();
+			});
+			document.getElementById('openMap').classList.add('in');
+			document.getElementById('openMap').style.display = 'block';
+			$(document.body).addClass("modal-open");
+			$('body').append("<div id='my-element'class='modal-backdrop fade in'></div>");
+		});
 		
 	}
 	getContact(contactID){
@@ -210,11 +222,19 @@ import { Spinner } from 'spin.js';
 		this.userSettings.inputString = this.tmpContactMarker.location;
 		let location = new google.maps.LatLng(this.tmpContactMarker.position.lat, this.tmpContactMarker.position.lng);
 		this.map.panTo(location);
+
+		document.getElementById('openMap').classList.remove('in');
+		document.getElementById('openMap').style.display = 'none';
+		document.getElementById("my-element").remove();
 	}
 	mapClosed(){
 		this.curContactMarker.setPosition(this.myPos);
 		this.userSettings.inputString =  "search location again";
 		this.map.panTo(this.myPos);
+
+		document.getElementById('openMap').classList.remove('in');
+		document.getElementById('openMap').style.display = 'none';
+		document.getElementById("my-element").remove();
 	}
 	autoCompleteCallback1(selectedData:any) {
 		// console.log(selectedData);
