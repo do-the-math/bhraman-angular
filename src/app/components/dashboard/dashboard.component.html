@@ -1,7 +1,7 @@
 <div class="" [ngClass]="{'nav-sm': clicked, 'nav-md': !clicked}">
     <div class="container body">
       <div class="main_container">
-        <div class="col-md-3 left_col menu_fixed">
+        <div class="col-md-3 left_col menu_fixed" style="z-index: 100">
           <div class="left_col scroll-view">
             <div class="navbar nav_title">
               <a routerLink="/dashboard"  class="site_title" (click)="sideToggle='home'" routerLink="home"> <span> Tour App</span></a>
@@ -32,7 +32,6 @@
                   <li (click)="sideToggle='category'" routerLinkActive="active" ><a routerLink="category"><i class="fa fa-table"></i> Category </a></li>
                   <!-- <li (click)="sideToggle='home'" [ngClass]="{'active': sideToggle==='home'}"><a routerLink="home"><i class="fa fa-home"></i> Home </a></li>
                   <li (click)="sideToggle='category'" [ngClass]="{'active': sideToggle==='category'}"><a routerLink="category"><i class="fa fa-table"></i> Category </a></li> -->
-                  <!-- <li><a routerLink="sandbox"><i class="fa fa-clone"></i>SandBox</a> </li> -->
                 </ul>
               </div>
               
@@ -55,7 +54,6 @@
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
-            
           </div>
         </div>
 

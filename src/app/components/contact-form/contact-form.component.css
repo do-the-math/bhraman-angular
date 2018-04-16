@@ -3,7 +3,8 @@ textarea {
 	/* will prevent resizing horizontally */
 	resize:vertical;
 }
- #openMap {
+#openMap {
 	position: absolute;
-	top: 40%;
+	top: 15%;
+	z-index: 10000;
 }
