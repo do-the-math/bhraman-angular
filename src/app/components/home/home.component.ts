@@ -65,10 +65,10 @@ export class HomeComponent implements OnInit {
 				}
 
 	ngOnInit() { 
-		// if(this.authService.getUser()==null || this.authService.getUser()==undefined){
-		// 	this.router.navigate(['/login']);
-		// 	return;
+		// if(document.getElementById("my-element")!=null){
+		// 	document.getElementById("my-element").remove();
 		// }
+
 		if(this.authService.loggedIn()==false){
 			console.log("YOU WERE LOGGED OUT | JWT EXPIRED")
 			this.router.navigate(['/login']);
@@ -296,6 +296,7 @@ export class HomeComponent implements OnInit {
 			}
 		});
 		this.spinner.stop();
+		
 	}
 	showContactInMap(contact: CONTACT) {
 		// console.log("showContactInMap fn");

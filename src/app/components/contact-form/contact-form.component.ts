@@ -89,6 +89,14 @@ export class ContactFormComponent implements OnInit {
 			// console.log(this.user);
 			this.createContact(this.user);
 
+			// if(document.getElementById("my-element")!=null){
+			// 	document.getElementById("my-element").remove();
+			// }
+			this.router.events.subscribe((val) =>{
+				if(document.getElementById("my-element")!=null){
+					document.getElementById("my-element").remove();
+				}
+			})
 			$( "#BUTN" ).focus(function() {
 				console.log("focus");
 				$('#my-element').each(function() {

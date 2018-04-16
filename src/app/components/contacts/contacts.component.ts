@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { USER } from '../../models/userBO';
 import {Location} from '@angular/common';
 import { Spinner } from 'spin.js';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-contacts',
@@ -33,10 +34,15 @@ export class ContactsComponent implements OnInit {
         private ContactService: ContactService,
         private authService: AuthService,
         private _location: Location) {
-			this.route.params.subscribe( params => console.log(params) );
+			// this.route.params.subscribe( params => console.log(params));
+			
 		}
 
     ngOnInit() {
+		// if(document.getElementById("my-element")!=null){
+		// 	document.getElementById("my-element").remove();
+		// }
+
 		this.categoryID = (this.route.snapshot.paramMap.get('categoryID'));
 		this.addNewLink = "../../contactform/"+this.categoryID;
 		// console.log("passed id "+this.categoryID)
@@ -93,7 +99,7 @@ export class ContactsComponent implements OnInit {
 			.subscribe(
 				data => {
 					this.pageCategory = data
-					console.log(data);
+					// console.log(data);
 				},
 				error => alert(error),
 				()=> console.log("done")

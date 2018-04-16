@@ -89,6 +89,14 @@ import { Spinner } from 'spin.js';
 		}
 		this.toggleForm('disable');
 
+		// $('#my-element').each(function() {
+		// 	$(this).remove();
+		// });
+		this.router.events.subscribe((val) =>{
+			if(document.getElementById("my-element")!=null){
+				document.getElementById("my-element").remove();
+			}
+		})
 		$( "#BUTN" ).focus(function() {
 			console.log("sdfsdf");
 

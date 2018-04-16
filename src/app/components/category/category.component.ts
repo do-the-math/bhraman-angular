@@ -28,7 +28,7 @@ export class CategoryComponent implements OnInit {
 		private authService: AuthService,
 		private router: Router,
 		private _location: Location
-		) { }
+		) {}
 
 	ngOnInit() {
 		// if(this.authService.getUser()==null || this.authService.getUser()==undefined){
@@ -65,7 +65,14 @@ export class CategoryComponent implements OnInit {
 		var target = document.getElementById('myPage');
 		this.spinner = new Spinner(opts).spin(target);
 
-		console.log("sdfsdf")
+		if(document.getElementById("my-element")!=null){
+			document.getElementById("my-element").remove();
+		}
+		// this.router.events.subscribe((val) =>{
+		// 	if(document.getElementById("my-element")!=null){
+		// 		document.getElementById("my-element").remove();
+		// 	}
+		// })
 	}
 
 	passObj(passedCategory: CATEGORY){
